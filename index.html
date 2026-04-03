@@ -3,84 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shelley Chen | 主见 · 行动 · 思考</title>
+    <title>Shelley Chen | 个人主页</title>
     <style>
-        :root { --dark: #1a1a1a; --soft-white: #fdfcf8; --accent: #2d5a27; }
-        body { font-family: 'PingFang SC', sans-serif; margin: 0; background: var(--soft-white); color: var(--dark); display: flex; min-height: 100vh; }
-        
-        /* 侧边栏 */
-        .sidebar { width: 300px; background: var(--dark); color: white; padding: 60px 40px; position: fixed; height: 100vh; }
-        .name { font-size: 2.5rem; font-weight: bold; line-height: 1.1; }
-        .motto { font-size: 0.8rem; color: #888; margin-top: 15px; letter-spacing: 4px; text-transform: uppercase; }
-        .bio { margin-top: 50px; font-size: 0.95rem; line-height: 2; border-left: 2px solid var(--accent); padding-left: 20px; color: #ccc; }
-        .birth { position: absolute; bottom: 40px; font-size: 0.8rem; color: #555; }
+        :root { --dark: #1a1a1a; --white: #ffffff; --accent: #8e9775; --bg: #f9f9f7; }
+        * { box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'PingFang SC', sans-serif; margin: 0; background: var(--bg); color: var(--dark); }
 
-        /* 主内容 */
-        .main { margin-left: 380px; padding: 80px 40px; max-width: 700px; }
-        .section-title { font-size: 1.4rem; font-weight: 600; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        
-        /* 深度思考位 - 《飘》 */
-        .featured-book { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 50px; }
-        .quote { font-style: italic; color: var(--accent); font-size: 1.1rem; margin-bottom: 15px; display: block; }
-        
-        /* 影音卡片 */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
-        .tag { font-size: 0.7rem; color: var(--accent); font-weight: bold; letter-spacing: 1px; }
+        /* 顶部导航栏 - 固定在最上方 */
+        nav { position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1fr solid #eee; z-index: 1000; display: flex; justify-content: space-between; padding: 15px 10%; align-items: center; }
+        .logo { font-weight: bold; font-size: 1.2rem; letter-spacing: 1px; }
+        .nav-links a { text-decoration: none; color: var(--dark); margin-left: 25px; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
 
-        /* 留言板预览 */
-        .guestbook { margin-top: 60px; background: #f4f4f4; padding: 30px; border-radius: 12px; }
-        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        button { background: var(--dark); color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; }
+        /* 通用栏目样式 */
+        section { min-height: 100vh; padding: 100px 10% 60px; border-bottom: 1px solid #eee; }
+        .content-box { max-width: 900px; margin: 0 auto; }
+        h2 { font-size: 2rem; margin-bottom: 40px; border-left: 4px solid var(--accent); padding-left: 15px; }
+
+        /* 首页栏目 */
+        #home { background: var(--dark); color: white; display: flex; align-items: center; text-align: center; }
+        #home h1 { font-size: 3.5rem; margin: 0; }
+        .motto { letter-spacing: 5px; color: #888; margin-top: 20px; }
+
+        /* 随笔栏目 */
+        .diary-item { background: white; padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+
+        /* 影音栏目 - 磁贴布局 */
+        .vault-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .vault-card { background: white; padding: 20px; border-radius: 12px; border: 1px solid #eee; }
+        .tag { font-size: 0.7rem; color: var(--accent); font-weight: bold; }
+
+        /* 留言栏目 */
+        .input-group { margin-top: 30px; }
+        input, textarea { width: 100%; padding: 15px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        button { background: var(--dark); color: white; border: none; padding: 12px 40px; border-radius: 30px; cursor: pointer; transition: 0.3s; }
+        button:hover { background: var(--accent); }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="name">Shelley<br>Chen.</div>
-        <div class="motto">有主见 · 有行动 · 有思考</div>
-        <div class="bio">
-            2003年盛夏出生。<br>
-            比起随波逐流，更喜欢独立思考；<br>
-            比起纸上谈兵，更相信行动的力量。
+    <nav>
+        <div class="logo">SHELLEY CHEN.</div>
+        <div class="nav-links">
+            <a href="#home">首页</a>
+            <a href="#journal">随笔</a>
+            <a href="#vault">精神角落</a>
+            <a href="#contact">互动留言</a>
         </div>
-        <div class="birth">EST. 2003.06.20</div>
-    </div>
+    </nav>
 
-    <div class="main">
-        <section>
-            <div class="section-title">🌟 深度推荐 / Featured</div>
-            <div class="featured-book">
-                <span class="tag">BOOK / 经典推荐</span>
-                <h3>《飘》(Gone with the Wind)</h3>
-                <span class="quote">“After all, tomorrow is another day.”</span>
-                <p style="color: #666; font-size: 0.95rem;">斯嘉丽拥有最极致的生存本能。在土地与废墟之上，她从不自溺于痛苦，而是选择先活下去。这种韧性，是我对“行动力”最深刻的理解。</p>
+    <section id="home">
+        <div class="content-box">
+            <h1>Shelley Chen</h1>
+            <p class="motto">有主见 · 有行动 · 有思考</p>
+            <p style="margin-top: 40px; color: #ccc;">2003.06.20 · 盛夏出生的行动派</p>
+        </div>
+    </section>
+
+    <section id="journal">
+        <div class="content-box">
+            <h2>📝 随笔日常</h2>
+            <div class="diary-item">
+                <small>2026.04.03</small>
+                <h3>我的个人网站今天正式上线了</h3>
+                <p>从完全不懂 GitHub 到亲手写下第一行代码，行动是消除迷茫的最好方式。</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section>
-            <div class="section-title">🎭 精神角落 / The Vault</div>
-            <div class="grid">
-                <div class="card">
-                    <span class="tag">MUSIC</span>
-                    <p><strong>汪苏泷</strong></p>
-                    <p style="font-size: 0.8rem; color: #888;">那些温暖又细腻的旋律</p>
+    <section id="vault" style="background: #fff;">
+        <div class="content-box">
+            <h2>🎭 精神角落</h2>
+            <div class="vault-grid">
+                <div class="vault-card" style="grid-column: span 2; border-color: var(--accent);">
+                    <span class="tag">TOP RECOMMENDATION / 书籍</span>
+                    <h3>《飘》- 玛格丽特·米切尔</h3>
+                    <p>“After all, tomorrow is another day.” 斯嘉丽的生命力是我行动的坐标。</p>
                 </div>
-                <div class="card">
-                    <span class="tag">TV DRAMA</span>
+                <div class="vault-card">
+                    <span class="tag">MUSIC / 歌手</span>
+                    <p><strong>汪苏泷</strong></p>
+                    <p style="font-size: 0.8rem; color: #888;">陪伴我成长的细腻旋律</p>
+                </div>
+                <div class="vault-card">
+                    <span class="tag">DRAMA / 剧集</span>
                     <p><strong>《逐玉》</strong></p>
                     <p style="font-size: 0.8rem; color: #888;">主演：张凌赫 / 田曦薇</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="guestbook">
-            <div class="section-title" style="border:none; margin-bottom:10px;">💬 留言互动</div>
-            <input type="text" placeholder="你的名字">
-            <textarea rows="3" placeholder="在这里写下想对 Shelley 说的话..."></textarea>
-            <button>发送 (发送功能需接入后台)</button>
-        </section>
-    </div>
+    <section id="contact">
+        <div class="content-box">
+            <h2>💬 互动留言</h2>
+            <p>欢迎留下你想对我说的话，我会认真阅读。</p>
+            <div class="input-group">
+                <input type="text" placeholder="你的称呼">
+                <textarea rows="5" placeholder="写下你的留言..."></textarea>
+                <button>发送留言</button>
+            </div>
+        </div>
+    </section>
 
 </body>
 </html>
