@@ -66,4 +66,81 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.03);
             transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .ios-card:hover { transform: scale(1.02); box-shadow: 0 20px 40
+        .ios-card:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+        h2 { font-size: 2.5rem; letter-spacing: -0.02em; margin-bottom: 30px; }
+
+        /* 特别推荐板块 */
+        .featured { background: var(--ios-dark); color: white; }
+        .featured .tag { color: var(--ios-accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+
+        /* 留言板风格 */
+        .ios-input { width: 100%; background: #f5f5f7; border: none; padding: 20px; border-radius: 15px; margin-bottom: 15px; font-size: 1rem; }
+        .ios-btn { background: var(--ios-accent); color: white; border: none; padding: 15px 40px; border-radius: 25px; font-weight: 600; cursor: pointer; float: right; }
+    </style>
+</head>
+<body>
+
+    <nav class="ios-nav">
+        <a href="#home"><span class="nav-icon">⦿</span>首页</a>
+        <a href="#journal"><span class="nav-icon">✍︎</span>随笔</a>
+        <a href="#vault"><span class="nav-icon">◈</span>角落</a>
+        <a href="#contact"><span class="nav-icon">◎</span>留言</a>
+    </nav>
+
+    <section id="home">
+        <div class="container">
+            <h1 class="hero-title">Shelley Chen.</h1>
+            <p class="hero-sub">有主见 · 有行动 · 有思考</p>
+            <p style="margin-top: 30px; color: #86868b;">Est. 2003.06.20</p>
+        </div>
+    </section>
+
+    <section id="journal">
+        <div class="container">
+            <div class="ios-card">
+                <h2>📝 随笔日常</h2>
+                <div style="border-left: 2px solid #eee; padding-left: 20px;">
+                    <p style="color: #86868b;">2026.04.03</p>
+                    <p style="font-size: 1.2rem;">“从完全不懂 GitHub 到亲手写下第一行代码，行动是消除迷茫的最好方式。”</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="vault" class="featured">
+        <div class="container">
+            <span class="tag">深度思考 / Featured</span>
+            <h2 style="color: white; margin-top: 10px;">《飘》(Gone with the Wind)</h2>
+            <p style="font-size: 1.4rem; line-height: 1.6; color: #a1a1a6;">
+                “After all, tomorrow is another day.” <br><br>
+                斯嘉丽拥有最极致的生存本能。这种在废墟之上选择先活下去的韧性，是我对“行动力”最深刻的理解。
+            </p>
+            <div class="card-stack" style="margin-top: 50px;">
+                <div class="ios-card" style="color: var(--ios-dark);">
+                    <p class="tag">MUSIC</p>
+                    <h3>汪苏泷</h3>
+                    <p>细腻的旋律，成长的底色。</p>
+                </div>
+                <div class="ios-card" style="color: var(--ios-dark);">
+                    <p class="tag">TV DRAMA</p>
+                    <h3>《逐玉》</h3>
+                    <p>主演：张凌赫 / 田曦薇</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="ios-card" style="max-width: 600px; margin: 0 auto;">
+                <h2>💬 留言互动</h2>
+                <input type="text" class="ios-input" placeholder="你的名字">
+                <textarea class="ios-input" rows="4" placeholder="写下你的想法..."></textarea>
+                <button class="ios-btn">发送</button>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
