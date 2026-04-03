@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shelley Chen | 主见 · 行动 · 思考</title>
+    <style>
+        :root { --dark: #1a1a1a; --soft-white: #fdfcf8; --accent: #2d5a27; }
+        body { font-family: 'PingFang SC', sans-serif; margin: 0; background: var(--soft-white); color: var(--dark); display: flex; min-height: 100vh; }
+        
+        /* 侧边栏 */
+        .sidebar { width: 300px; background: var(--dark); color: white; padding: 60px 40px; position: fixed; height: 100vh; }
+        .name { font-size: 2.5rem; font-weight: bold; line-height: 1.1; }
+        .motto { font-size: 0.8rem; color: #888; margin-top: 15px; letter-spacing: 4px; text-transform: uppercase; }
+        .bio { margin-top: 50px; font-size: 0.95rem; line-height: 2; border-left: 2px solid var(--accent); padding-left: 20px; color: #ccc; }
+        .birth { position: absolute; bottom: 40px; font-size: 0.8rem; color: #555; }
+
+        /* 主内容 */
+        .main { margin-left: 380px; padding: 80px 40px; max-width: 700px; }
+        .section-title { font-size: 1.4rem; font-weight: 600; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        
+        /* 深度思考位 - 《飘》 */
+        .featured-book { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 50px; }
+        .quote { font-style: italic; color: var(--accent); font-size: 1.1rem; margin-bottom: 15px; display: block; }
+        
+        /* 影音卡片 */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
+        .tag { font-size: 0.7rem; color: var(--accent); font-weight: bold; letter-spacing: 1px; }
+
+        /* 留言板预览 */
+        .guestbook { margin-top: 60px; background: #f4f4f4; padding: 30px; border-radius: 12px; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { background: var(--dark); color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="name">Shelley<br>Chen.</div>
+        <div class="motto">有主见 · 有行动 · 有思考</div>
+        <div class="bio">
+            2003年盛夏出生。<br>
+            比起随波逐流，更喜欢独立思考；<br>
+            比起纸上谈兵，更相信行动的力量。
+        </div>
+        <div class="birth">EST. 2003.06.20</div>
+    </div>
+
+    <div class="main">
+        <section>
+            <div class="section-title">🌟 深度推荐 / Featured</div>
+            <div class="featured-book">
+                <span class="tag">BOOK / 经典推荐</span>
+                <h3>《飘》(Gone with the Wind)</h3>
+                <span class="quote">“After all, tomorrow is another day.”</span>
+                <p style="color: #666; font-size: 0.95rem;">斯嘉丽拥有最极致的生存本能。在土地与废墟之上，她从不自溺于痛苦，而是选择先活下去。这种韧性，是我对“行动力”最深刻的理解。</p>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">🎭 精神角落 / The Vault</div>
+            <div class="grid">
+                <div class="card">
+                    <span class="tag">MUSIC</span>
+                    <p><strong>汪苏泷</strong></p>
+                    <p style="font-size: 0.8rem; color: #888;">那些温暖又细腻的旋律</p>
+                </div>
+                <div class="card">
+                    <span class="tag">TV DRAMA</span>
+                    <p><strong>《逐玉》</strong></p>
+                    <p style="font-size: 0.8rem; color: #888;">主演：张凌赫 / 田曦薇</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="guestbook">
+            <div class="section-title" style="border:none; margin-bottom:10px;">💬 留言互动</div>
+            <input type="text" placeholder="你的名字">
+            <textarea rows="3" placeholder="在这里写下想对 Shelley 说的话..."></textarea>
+            <button>发送 (发送功能需接入后台)</button>
+        </section>
+    </div>
+
+</body>
+</html>
