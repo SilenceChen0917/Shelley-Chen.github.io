@@ -115,6 +115,56 @@
     </div>
 
     <div class="h-20"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+    // 1. 初始化连接 (请替换成你在 Supabase 看到的真实数据)
+    const SUPABASE_URL = '你的Project_URL';
+    const SUPABASE_KEY = '你的anon_public_key';
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // 2. 加载随笔的功能
+    async function fetchPosts() {
+        const { data, error } = await supabase
+            .from('posts')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (data) {
+            const list = document.getElementById('postList');
+            list.innerHTML = data.map(post => `
+                <div class="glass-card p-5 mb-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full text-center leading-8">S</div>
+                        <span class="font-bold">${post.author}</span>
+                        <span class="text-xs text-gray-500">${new Date(post.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <p>${post.content}</p>
+                    <div class="mt-4 flex gap-4 text-xs text-gray-500 cursor-pointer">
+                        <span onclick="likePost(${post.id})">❤️ ${post.likes} 赞</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // 3. 发布随笔的功能
+    async function savePost() {
+        const content = document.getElementById('postContent').value;
+        if (!content) return alert('写点什么吧...');
+
+        const { error } = await supabase
+            .from('posts')
+            .insert([{ content: content, author: 'Shelley' }]);
+
+        if (!error) {
+            document.getElementById('postContent').value = '';
+            fetchPosts(); // 刷新列表
+        }
+    }
+
+    // 页面加载时执行
+    fetchPosts();
+</script>
 </body>
 </html>
