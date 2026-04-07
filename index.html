@@ -35,12 +35,53 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
         .id-card-gradient { background: linear-gradient(135deg, #a83279 0%, #3b1654 100%); }
+@keyframes pop {
+    from { opacity: 0; transform: scale(1.1); }
+    to { opacity: 1; transform: scale(1); }
+}
+.ios-blur {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
     </style>
 </head>
 <body>
 
     <div id="particles-js"></div>
+    <div id="ios-dialog" class="fixed inset-0 z-[1000] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div class="relative ios-blur w-[270px] rounded-[14px] overflow-hidden flex flex-col text-center animate-[pop_0.2s_ease-out]">
+        <div class="p-5">
+            <h3 id="dialog-title" class="text-[17px] font-semibold text-black">确认操作</h3>
+            <p id="dialog-msg" class="text-[13px] text-black mt-1">确定要执行此操作吗？</p>
+        </div>
+        <div class="flex border-t border-black/10 h-[44px]">
+            <button onclick="closeDialog()" class="flex-1 text-[17px] text-[#007AFF] border-r border-black/10 active:bg-black/10">取消</button>
+            <button id="confirm-btn" class="flex-1 text-[17px] text-[#007AFF] font-semibold active:bg-black/10">确定</button>
+        </div>
+    </div>
+</div>
+<div id="ios-dialog" class="fixed inset-0 z-[1000] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div class="relative bg-white/80 backdrop-blur-xl w-[270px] rounded-[14px] overflow-hidden flex flex-col text-center animate-[pop_0.3s_ease-out]">
+        <div class="p-5">
+            <h3 id="dialog-title" class="text-[17px] font-semibold text-black">确认操作</h3>
+            <p id="dialog-msg" class="text-[13px] text-black mt-1">确定要执行此操作吗？</p>
+        </div>
+        <div class="flex border-t border-black/10 h-[44px]">
+            <button onclick="closeDialog()" class="flex-1 text-[17px] text-[#007AFF] border-r border-black/10 active:bg-black/5">取消</button>
+            <button id="confirm-btn" class="flex-1 text-[17px] text-[#007AFF] font-semibold active:bg-black/5">确定</button>
+        </div>
+    </div>
+</div>
 
+<style>
+@keyframes pop {
+    from { opacity: 0; transform: scale(1.2); }
+    to { opacity: 1; transform: scale(1); }
+}
+</style>
     <nav class="top-nav">
         <div class="nav-item active" onclick="showPage('about')">🏠 关于</div>
         <div class="nav-item" onclick="showPage('journal')">📝 随笔</div>
