@@ -294,7 +294,7 @@ tableBody.innerHTML = concertData.map(item => `
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU'; 
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // --- 3. 页面切换逻辑 ---
+// --- 3. 页面切换逻辑 ---
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
