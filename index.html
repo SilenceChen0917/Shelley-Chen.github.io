@@ -252,72 +252,96 @@ tableBody.innerHTML = concertData.map(item => `
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // --- 1. 配置高级动态粒子星空 ---
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#ffffff" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
-                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
-                "modes": { "grab": { "distance": 200, "line_linked": { "opacity": 0.5 } }, "push": { "particles_nb": 4 } }
-            },
-            "retina_detect": true
-        });
+    // 1. 配置高级动态粒子星空
+    particlesJS('particles-js', {
+        "particles": {
+            "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#ffffff" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": true },
+            "size": { "value": 2, "random": true },
+            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+            "move": { "enable": true, "speed": 1.2, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true }
+        },
+        "retina_detect": true
+    });
 
-        // --- 2. 页面切换逻辑 ---
-        function showPage(pageId) {
-            // 隐藏所有页面
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            // 取消导航激活状态
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            // 显示目标页面
-            document.getElementById(pageId).classList.add('active');
-            // 激活对应导航项
-            event.target.classList.add('active');
-            // 切换页面时，内容区域滚动回顶部
-            document.getElementById('content-wrapper').scrollTo(0, 0);
-        }
+    // 2. 统一配置区
+    const MY_AVATAR = "https://api.dicebear.com/7.x/avataaars/svg?seed=Shelley"; // 你的头像地址
+    const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
+    const SUPABASE_KEY = '这里填你那个以eyJ开头的超长Key'; 
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // --- 3. Supabase 逻辑 (直接复用你之前的配置) ---
-        const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
-        // 此处填入你之前的Key
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU'; 
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // 3. 页面切换逻辑
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        if(event) event.target.classList.add('active');
+        document.getElementById('content-wrapper').scrollTo(0, 0);
+    }
 
-        async function fetchPosts() {
-            const { data, error } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
-            if (data) {
-                document.getElementById('postList').innerHTML = data.map(post => `
-                    <div class="glass-card p-8">
-                        <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
-                            <span class="font-bold text-white flex items-center gap-2"><div class="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-xs">S</div> Shelley</span>
+    // 4. 随笔：读取列表 (含头像同步、编辑/删除按钮)
+    async function fetchPosts() {
+        const { data, error } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
+        if (data) {
+            document.getElementById('postList').innerHTML = data.map(post => `
+                <div class="glass-card p-8 group relative transition-all hover:border-orange-500/30">
+                    <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
+                        <span class="font-bold text-white flex items-center gap-3">
+                            <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500/50 shadow-lg">
+                            Shelley
+                        </span>
+                        <div class="flex items-center gap-4">
                             <span>${new Date(post.created_at).toLocaleString()}</span>
+                            <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-3">
+                                <button onclick="editPost('${post.id}', '${post.content.replace(/\'/g, "\\'")}')" class="text-blue-400 hover:text-blue-300 transition text-xs">编辑</button>
+                                <button onclick="deletePost('${post.id}')" class="text-red-400 hover:text-red-300 transition text-xs">删除</button>
+                            </div>
                         </div>
-                        <p class="text-gray-200 text-lg leading-relaxed">${post.content}</p>
                     </div>
-                `).join('');
-            }
+                    <p class="text-gray-200 text-lg leading-relaxed">${post.content}</p>
+                </div>
+            `).join('');
         }
-        async function savePost() {
-            const content = document.getElementById('postContent').value;
-            if(!content) return;
-            const { error } = await _supabase.from('posts').insert([{ content: content, author: 'Shelley' }]);
-            if(!error) { 
-                document.getElementById('postContent').value = ''; 
-                fetchPosts(); 
-            } else {
-                alert('发布失败，请检查 RLS 权限是否设置为 ALL。');
-            }
+    }
+
+    // 5. 随笔：发布功能
+    async function savePost() {
+        const content = document.getElementById('postContent').value;
+        if(!content) return;
+        const { error } = await _supabase.from('posts').insert([{ content: content, author: 'Shelley' }]);
+        if(!error) { 
+            document.getElementById('postContent').value = ''; 
+            fetchPosts(); 
+        } else {
+            alert('发布失败，请检查 Supabase 权限是否勾选了 INSERT');
         }
-        // 初始化加载随笔
-        fetchPosts();
-    </script>
+    }
+
+    // 6. 随笔：删除功能
+    async function deletePost(id) {
+        if (!confirm("确定要删除这条随笔吗？")) return;
+        const { error } = await _supabase.from('posts').delete().eq('id', id);
+        if (!error) fetchPosts();
+        else alert("删除失败，请在 Supabase 权限里勾选 DELETE");
+    }
+
+    // 7. 随笔：编辑功能
+    async function editPost(id, oldContent) {
+        const newContent = prompt("编辑随笔内容：", oldContent);
+        if (newContent === null || newContent === oldContent || newContent.trim() === "") return;
+        const { error } = await _supabase.from('posts').update({ content: newContent }).eq('id', id);
+        if (!error) fetchPosts();
+        else alert("编辑失败，请在 Supabase 权限里勾选 UPDATE");
+    }
+
+    // 初始加载
+    fetchPosts();
+</script>
 </body>
 </html>
