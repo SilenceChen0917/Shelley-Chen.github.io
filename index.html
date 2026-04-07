@@ -3,144 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shelley Chen | Digital Space</title>
+    <title>Shelley's Space | 向往自由</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --ios-bg: #f5f5f7;
-            --ios-dark: #1d1d1f;
-            --ios-accent: #0071e3;
-            --glass: rgba(255, 255, 255, 0.7);
+        :root { --accent: #ff6b00; --glass: rgba(26, 26, 29, 0.7); }
+        body { 
+            background: #0d0d12 url('https://w.wallhaven.cc/full/8o/wallhaven-8og96j.jpg') fixed center;
+            background-size: cover;
+            color: white; font-family: -apple-system, sans-serif;
         }
-
-        * { box-sizing: border-box; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif; margin: 0; background: var(--ios-bg); color: var(--ios-dark); overflow-x: hidden; }
-
-        /* --- iOS 26 灵动导航坞 (Floating Dock) --- */
-        .ios-nav {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--glass);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            padding: 10px 25px;
-            border-radius: 35px;
-            display: flex;
-            gap: 30px;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            z-index: 9999;
-            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        .glass-card { 
+            background: var(--glass); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
         }
-        .ios-nav:hover { transform: translateX(-50%) scale(1.05); background: rgba(255,255,255,0.85); }
-        .ios-nav a {
-            text-decoration: none;
-            color: var(--ios-dark);
-            font-size: 0.85rem;
-            font-weight: 500;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0.6;
-            transition: 0.3s;
+        .id-card-gradient { background: linear-gradient(135deg, #6332a8 0%, #3b1654 100%); }
+        .nav-dock { 
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.6); padding: 10px 30px; border-radius: 40px;
+            backdrop-filter: blur(10px); z-index: 100;
         }
-        .ios-nav a:hover { opacity: 1; color: var(--ios-accent); }
-        .nav-icon { font-size: 1.2rem; margin-bottom: 2px; }
-
-        /* --- 内容区域样式 --- */
-        section { min-height: 100vh; padding: 60px 20px; display: flex; align-items: center; justify-content: center; }
-        .container { max-width: 1000px; width: 100%; margin: 0 auto; }
-
-        /* 首页：大字美学 */
-        #home { text-align: center; background: #fff; }
-        .hero-title { font-size: 12vw; font-weight: 700; letter-spacing: -0.05em; margin: 0; background: linear-gradient(180deg, #1d1d1f 30%, #86868b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero-sub { font-size: 1.5rem; color: #86868b; margin-top: 20px; }
-
-        /* 模块卡片化 */
-        .card-stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .ios-card {
-            background: #fff;
-            padding: 40px;
-            border-radius: 28px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
-            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .ios-card:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-        h2 { font-size: 2.5rem; letter-spacing: -0.02em; margin-bottom: 30px; }
-
-        /* 特别推荐板块 */
-        .featured { background: var(--ios-dark); color: white; }
-        .featured .tag { color: var(--ios-accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
-
-        /* 留言板风格 */
-        .ios-input { width: 100%; background: #f5f5f7; border: none; padding: 20px; border-radius: 15px; margin-bottom: 15px; font-size: 1rem; }
-        .ios-btn { background: var(--ios-accent); color: white; border: none; padding: 15px 40px; border-radius: 25px; font-weight: 600; cursor: pointer; float: right; }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-10 pt-24">
 
-    <nav class="ios-nav">
-        <a href="#home"><span class="nav-icon">⦿</span>首页</a>
-        <a href="#journal"><span class="nav-icon">✍︎</span>随笔</a>
-        <a href="#vault"><span class="nav-icon">◈</span>角落</a>
-        <a href="#contact"><span class="nav-icon">◎</span>留言</a>
+    <nav class="nav-dock flex gap-6 text-sm font-medium">
+        <a href="#about" class="hover:text-orange-500">🏠 关于我</a>
+        <a href="#journal" class="hover:text-orange-500">📝 随笔</a>
+        <a href="#silence" class="hover:text-orange-500">🎵 汪苏泷</a>
+        <a href="#media" class="hover:text-orange-500">🎬 影视</a>
+        <a href="#msg" class="hover:text-orange-500">💬 留言</a>
     </nav>
 
-    <section id="home">
-        <div class="container">
-            <h1 class="hero-title">Shelley Chen.</h1>
-            <p class="hero-sub">有主见 · 有行动 · 有思考</p>
-            <p style="margin-top: 30px; color: #86868b;">Est. 2003.06.20</p>
-        </div>
-    </section>
-
-    <section id="journal">
-        <div class="container">
-            <div class="ios-card">
-                <h2>📝 随笔日常</h2>
-                <div style="border-left: 2px solid #eee; padding-left: 20px;">
-                    <p style="color: #86868b;">2026.04.03</p>
-                    <p style="font-size: 1.2rem;">“从完全不懂 GitHub 到亲手写下第一行代码，行动是消除迷茫的最好方式。”</p>
+    <div class="max-w-6xl mx-auto space-y-20">
+        
+        <section id="about" class="grid md:grid-cols-2 gap-10 items-center">
+            <div class="glass-card p-1 shadow-2xl w-full max-w-sm mx-auto overflow-hidden">
+                <div class="id-card-gradient p-8 text-center relative h-40">
+                    <div class="w-24 h-24 bg-white rounded-full mx-auto absolute -bottom-12 left-1/2 -translate-x-1/2 border-4 border-[#1a1a1d]">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Shelley" class="rounded-full">
+                    </div>
+                </div>
+                <div class="pt-16 pb-8 px-8 text-center">
+                    <h2 class="text-2xl font-bold">Shelley Chen</h2>
+                    <p class="text-orange-400 text-sm mt-1">Wayfair 运营专员</p>
+                    <div class="mt-6 text-left space-y-2 text-sm text-gray-300 border-t border-gray-700 pt-4">
+                        <p>🎂 22岁 · 2003.06.20</p>
+                        <p>🎓 商务英语专业 · 长沙大专生</p>
+                        <p>📍 湖南 · 2023届毕业生</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section id="vault" class="featured">
-        <div class="container">
-            <span class="tag">深度思考 / Featured</span>
-            <h2 style="color: white; margin-top: 10px;">《飘》(Gone with the Wind)</h2>
-            <p style="font-size: 1.4rem; line-height: 1.6; color: #a1a1a6;">
-                “After all, tomorrow is another day.” <br><br>
-                斯嘉丽拥有最极致的生存本能。这种在废墟之上选择先活下去的韧性，是我对“行动力”最深刻的理解。
-            </p>
-            <div class="card-stack" style="margin-top: 50px;">
-                <div class="ios-card" style="color: var(--ios-dark);">
-                    <p class="tag">MUSIC</p>
-                    <h3>汪苏泷</h3>
-                    <p>细腻的旋律，成长的底色。</p>
-                </div>
-                <div class="ios-card" style="color: var(--ios-dark);">
-                    <p class="tag">TV DRAMA</p>
-                    <h3>《逐玉》</h3>
-                    <p>主演：张凌赫 / 田曦薇</p>
+            <div class="space-y-6">
+                <h1 class="text-5xl font-bold leading-tight">向往自由，<br><span class="text-orange-500">精彩的人生。</span></h1>
+                <p class="text-gray-300 leading-relaxed italic">“我和你都在 同一个大大银河 会炙热 会冷漠 但也独特 —— Silence Wang”</p>
+                <p class="text-gray-400">博览影综，笔耕摘抄。这辈子最想实现的愿望就是环游世界！！</p>
+                <div class="glass-card p-4 border-l-4 border-orange-500">
+                    最喜欢的书籍：米切尔《飘》
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="contact">
-        <div class="container">
-            <div class="ios-card" style="max-width: 600px; margin: 0 auto;">
-                <h2>💬 留言互动</h2>
-                <input type="text" class="ios-input" placeholder="你的名字">
-                <textarea class="ios-input" rows="4" placeholder="写下你的想法..."></textarea>
-                <button class="ios-btn">发送</button>
-                <div style="clear: both;"></div>
+        <section id="journal" class="space-y-6">
+            <h2 class="text-3xl font-bold flex items-center gap-2">📖 随笔日常</h2>
+            <div class="glass-card p-6">
+                <textarea id="postContent" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:outline-none" placeholder="记录当下的心情..."></textarea>
+                <button onclick="savePost()" class="mt-3 bg-orange-600 px-6 py-2 rounded-full font-bold float-right">发布随笔</button>
+                <div class="clear-both"></div>
             </div>
-        </div>
-    </section>
+            <div id="postList" class="space-y-4 mt-8">
+                <div class="glass-card p-5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full"></div>
+                        <span class="font-bold">Shelley</span>
+                        <span class="text-xs text-gray-500">2026-04-06</span>
+                    </div>
+                    <p>今天终于把网站的架构搭好了！向着自由的人生又近了一步 🚀</p>
+                    <div class="mt-4 flex gap-4 text-xs text-gray-500">
+                        <span>❤️ 12 赞</span> <span>💬 4 评论</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="silence" class="grid md:grid-cols-2 gap-6">
+            <div class="glass-card p-8">
+                <h2 class="text-2xl font-bold mb-6">🎵 汪苏泷专栏</h2>
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-orange-500 font-bold">2024 《21世纪罗曼史》</p>
+                        <p class="text-sm text-gray-400">浪漫主义的极致表达</p>
+                    </div>
+                    <div>
+                        <p class="text-orange-500 font-bold">巡演记录</p>
+                        <ul class="text-sm text-gray-400 list-disc ml-4">
+                            <li>“十万伏特”巡回演唱会 (进行中)</li>
+                            <li>“大娱乐家”巡回演唱会 (已结束)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card p-8 bg-gradient-to-br from-orange-600/20 to-purple-600/20">
+                <h3 class="text-xl font-bold">我去过现场！</h3>
+                <p class="text-sm mt-4 text-gray-300">在人山人海中，听着熟悉的旋律，那一刻我觉得青春从未走远。</p>
+                <div class="grid grid-cols-2 gap-2 mt-6">
+                    <div class="h-32 bg-white/10 rounded-lg"></div>
+                    <div class="h-32 bg-white/10 rounded-lg"></div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="h-20"></div>
 
 </body>
 </html>
