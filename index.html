@@ -271,9 +271,9 @@ tableBody.innerHTML = concertData.map(item => `
     });
 
     // 2. 统一配置区
-    const MY_AVATAR = "https://api.dicebear.com/7.x/avataaars/svg?seed=Shelley"; // 你的头像地址
+    const MY_AVATAR = "https://api.dicebear.com/7.x/avataaars/svg?seed=Shelley"; // https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg
     const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
-    const SUPABASE_KEY = '这里填你那个以eyJ开头的超长Key'; 
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU'; 
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // 3. 页面切换逻辑
