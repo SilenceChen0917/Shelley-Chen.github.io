@@ -382,10 +382,15 @@ function showPage(pageId) {
 }
 
 // 启动！
-function startApp() {
-    initStars();  // 启动星空
-    fetchPosts(); // 加载随笔
-    console.log("程序已点火：星空与随笔加载完毕");
+async function startApp() {
+    // 1. 启动星空
+    initStars();  
+    
+    // 2. 关键：确保这里调用了 fetchPosts() 来读取旧随笔
+    console.log("正在尝试读取旧随笔...");
+    await fetchPosts(); 
+    
+    console.log("程序已全部点火：星空与随笔加载完毕");
 }
 
 // 确保无论脚本加载快慢，都能触发启动
