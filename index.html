@@ -269,14 +269,15 @@ tableBody.innerHTML = concertData.map(item => `
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <script>
-    // --- 1. 初始化配置 ---
-    const MY_AVATAR = "https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg"; 
-    const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU'; 
-    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+   <script>
+// --- 1. 配置区 (你的专属头像链接) ---
+const MY_AVATAR = "https://cdn.phototour1.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg";
+const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU';
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // --- 2. 粒子星空初始化 ---
+// --- 2. 星空背景“点火”程序 ---
+function initStars() {
     if (typeof particlesJS !== 'undefined') {
         particlesJS('particles-js', {
             "particles": {
@@ -295,109 +296,93 @@ tableBody.innerHTML = concertData.map(item => `
             "retina_detect": true
         });
     }
+}
 
-    // --- 3. 页面切换逻辑 ---
-    function showPage(pageId) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        // 兼容点击事件对象
-        if(window.event && window.event.target) {
-            window.event.target.classList.add('active');
-        }
-        document.getElementById('content-wrapper').scrollTo(0, 0);
+// --- 3. 弹窗控制逻辑 ---
+function showDialog(title, msg, onConfirm, isInput = false, defaultVal = "") {
+    const dialog = document.getElementById('ios-dialog');
+    const inputField = document.getElementById('dialog-input');
+    document.getElementById('dialog-title').innerText = title;
+    document.getElementById('dialog-msg').innerText = msg;
+    
+    if (isInput) {
+        inputField.classList.remove('hidden');
+        inputField.value = defaultVal;
+    } else {
+        inputField.classList.add('hidden');
     }
+    dialog.classList.remove('hidden');
 
-    // --- 4. iOS 弹窗控制逻辑 (核心) ---
-    function showDialog(title, msg, onConfirm, isInput = false, defaultVal = "") {
-        const dialog = document.getElementById('ios-dialog');
-        const inputField = document.getElementById('dialog-input');
-        
-        document.getElementById('dialog-title').innerText = title;
-        document.getElementById('dialog-msg').innerText = msg;
-        
-        if (isInput) {
-            inputField.classList.remove('hidden');
-            inputField.value = defaultVal;
-        } else {
-            inputField.classList.add('hidden');
-        }
-        
-        dialog.classList.remove('hidden');
+    document.getElementById('confirm-btn').onclick = async () => {
+        const val = isInput ? inputField.value : null;
+        await onConfirm(val);
+        closeDialog();
+    };
+}
 
-        // 绑定确定按钮点击
-        document.getElementById('confirm-btn').onclick = async () => {
-            const val = isInput ? inputField.value : null;
-            await onConfirm(val);
-            closeDialog();
-        };
-    }
+function closeDialog() {
+    document.getElementById('ios-dialog').classList.add('hidden');
+}
 
-    function closeDialog() {
-        const dialog = document.getElementById('ios-dialog');
-        if(dialog) dialog.classList.add('hidden');
-    }
-
-    // --- 5. 随笔：读取列表 ---
-    async function fetchPosts() {
-        const { data, error } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
-        if (data) {
-            document.getElementById('postList').innerHTML = data.map(post => `
-                <div class="glass-card p-8 group relative transition-all hover:border-orange-500/30 mb-6">
-                    <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
-                        <span class="font-bold text-white flex items-center gap-3">
-                            <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500/50"> Shelley
-                        </span>
-                        <div class="flex items-center gap-4">
-                            <span>${new Date(post.created_at).toLocaleString()}</span>
-                            <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-3">
-                                <button onclick="editPost('${post.id}')" class="text-blue-400 hover:text-blue-300 text-xs">编辑</button>
-                                <button onclick="deletePost('${post.id}')" class="text-red-400 hover:text-red-300 text-xs">删除</button>
-                            </div>
+// --- 4. 随笔逻辑 (头像同步) ---
+async function fetchPosts() {
+    const { data, error } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
+    if (data) {
+        document.getElementById('postList').innerHTML = data.map(post => `
+            <div class="glass-card p-8 group relative mb-6">
+                <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
+                    <span class="font-bold text-white flex items-center gap-3">
+                        <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500/50 object-cover"> Shelley
+                    </span>
+                    <div class="flex items-center gap-4">
+                        <span>${new Date(post.created_at).toLocaleString()}</span>
+                        <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-3">
+                            <button onclick="editPost('${post.id}')" class="text-blue-400 text-xs">编辑</button>
+                            <button onclick="deletePost('${post.id}')" class="text-red-400 text-xs">删除</button>
                         </div>
                     </div>
-                    <p id="content-${post.id}" class="text-gray-200 text-lg leading-relaxed">${post.content}</p>
                 </div>
-            `).join('');
-        }
+                <p id="content-${post.id}" class="text-gray-200 text-lg">${post.content}</p>
+            </div>
+        `).join('');
     }
+}
 
-    // --- 6. 随笔：发布、删除、编辑功能 ---
-    async function savePost() {
-        const content = document.getElementById('postContent').value;
-        if(!content) return;
-        const { error } = await _supabase.from('posts').insert([{ content: content, author: 'Shelley' }]);
-        if(!error) { 
-            document.getElementById('postContent').value = ''; 
-            fetchPosts(); 
-        } else {
-            // 如果报错，自动弹窗提示去 Supabase 检查
-            showDialog("发布失败", "请确保 Supabase 权限已勾选 INSERT", () => {});
-        }
-    }
+async function savePost() {
+    const content = document.getElementById('postContent').value;
+    if(!content) return;
+    const { error } = await _supabase.from('posts').insert([{ content: content, author: 'Shelley' }]);
+    if(!error) { document.getElementById('postContent').value = ''; fetchPosts(); }
+}
 
-    function deletePost(id) {
-        showDialog("确认删除", "这条随笔将被永久移除，确定吗？", async () => {
-            const { error } = await _supabase.from('posts').delete().eq('id', id);
-            if(!error) fetchPosts();
-        });
-    }
-
-    async function editPost(id) {
-        const contentEl = document.getElementById(`content-${id}`);
-        if(!contentEl) return;
-        const currentText = contentEl.innerText;
-        
-        showDialog("编辑随笔", "请修改内容：", async (newVal) => {
-            if (newVal && newVal !== currentText) {
-                const { error } = await _supabase.from('posts').update({ content: newVal }).eq('id', id);
-                if (!error) fetchPosts();
-            }
-        }, true, currentText);
-    }
-
-    // --- 7. 初始加载 ---
-    window.onload = () => {
+function deletePost(id) {
+    showDialog("确认删除", "这条随笔将被永久移除？", async () => {
+        await _supabase.from('posts').delete().eq('id', id);
         fetchPosts();
-    };
+    });
+}
+
+async function editPost(id) {
+    const currentText = document.getElementById(`content-${id}`).innerText;
+    showDialog("编辑随笔", "请修改：", async (newVal) => {
+        if (newVal && newVal !== currentText) {
+            await _supabase.from('posts').update({ content: newVal }).eq('id', id);
+            fetchPosts();
+        }
+    }, true, currentText);
+}
+
+// --- 5. 页面初始化 ---
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    document.getElementById('content-wrapper').scrollTo(0, 0);
+}
+
+// 启动！
+window.onload = () => {
+    initStars(); // 启动星空
+    fetchPosts(); // 加载随笔
+};
 </script>
