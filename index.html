@@ -332,7 +332,9 @@ async function fetchPosts() {
             <div class="glass-card p-8 group relative mb-6">
                 <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
                     <span class="font-bold text-white flex items-center gap-3">
-                        <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500/50 object-cover">Shelley
+                        <img src="https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg" 
+                             class="w-8 h-8 rounded-full border border-orange-500/50 object-cover"> 
+                        Shelley
                     </span>
                     <div class="flex items-center gap-4">
                         <span>${new Date(post.created_at).toLocaleString()}</span>
@@ -347,7 +349,6 @@ async function fetchPosts() {
         `).join('');
     }
 }
-
 async function savePost() {
     const content = document.getElementById('postContent').value;
     if(!content) return;
