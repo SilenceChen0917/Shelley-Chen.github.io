@@ -168,7 +168,7 @@
                             累计 <b>105</b> 场次
                         </span>
                         <span class="px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs">
-                            含 <b>2026</b> 计划
+                            覆盖 <b>20</b> 城市
                         </span>
                     </div>
                 </div>
@@ -199,7 +199,7 @@
                 <div class="flex items-center gap-6">
                     <h3 class="text-xl font-bold">💿 音乐专辑年表</h3>
                     <span class="px-3 py-1 bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-full text-xs">
-                        已收录 <b id="album-count">0</b> 张
+                        已收录 <b id="album-count">11</b> 张
                     </span>
                 </div>
                 <span id="album-icon" class="transition-transform duration-300 text-orange-500">▼</span>
@@ -238,7 +238,9 @@ const concertData = [
     { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge', title: '🏆 第100场:罗曼前传' },
     ...['2026-05-01', '2026-05-02', '2026-05-03'].map(d => ({ date: d, city: '郑州', venue: '郑州奥体中心', title: '明日世界' }))
 ];
-
+    </script>
+    
+<script>
 const albumData = [
     { id: 1, name: "弗斯特", date: "2010-05-14", color: "from-gray-500", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] },
     { id: 2, name: "慢慢懂", date: "2010-11-19", color: "from-blue-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
@@ -252,10 +254,11 @@ const albumData = [
     { id: 10, name: "联名", date: "2022-09-19", color: "from-purple-600", songs: ["如果你也听说", "如果爱忘了", "落日飞车", "夏夜晚风", "爱人错过", "像鱼", "星河", "像风一样", "慢慢懂", "第一首情歌"], note: "与10位女歌手合作" },
     { id: 11, name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-yellow-200", songs: ["十万伏特", "浪漫主义", "银河系漫游", "电光石火", "浪潮", "夜行者", "反重力", "星际恋人", "未来情书", "再见宇宙"], isNew: true }
 ];
-
+</script>
 // --- 逻辑函数 ---
 
 // 渲染专辑
+        <script>
 function renderAlbums() {
     const grid = document.getElementById('album-grid');
     const countEl = document.getElementById('album-count');
