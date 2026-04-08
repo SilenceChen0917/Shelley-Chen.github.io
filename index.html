@@ -29,6 +29,29 @@
         .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); }
 
         /* --- 4. 大卡片样式 --- */
+        /* --- 给卡片增加“弹性触感” --- */
+.glass-card {
+    /* 确保原有属性里有这一行，让动作变丝滑 */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    cursor: pointer;
+}
+
+.glass-card:hover {
+    /* 1. 物理位移：向上轻微浮起 8 像素 */
+    transform: translateY(-8px) scale(1.02); 
+    
+    /* 2. 光感变化：边框变亮，背景稍微加深 */
+    border-color: rgba(255, 107, 0, 0.4); 
+    background: rgba(20, 20, 25, 0.9);
+    
+    /* 3. 阴影触感：增加一个发光的投影，显得卡片“浮”起来了 */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 107, 0, 0.1);
+}
+
+/* 如果是那个渐变色的 ID 卡片，悬停时可以加一点旋转感 */
+.id-card-gradient:hover {
+    transform: translateY(-10px) rotateX(5deg) rotateY(2deg);
+}
         .glass-card { 
             background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 40px;
