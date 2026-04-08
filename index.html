@@ -180,7 +180,6 @@
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-white/5 text-orange-500 text-xs uppercase tracking-wider">
-                                <th class="p-4 pl-8">序号</th>
                                 <th class="p-4">日期</th>
                                 <th class="p-4">城市</th>
                                 <th class="p-4">场馆</th>
@@ -206,25 +205,6 @@
                 <span id="album-icon" class="transition-transform duration-300 text-orange-500">▼</span>
             </div>
             
-            const albumData = [
-    { id: 1, name: "弗斯特", date: "2010-05-14", color: "from-gray-500", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] },
-    { id: 2, name: "慢慢懂", date: "2010-11-19", color: "from-blue-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
-    { id: 3, name: "万有引力", date: "2012-07-16", color: "from-orange-500", songs: ["万有引力", "巴赫旧约", "三国杀", "有点甜", "不分手的恋爱", "苦笑", "小星星", "第一首情歌", "专属味道", "我想了太多"] },
-    { id: 4, name: "传世乐章", date: "2014-06-25", color: "from-red-600", songs: ["传世乐章", "晴", "睡前故事", "有你的快乐", "风度", "银河", "等你下课", "合照", "后会无期", "想"] },
-    { id: 5, name: "登陆计划", date: "2015-10-19", color: "from-indigo-600", songs: ["登陆计划", "银河", "小星星(Remix)", "睡前故事", "合照", "黑眼圈", "风度", "有你的快乐", "等你下课", "晴"] },
-    { id: 6, name: "莱芙", date: "2017-04-18", color: "from-green-500", songs: ["莱芙", "一笑倾城", "年轮", "那个男孩", "让我留在你身边", "告白", "等不到你", "像风一样", "慢慢懂", "第一首情歌"] },
-    { id: 7, name: "克制凶猛", date: "2018-09-19", color: "from-cyan-600", songs: ["克制凶猛", "对话", "落单恋人", "没关系", "如果时光倒流", "我也不知道", "风度", "第一首情歌", "合照", "后会无期"] },
-    { id: 8, name: "过去现在时", date: "2019-10-30", color: "from-yellow-600", songs: ["过去现在时", "像风一样", "告白", "慢慢懂", "第一首情歌", "不分手的恋爱", "专属味道", "小星星", "有点甜", "一笑倾城"] },
-    { id: 9, name: "大娱乐家", date: "2020-09-19", color: "from-pink-600", songs: ["大娱乐家", "娱乐至死", "我想念", "恋爱循环", "自我催眠", "失眠飞行", "那一年", "像风一样", "不分手的恋爱", "第一首情歌"] },
-    { id: 10, name: "联名", date: "2022-09-19", color: "from-purple-600", songs: ["如果你也听说", "如果爱忘了", "落日飞车", "夏夜晚风", "爱人错过", "像鱼", "星河", "像风一样", "慢慢懂", "第一首情歌"], note: "与10位女歌手合作" },
-    { id: 11, name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-yellow-200", songs: ["十万伏特", "浪漫主义", "银河系漫游", "电光石火", "浪潮", "夜行者", "反重力", "星际恋人", "未来情书", "再见宇宙"], isNew: true }
-];
-
-function renderAlbums() {
-    const grid = document.getElementById('album-grid');
-    if(!grid) return;
-
-    grid.innerHTML = albumData.map(album => `
         <div class="glass-card !bg-white/5 p-5 rounded-2xl border-white/10 hover:border-orange-500/50 transition-all group ${album.isNew ? 'border-2 border-yellow-500/30' : ''}">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex gap-4">
@@ -246,7 +226,6 @@ function renderAlbums() {
     `).join('');
 }
 
-// 记得在 window.onload 里面调用 renderAlbums();
 
 <script>
 // 1.汪苏泷演唱会 105 场全量数据汇总
@@ -310,6 +289,47 @@ const concertData = [
     // --- 明日世界 (郑州6连开) ---
     ...['2026-05-01', '2026-05-02', '2026-05-03', '2026-05-08', '2026-05-09', '2026-05-10'].map(d => ({ date: d, city: '郑州', venue: '郑州奥体中心', title: '明日世界' }))
 ];
+    const albumData = [
+    { id: 1, name: "弗斯特", date: "2010-05-14", color: "from-gray-500", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] },
+    { id: 2, name: "慢慢懂", date: "2010-11-19", color: "from-blue-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
+    { id: 3, name: "万有引力", date: "2012-07-16", color: "from-orange-500", songs: ["万有引力", "巴赫旧约", "三国杀", "有点甜", "不分手的恋爱", "苦笑", "小星星", "第一首情歌", "专属味道", "我想了太多"] },
+    { id: 4, name: "传世乐章", date: "2014-06-25", color: "from-red-600", songs: ["传世乐章", "晴", "睡前故事", "有你的快乐", "风度", "银河", "等你下课", "合照", "后会无期", "想"] },
+    { id: 5, name: "登陆计划", date: "2015-10-19", color: "from-indigo-600", songs: ["登陆计划", "银河", "小星星(Remix)", "睡前故事", "合照", "黑眼圈", "风度", "有你的快乐", "等你下课", "晴"] },
+    { id: 6, name: "莱芙", date: "2017-04-18", color: "from-green-500", songs: ["莱芙", "一笑倾城", "年轮", "那个男孩", "让我留在你身边", "告白", "等不到你", "像风一样", "慢慢懂", "第一首情歌"] },
+    { id: 7, name: "克制凶猛", date: "2018-09-19", color: "from-cyan-600", songs: ["克制凶猛", "对话", "落单恋人", "没关系", "如果时光倒流", "我也不知道", "风度", "第一首情歌", "合照", "后会无期"] },
+    { id: 8, name: "过去现在时", date: "2019-10-30", color: "from-yellow-600", songs: ["过去现在时", "像风一样", "告白", "慢慢懂", "第一首情歌", "不分手的恋爱", "专属味道", "小星星", "有点甜", "一笑倾城"] },
+    { id: 9, name: "大娱乐家", date: "2020-09-19", color: "from-pink-600", songs: ["大娱乐家", "娱乐至死", "我想念", "恋爱循环", "自我催眠", "失眠飞行", "那一年", "像风一样", "不分手的恋爱", "第一首情歌"] },
+    { id: 10, name: "联名", date: "2022-09-19", color: "from-purple-600", songs: ["如果你也听说", "如果爱忘了", "落日飞车", "夏夜晚风", "爱人错过", "像鱼", "星河", "像风一样", "慢慢懂", "第一首情歌"], note: "与10位女歌手合作" },
+    { id: 11, name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-yellow-200", songs: ["十万伏特", "浪漫主义", "银河系漫游", "电光石火", "浪潮", "夜行者", "反重力", "星际恋人", "未来情书", "再见宇宙"], isNew: true }
+];
+
+function renderAlbums() {
+    const grid = document.getElementById('album-grid');
+    if(!grid) return;
+
+    grid.innerHTML = albumData.map(album => `
+        <div class="glass-card !bg-white/5 p-5 rounded-2xl border-white/10 hover:border-orange-500/50 transition-all group ${album.isNew ? 'border-2 border-yellow-500/30' : ''}">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex gap-4">
+                    <div class="w-14 h-14 bg-gradient-to-br ${album.color} rounded-lg flex-shrink-0 flex items-center justify-center shadow-lg font-bold text-white">${album.id}</div>
+                    <div>
+                        <h4 class="text-lg font-bold text-white group-hover:text-orange-400 transition">《${album.name}》</h4>
+                        <p class="text-[10px] text-gray-500 mt-1">📅 ${album.date}</p>
+                        ${album.note ? `<p class="text-[10px] text-purple-400 font-bold">${album.note}</p>` : ''}
+                    </div>
+                </div>
+                <button onclick="toggleSongs('s-${album.id}')" class="text-[10px] bg-white/10 px-3 py-1 rounded-full hover:bg-orange-500 transition">曲目</button>
+            </div>
+            <div id="s-${album.id}" class="hidden mt-4 pt-4 border-t border-white/5">
+                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[12px] text-gray-400">
+                    ${album.songs.map((s, i) => `<span>${i+1}. ${s}</span>`).join('')}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 记得在 window.onload 里面调用 renderAlbums();
     
     // 2. 放置 renderConcerts 函数
     function renderConcerts() {
