@@ -346,18 +346,22 @@ function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     
+    // 找到对应的导航项并高亮
+    const navItems = document.querySelectorAll('.nav-item');
+    const pageIndex = { 'about':0, 'journal':1, 'silence':2, 'media':3, 'msg':4 };
+    if(navItems[pageIndex[pageId]]) navItems[pageIndex[pageId]].classList.add('active');
+
     const targetPage = document.getElementById(pageId);
     if (targetPage) {
         targetPage.classList.add('active');
-        if (pageId === 'journal') fetchPosts();
-        if (pageId === 'silence') {
-            renderAlbums();
-            renderConcerts();
+        // ✅ 关键：如果切换到随笔页，立即拉取数据
+        if (pageId === 'journal') {
+            fetchPosts();
         }
     }
     document.getElementById('content-wrapper').scrollTo(0, 0);
 }
-
+    
 // ==========================================
 // 5. 随笔逻辑 & 星空
 // ==========================================
