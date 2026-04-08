@@ -324,6 +324,14 @@ window.onload = function() {
     renderAlbums();
     renderConcerts();
 };
+</script>
+        
+<script>
+// --- 初始化运行 ---
+window.onload = function() {
+    renderAlbums();
+    renderConcerts();
+};
     
     // 2. 放置 renderConcerts 函数
     function renderConcerts() {
@@ -359,10 +367,8 @@ window.onload = function() {
         }
     }
 </script>
-
-// 渲染表格
-const tableBody = document.getElementById('concert-table-body');
-tableBody.innerHTML = concertData.map(item => `
+        
+<script>
     <tr class="hover:bg-white/5 transition group">
         <td class="p-6 text-orange-500/50 font-mono text-xs">${item.id.toString().padStart(2, '0')}</td>
         <td class="p-6 text-white font-medium">${item.date}</td>
