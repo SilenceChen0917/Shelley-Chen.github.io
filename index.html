@@ -214,7 +214,9 @@
 </div>
 
 <script>
-// --- 数据定义 ---
+// ==========================================
+// 1. 数据定义 (整合在一起，清晰明了)
+// ==========================================
 const concertData = [
     { date: '2012-11-24', city: '武汉', venue: '武汉杂技厅', title: 'QQ音乐尊享' },
     { date: '2012-12-22', city: '广州', venue: '白云国际会议中心', title: 'QQ音乐尊享' },
@@ -224,23 +226,18 @@ const concertData = [
     { date: '2019-03-16', city: '重庆', venue: '合川文化艺术中心', title: '银河漫游' },
     { date: '2021-08-28', city: '上海', venue: '虹馆', title: '大娱乐家' },
     { date: '2021-12-04', city: '武汉', venue: '网球中心', title: '大娱乐家' },
-    // 变得有些奢侈的事 (10场精选示例)
     ...['2023-11-04', '2023-11-05'].map(d => ({ date: d, city: '台北', venue: '小巨蛋', title: '奢侈的事' })),
     { date: '2024-03-09', city: '广州', venue: '广州体育馆', title: '奢侈的事' },
     { date: '2024-04-13', city: '成都', venue: '凤凰山体育馆', title: '奢侈的事' },
     { date: '2024-05-25', city: '北京', venue: '首都体育馆', title: '奢侈的事' },
     { date: '2024-08-03', city: '上海', venue: '梅赛德斯奔驰', title: '奢侈的事' },
-    // 十万伏特 1.0 (部分示例)
     ...['2024-08-23', '2024-08-24'].map(d => ({ date: d, city: '青岛', venue: '青春足球场', title: '十万伏特' })),
     ...['2024-12-31', '2025-01-01'].map(d => ({ date: d, city: '广州', venue: '大学城体育中心', title: '十万伏特' })),
-    // 十万伏特 2.0 & 2026 计划 (含第100场)
     ...['2025-03-21', '2025-03-22', '2025-03-23'].map(d => ({ date: d, city: '北京', venue: '鸟巢', title: '十万伏特2.0' })),
     { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge', title: '🏆 第100场:罗曼前传' },
     ...['2026-05-01', '2026-05-02', '2026-05-03'].map(d => ({ date: d, city: '郑州', venue: '郑州奥体中心', title: '明日世界' }))
 ];
-    </script>
-    
-<script>
+
 const albumData = [
     { id: 1, name: "弗斯特", date: "2010-05-14", color: "from-gray-500", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] },
     { id: 2, name: "慢慢懂", date: "2010-11-19", color: "from-blue-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
@@ -254,24 +251,31 @@ const albumData = [
     { id: 10, name: "联名", date: "2022-09-19", color: "from-purple-600", songs: ["如果你也听说", "如果爱忘了", "落日飞车", "夏夜晚风", "爱人错过", "像鱼", "星河", "像风一样", "慢慢懂", "第一首情歌"], note: "与10位女歌手合作" },
     { id: 11, name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-yellow-200", songs: ["十万伏特", "浪漫主义", "银河系漫游", "电光石火", "浪潮", "夜行者", "反重力", "星际恋人", "未来情书", "再见宇宙"], isNew: true }
 ];
-</script>
-// --- 逻辑函数 ---
 
-// 渲染专辑
-        <script>
+// ==========================================
+// 2. 配置 & Supabase 初始化
+// ==========================================
+const MY_AVATAR = "https://cdn.phototour1.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg";
+const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU';
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ==========================================
+// 3. 渲染逻辑函数
+// ==========================================
+
 function renderAlbums() {
     const grid = document.getElementById('album-grid');
     const countEl = document.getElementById('album-count');
     if(!grid) return;
-
     grid.innerHTML = albumData.map(album => `
         <div class="glass-card !bg-white/5 p-5 rounded-2xl border-white/10 hover:border-orange-500/50 transition-all group ${album.isNew ? 'border-2 border-yellow-500/30' : ''}">
             <div class="flex justify-between items-start mb-4">
                 <div class="flex gap-4">
                     <div class="w-14 h-14 bg-gradient-to-br ${album.color} rounded-lg flex-shrink-0 flex items-center justify-center shadow-lg font-bold text-white">${album.id}</div>
                     <div>
-                        <h4 class="text-lg font-bold text-white group-hover:text-orange-400 transition">《${album.name}》</h4>
-                        <p class="text-[10px] text-gray-500 mt-1">📅 ${album.date}</p>
+                        <h4 class="text-lg font-bold text-white group-hover:text-orange-400">《${album.name}》</h4>
+                        <p class="text-[10px] text-gray-500">📅 ${album.date}</p>
                         ${album.note ? `<p class="text-[10px] text-purple-400 font-bold">${album.note}</p>` : ''}
                     </div>
                 </div>
@@ -284,296 +288,119 @@ function renderAlbums() {
             </div>
         </div>
     `).join('');
-    
     if(countEl) countEl.innerText = albumData.length;
 }
 
-// 渲染演唱会
 function renderConcerts() {
     const tbody = document.getElementById('concert-table-body');
     if(!tbody) return;
-    tbody.innerHTML = concertData.map(c => `
-        <tr class="hover:bg-white/5 transition border-b border-white/5">
-            <td class="p-4 font-mono text-xs">${c.date}</td>
-            <td class="p-4 text-sm">${c.city}</td>
+    // 倒序排列，让最新的演唱会排在前面
+    const sortedConcerts = [...concertData].reverse();
+    tbody.innerHTML = sortedConcerts.map((c, index) => `
+        <tr class="hover:bg-white/5 transition border-b border-white/5 group">
+            <td class="p-4 text-orange-500/50 font-mono text-xs">${(sortedConcerts.length - index).toString().padStart(2, '0')}</td>
+            <td class="p-4 text-white font-medium text-sm">${c.date}</td>
+            <td class="p-4 text-gray-400 text-sm">${c.city}</td>
             <td class="p-4 text-gray-500 text-xs">${c.venue}</td>
-            <td class="p-4"><span class="text-orange-400 text-xs">${c.title}</span></td>
+            <td class="p-4">
+                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 rounded-full text-[10px] font-bold group-hover:bg-orange-500 group-hover:text-white transition">
+                    ${c.title}
+                </span>
+            </td>
         </tr>
     `).join('');
 }
 
-// 通用切换函数
+// ==========================================
+// 4. 交互控制逻辑
+// ==========================================
+
 function toggleSection(contentId, iconId) {
     const content = document.getElementById(contentId);
     const icon = document.getElementById(iconId);
     if (!content) return;
     
-    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-        content.style.maxHeight = '0px';
-        icon.style.transform = 'rotate(0deg)';
-    } else {
-        content.style.maxHeight = '3000px'; 
-        icon.style.transform = 'rotate(180deg)';
-    }
-}
-
-function toggleSongs(id) {
-    const el = document.getElementById(id);
-    if(el) el.classList.toggle('hidden');
-}
-
-// --- 初始化运行 ---
-window.onload = function() {
-    renderAlbums();
-    renderConcerts();
-};
-</script>
-        
-<script>
-// --- 初始化运行 ---
-window.onload = function() {
-    renderAlbums();
-    renderConcerts();
-};
-    
-    // 2. 放置 renderConcerts 函数
-    function renderConcerts() {
-        const tableBody = document.getElementById('concert-table-body');
-        if(!tableBody) return;
-
-        const sortedData = [...concertData].reverse();
-
-        tableBody.innerHTML = sortedData.map((item, index) => {
-            // ... 内部渲染逻辑 ...
-            return `<tr>...</tr>`;
-        }).join('');
-
-        // 更新统计数字
-        document.getElementById('total-shows').innerText = concertData.length;
-        const cities = new Set(concertData.map(c => c.city));
-        document.getElementById('total-cities').innerText = cities.size;
-    }
-
-    // 3. 关键：在页面加载或切换到“汪苏泷板块”时调用它
-    // 方案 A：如果你的页面是一次性加载的，直接执行：
-    window.onload = function() {
-        renderConcerts();
-        // 如果有其他初始化函数（比如星空），也放在这里
-        if(typeof initStars === 'function') initStars(); 
-    };
-
-    // 方案 B：如果你有 showPage('silence') 切换函数，也要在里面执行一次
-    function showPage(pageId) {
-        // ... 原有的切换逻辑 ...
-        if(pageId === 'silence') {
-            renderConcerts(); // 确保切换到这个板块时，表格被刷出来
-        }
-    }
-</script>
-        
-<script>
-    <tr class="hover:bg-white/5 transition group">
-        <td class="p-6 text-orange-500/50 font-mono text-xs">${item.id.toString().padStart(2, '0')}</td>
-        <td class="p-6 text-white font-medium">${item.date}</td>
-        <td class="p-6 text-gray-400">${item.city}</td>
-        <td class="p-6 text-gray-500">${item.venue}</td>
-        <td class="p-6">
-            <span class="px-3 py-1 bg-orange-500/10 text-orange-400 rounded-full text-[10px] font-bold group-hover:bg-orange-500 group-hover:text-white transition">
-                ${item.title}
-            </span>
-        </td>
-    </tr>
-`).join('');
-</script>
-
-        <div id="media" class="page"><div class="pt-20 glass-card text-center text-gray-400 text-xl">🎬 影视内容板块大布局施工中...</div></div>
-        <div id="msg" class="page"><div class="pt-20 glass-card text-center text-gray-400 text-xl">💬 留言板大布局施工中...</div></div>
-
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-   <script>
-// --- 1. 配置区 (你的专属头像链接) ---
-const MY_AVATAR = "https://cdn.phototour1.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg";
-const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU';
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// --- 2. 星空背景“点火”程序 ---
-function initStars() {
-    if (typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#ffffff" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 3, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.3, "width": 1 },
-                "move": { "enable": true, "speed": 2 }
-            },
-            "interactivity": {
-                "events": { "onhover": { "enable": true, "mode": "grab" } }
-            },
-            "retina_detect": true
-        });
-        console.log("星空渲染指令已发出");
-    } else {
-        console.error("particles.js 库未加载成功");
-    }
-}
-
-// --- 3. 弹窗控制逻辑 ---
-function showDialog(title, msg, onConfirm, isInput = false, defaultVal = "") {
-    const dialog = document.getElementById('ios-dialog');
-    const inputField = document.getElementById('dialog-input');
-    document.getElementById('dialog-title').innerText = title;
-    document.getElementById('dialog-msg').innerText = msg;
-    
-    if (isInput) {
-        inputField.classList.remove('hidden');
-        inputField.value = defaultVal;
-    } else {
-        inputField.classList.add('hidden');
-    }
-    dialog.classList.remove('hidden');
-
-    document.getElementById('confirm-btn').onclick = async () => {
-        const val = isInput ? inputField.value : null;
-        await onConfirm(val);
-        closeDialog();
-    };
-}
-
-function closeDialog() {
-    document.getElementById('ios-dialog').classList.add('hidden');
-}
-
-// --- 4. 随笔逻辑 (头像同步) ---
-async function fetchPosts() {
-    const { data, error } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
-    if (data) {
-        document.getElementById('postList').innerHTML = data.map(post => `
-            <div class="glass-card p-8 group relative mb-6">
-                <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
-                    <span class="font-bold text-white flex items-center gap-3">
-                        <img src="https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg" 
-                             class="w-8 h-8 rounded-full border border-orange-500/50 object-cover"> 
-                        Shelley
-                    </span>
-                    <div class="flex items-center gap-4">
-                        <span>${new Date(post.created_at).toLocaleString()}</span>
-                        <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-3">
-                            <button onclick="editPost('${post.id}')" class="text-blue-400 text-xs">编辑</button>
-                            <button onclick="deletePost('${post.id}')" class="text-red-400 text-xs">删除</button>
-                        </div>
-                    </div>
-                </div>
-                <p id="content-${post.id}" class="text-gray-200 text-lg">${post.content}</p>
-            </div>
-        `).join('');
-    }
-}
-async function savePost() {
-    const content = document.getElementById('postContent').value;
-    if(!content) return;
-    const { error } = await _supabase.from('posts').insert([{ content: content, author: 'Shelley' }]);
-    if(!error) { document.getElementById('postContent').value = ''; fetchPosts(); }
-}
-
-function deletePost(id) {
-    showDialog("确认删除", "这条随笔将被永久移除？", async () => {
-        await _supabase.from('posts').delete().eq('id', id);
-        fetchPosts();
-    });
-}
-
-async function editPost(id) {
-    const currentText = document.getElementById(`content-${id}`).innerText;
-    showDialog("编辑随笔", "请修改：", async (newVal) => {
-        if (newVal && newVal !== currentText) {
-            await _supabase.from('posts').update({ content: newVal }).eq('id', id);
-            fetchPosts();
-        }
-    }, true, currentText);
-}
-
-// --- 5. 页面初始化 ---
-function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    
-    // 找到对应的导航项并高亮
-    const navItems = document.querySelectorAll('.nav-item');
-    const pageIndex = { 'about':0, 'journal':1, 'silence':2, 'media':3, 'msg':4 };
-    if(navItems[pageIndex[pageId]]) navItems[pageIndex[pageId]].classList.add('active');
-
-    const targetPage = document.getElementById(pageId);
-    if (targetPage) {
-        targetPage.classList.add('active');
-        // ✅ 关键：如果切换到随笔页，立即拉取数据
-        if (pageId === 'journal') {
-            fetchPosts();
-        }
-    }
-    document.getElementById('content-wrapper').scrollTo(0, 0);
-}
-function toggleSection(contentId, iconId) {
-    const content = document.getElementById(contentId);
-    const icon = document.getElementById(iconId);
-    
     if (content.style.maxHeight === "0px" || content.classList.contains('max-h-0')) {
-        // 展开
         content.classList.remove('max-h-0');
         content.style.maxHeight = content.scrollHeight + "px";
         icon.style.transform = "rotate(180deg)";
     } else {
-        // 折叠
         content.style.maxHeight = "0px";
         icon.style.transform = "rotate(0deg)";
-        // 延迟加回类名防止溢出
         setTimeout(() => content.classList.add('max-h-0'), 500);
     }
 }
-// --- 6.启动！ ---
-function startEverything() {
-    console.log("正在点火...");
-    
-    // 1. 初始化星空 (必须最先运行)
-    initStars();
-    
-    // 2. 加载数据
-    fetchPosts();
-    
-    // 💡 额外保险：如果星空没出来，延迟 500ms 再试一次
-    setTimeout(() => {
-        if (!document.querySelector('#particles-js canvas')) {
-            console.log("重试启动星空...");
-            initStars();
-        }
-    }, 500);
-}
 
-// --- 8.确保在所有资源加载完后执行 ---
-window.addEventListener('load', startEverything);
-
-// --- 9.如果页面已经加载完了（比如缓存），直接执行 ---
-if (document.readyState === 'complete') {
-    startEverything();
-}
-       // --- 10.切换专辑内部歌曲列表的显示 ---
 function toggleSongs(id) {
     const el = document.getElementById(id);
     const parentContent = document.getElementById('album-content');
-    
-    // 切换显示/隐藏
+    if(!el) return;
     el.classList.toggle('hidden');
-    
-    // 关键：因为父容器有 max-height 限制，展开歌曲时需要重新计算高度
-    if (parentContent.style.maxHeight !== "0px") {
+    // 重新调整父容器高度
+    if (parentContent && parentContent.style.maxHeight !== "0px") {
         parentContent.style.maxHeight = parentContent.scrollHeight + "px";
     }
 }
+
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        if (pageId === 'journal') fetchPosts();
+        if (pageId === 'silence') {
+            renderAlbums();
+            renderConcerts();
+        }
+    }
+    document.getElementById('content-wrapper').scrollTo(0, 0);
+}
+
+// ==========================================
+// 5. 随笔逻辑 & 星空
+// ==========================================
+
+async function fetchPosts() {
+    const { data } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
+    if (data) {
+        document.getElementById('postList').innerHTML = data.map(post => `
+            <div class="glass-card p-8 group mb-6">
+                <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
+                    <span class="font-bold text-white flex items-center gap-3">
+                        <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500/50 object-cover"> Shelley
+                    </span>
+                    <span>${new Date(post.created_at).toLocaleString()}</span>
+                </div>
+                <p class="text-gray-200 text-lg">${post.content}</p>
+            </div>
+        `).join('');
+    }
+}
+
+function initStars() {
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 80 },
+                "color": { "value": "#ffffff" },
+                "move": { "enable": true, "speed": 1 }
+            }
+        });
+    }
+}
+
+// ==========================================
+// 6. 核心启动器 (只运行这一次)
+// ==========================================
+function startEverything() {
+    initStars();
+    fetchPosts();
+    renderAlbums();   // 启动时先渲染一次数据
+    renderConcerts(); // 启动时先渲染一次数据
+    console.log("汪苏泷板块数据加载完毕");
+}
+
+window.addEventListener('load', startEverything);
 </script>
