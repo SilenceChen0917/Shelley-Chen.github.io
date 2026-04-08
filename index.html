@@ -381,8 +381,16 @@ function showPage(pageId) {
 }
 
 // 启动！
-window.onload = () => {
-    initStars(); // 启动星空
+function startApp() {
+    initStars();  // 启动星空
     fetchPosts(); // 加载随笔
-};
+    console.log("程序已点火：星空与随笔加载完毕");
+}
+
+// 确保无论脚本加载快慢，都能触发启动
+if (document.readyState === 'complete') {
+    startApp();
+} else {
+    window.addEventListener('load', startApp);
+}
 </script>
