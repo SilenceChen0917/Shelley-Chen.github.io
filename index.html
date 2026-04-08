@@ -377,26 +377,47 @@ async function editPost(id) {
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
+    
+    // 找到对应的导航项并高亮
+    const navItems = document.querySelectorAll('.nav-item');
+    const pageIndex = { 'about':0, 'journal':1, 'silence':2, 'media':3, 'msg':4 };
+    if(navItems[pageIndex[pageId]]) navItems[pageIndex[pageId]].classList.add('active');
+
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        // ✅ 关键：如果切换到随笔页，立即拉取数据
+        if (pageId === 'journal') {
+            fetchPosts();
+        }
+    }
     document.getElementById('content-wrapper').scrollTo(0, 0);
 }
 
 // 启动！
-async function startApp() {
-    // 1. 启动星空
-    initStars();  
+function startEverything() {
+    console.log("正在点火...");
     
-    // 2. 关键：确保这里调用了 fetchPosts() 来读取旧随笔
-    console.log("正在尝试读取旧随笔...");
-    await fetchPosts(); 
+    // 1. 初始化星空 (必须最先运行)
+    initStars();
     
-    console.log("程序已全部点火：星空与随笔加载完毕");
+    // 2. 加载数据
+    fetchPosts();
+    
+    // 💡 额外保险：如果星空没出来，延迟 500ms 再试一次
+    setTimeout(() => {
+        if (!document.querySelector('#particles-js canvas')) {
+            console.log("重试启动星空...");
+            initStars();
+        }
+    }, 500);
 }
 
-// 确保无论脚本加载快慢，都能触发启动
+// 确保在所有资源加载完后执行
+window.addEventListener('load', startEverything);
+
+// 如果页面已经加载完了（比如缓存），直接执行
 if (document.readyState === 'complete') {
-    startApp();
-} else {
-    window.addEventListener('load', startApp);
+    startEverything();
 }
 </script>
