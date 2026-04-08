@@ -149,7 +149,7 @@
             </div>
         </div>
 
-        <div id="silence" class="page">
+       <div id="silence" class="page">
     <div class="max-w-6xl mx-auto space-y-6">
         <div class="border-b border-orange-500/30 pb-6 mb-10">
             <h2 class="text-5xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white to-orange-500">
@@ -165,10 +165,10 @@
                     <h3 class="text-xl font-bold">🎤 巡回演唱会全记录</h3>
                     <div class="flex gap-3">
                         <span class="px-3 py-1 bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-full text-xs">
-                            累计 <b>63+</b> 场次
+                            累计 <b>105</b> 场次
                         </span>
                         <span class="px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs">
-                            覆盖 <b>15</b> 座城市
+                            含 <b>2026</b> 计划
                         </span>
                     </div>
                 </div>
@@ -199,38 +199,23 @@
                 <div class="flex items-center gap-6">
                     <h3 class="text-xl font-bold">💿 音乐专辑年表</h3>
                     <span class="px-3 py-1 bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-full text-xs">
-                        已收录 <b>11</b> 张
+                        已收录 <b id="album-count">0</b> 张
                     </span>
                 </div>
                 <span id="album-icon" class="transition-transform duration-300 text-orange-500">▼</span>
             </div>
             
-        <div class="glass-card !bg-white/5 p-5 rounded-2xl border-white/10 hover:border-orange-500/50 transition-all group ${album.isNew ? 'border-2 border-yellow-500/30' : ''}">
-            <div class="flex justify-between items-start mb-4">
-                <div class="flex gap-4">
-                    <div class="w-14 h-14 bg-gradient-to-br ${album.color} rounded-lg flex-shrink-0 flex items-center justify-center shadow-lg font-bold text-white">${album.id}</div>
-                    <div>
-                        <h4 class="text-lg font-bold text-white group-hover:text-orange-400 transition">《${album.name}》</h4>
-                        <p class="text-[10px] text-gray-500 mt-1">📅 ${album.date}</p>
-                        ${album.note ? `<p class="text-[10px] text-purple-400 font-bold">${album.note}</p>` : ''}
+            <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                <div id="album-grid" class="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 border-t border-white/10 bg-black/40">
                     </div>
-                </div>
-                <button onclick="toggleSongs('s-${album.id}')" class="text-[10px] bg-white/10 px-3 py-1 rounded-full hover:bg-orange-500 transition">曲目</button>
-            </div>
-            <div id="s-${album.id}" class="hidden mt-4 pt-4 border-t border-white/5">
-                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[12px] text-gray-400">
-                    ${album.songs.map((s, i) => `<span>${i+1}. ${s}</span>`).join('')}
-                </div>
             </div>
         </div>
-    `).join('');
-}
-
+    </div>
+</div>
 
 <script>
-// 1.汪苏泷演唱会 105 场全量数据汇总
+// --- 数据定义 ---
 const concertData = [
-    // --- 早期 ---
     { date: '2012-11-24', city: '武汉', venue: '武汉杂技厅', title: 'QQ音乐尊享' },
     { date: '2012-12-22', city: '广州', venue: '白云国际会议中心', title: 'QQ音乐尊享' },
     { date: '2016-09-16', city: '北京', venue: '北京展览馆剧场', title: '登陆星球' },
@@ -239,57 +224,22 @@ const concertData = [
     { date: '2019-03-16', city: '重庆', venue: '合川文化艺术中心', title: '银河漫游' },
     { date: '2021-08-28', city: '上海', venue: '虹馆', title: '大娱乐家' },
     { date: '2021-12-04', city: '武汉', venue: '网球中心', title: '大娱乐家' },
-
-    // --- 变得有些奢侈的事 (10场) ---
+    // 变得有些奢侈的事 (10场精选示例)
     ...['2023-11-04', '2023-11-05'].map(d => ({ date: d, city: '台北', venue: '小巨蛋', title: '奢侈的事' })),
     { date: '2024-03-09', city: '广州', venue: '广州体育馆', title: '奢侈的事' },
     { date: '2024-04-13', city: '成都', venue: '凤凰山体育馆', title: '奢侈的事' },
     { date: '2024-05-25', city: '北京', venue: '首都体育馆', title: '奢侈的事' },
-    { date: '2024-06-15', city: '南京', venue: '南京奥体中心', title: '奢侈的事' },
-    { date: '2024-06-29', city: '武汉', venue: '武汉体育中心', title: '奢侈的事' },
-    { date: '2024-07-06', city: '深圳', venue: '春茧体育馆', title: '奢侈的事' },
-    { date: '2024-07-20', city: '长沙', venue: '湖南国展中心', title: '奢侈的事' },
     { date: '2024-08-03', city: '上海', venue: '梅赛德斯奔驰', title: '奢侈的事' },
-
-    // --- 十万伏特 1.0 (24场) ---
+    // 十万伏特 1.0 (部分示例)
     ...['2024-08-23', '2024-08-24'].map(d => ({ date: d, city: '青岛', venue: '青春足球场', title: '十万伏特' })),
-    ...['2024-09-12', '2024-09-13', '2024-09-14'].map(d => ({ date: d, city: '南京', venue: '奥体中心体育场', title: '十万伏特' })),
-    ...['2024-09-26', '2024-09-27', '2024-09-28'].map(d => ({ date: d, city: '福州', venue: '海峡奥体中心', title: '十万伏特' })),
-    ...['2024-10-17', '2024-10-18', '2024-10-19'].map(d => ({ date: d, city: '重庆', venue: '奥体中心体育场', title: '十万伏特' })),
-    ...['2024-10-31', '2024-11-01', '2024-11-02'].map(d => ({ date: d, city: '台州', venue: '台州体育中心', title: '十万伏特' })),
-    ...['2024-11-14', '2024-11-15', '2024-11-16'].map(d => ({ date: d, city: '厦门', venue: '白鹭体育场', title: '十万伏特' })),
-    ...['2024-11-29', '2024-11-30', '2024-12-01'].map(d => ({ date: d, city: '杭州', venue: '奥体中心', title: '十万伏特' })),
-    ...['2024-12-19', '2024-12-20'].map(d => ({ date: d, city: '南宁', venue: '广西体育中心', title: '十万伏特' })),
     ...['2024-12-31', '2025-01-01'].map(d => ({ date: d, city: '广州', venue: '大学城体育中心', title: '十万伏特' })),
-
-    // --- 十万伏特 2.0 ---
+    // 十万伏特 2.0 & 2026 计划 (含第100场)
     ...['2025-03-21', '2025-03-22', '2025-03-23'].map(d => ({ date: d, city: '北京', venue: '鸟巢', title: '十万伏特2.0' })),
-    ...['2025-04-11', '2025-04-12', '2025-04-13'].map(d => ({ date: d, city: '合肥', venue: '合肥体育中心', title: '十万伏特2.0' })),
-    ...['2025-05-16', '2025-05-17', '2025-05-18'].map(d => ({ date: d, city: '南昌', venue: '南昌体育中心', title: '十万伏特2.0' })),
-    ...['2025-06-13', '2025-06-14', '2025-06-15'].map(d => ({ date: d, city: '沈阳', venue: '沈阳奥体中心', title: '十万伏特2.0' })),
-    ...['2025-06-27', '2025-06-28', '2025-06-29'].map(d => ({ date: d, city: '太原', venue: '山西体育中心', title: '十万伏特2.0' })),
-    ...['2025-07-12', '2025-07-13'].map(d => ({ date: d, city: '兰州', venue: '兰州奥体玫瑰场', title: '十万伏特2.0' })),
-    ...['2025-07-25', '2025-07-26', '2025-07-27'].map(d => ({ date: d, city: '深圳', venue: '大运体育场', title: '十万伏特2.0' })),
-    ...['2025-08-08', '2025-08-09', '2025-08-10'].map(d => ({ date: d, city: '西安', venue: '西安奥体中心', title: '十万伏特2.0' })),
-    ...['2025-08-22', '2025-08-23'].map(d => ({ date: d, city: '青岛', venue: '市民健身中心', title: '十万伏特2.0' })),
-    ...['2025-09-12', '2025-09-13', '2025-09-14'].map(d => ({ date: d, city: '南京', venue: '南京奥体中心', title: '十万伏特2.0' })),
-    ...['2025-09-26', '2025-09-27', '2025-09-28'].map(d => ({ date: d, city: '福州', venue: '海峡奥体中心', title: '十万伏特2.0' })),
-    ...['2025-10-17', '2025-10-18', '2025-10-19'].map(d => ({ date: d, city: '重庆', venue: '奥体中心', title: '十万伏特2.0' })),
-    ...['2025-10-31', '2025-11-01', '2025-11-02'].map(d => ({ date: d, city: '台州', venue: '台州体育中心', title: '十万伏特2.0' })),
-    ...['2025-11-29', '2025-11-30', '2025-12-01'].map(d => ({ date: d, city: '杭州', venue: '奥体中心', title: '十万伏特2.0' })),
-    ...['2025-12-19', '2025-12-20', '2025-12-21'].map(d => ({ date: d, city: '南宁', venue: '广西体育中心', title: '十万伏特2.0' })),
-
-    // --- 罗曼前传 (世界巡演) ---
-    ...['2026-02-27', '2026-02-28', '2026-03-01'].map(d => ({ date: d, city: '澳门', venue: '银河综艺馆', title: '罗曼前传' })),
-    ...['2026-03-07', '2026-03-08'].map(d => ({ date: d, city: '纽约', venue: 'Barclays Center', title: '罗曼前传' })),
     { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge', title: '🏆 第100场:罗曼前传' },
-    ...['2026-03-21', '2026-03-22'].map(d => ({ date: d, city: '墨尔本', venue: 'Rod Laver Arena', title: '罗曼前传' })),
-    ...['2026-03-27', '2026-03-28', '2026-03-29'].map(d => ({ date: d, city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' })),
-
-    // --- 明日世界 (郑州6连开) ---
-    ...['2026-05-01', '2026-05-02', '2026-05-03', '2026-05-08', '2026-05-09', '2026-05-10'].map(d => ({ date: d, city: '郑州', venue: '郑州奥体中心', title: '明日世界' }))
+    ...['2026-05-01', '2026-05-02', '2026-05-03'].map(d => ({ date: d, city: '郑州', venue: '郑州奥体中心', title: '明日世界' }))
 ];
-    const albumData = [
+
+const albumData = [
     { id: 1, name: "弗斯特", date: "2010-05-14", color: "from-gray-500", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] },
     { id: 2, name: "慢慢懂", date: "2010-11-19", color: "from-blue-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
     { id: 3, name: "万有引力", date: "2012-07-16", color: "from-orange-500", songs: ["万有引力", "巴赫旧约", "三国杀", "有点甜", "不分手的恋爱", "苦笑", "小星星", "第一首情歌", "专属味道", "我想了太多"] },
@@ -303,8 +253,12 @@ const concertData = [
     { id: 11, name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-yellow-200", songs: ["十万伏特", "浪漫主义", "银河系漫游", "电光石火", "浪潮", "夜行者", "反重力", "星际恋人", "未来情书", "再见宇宙"], isNew: true }
 ];
 
+// --- 逻辑函数 ---
+
+// 渲染专辑
 function renderAlbums() {
     const grid = document.getElementById('album-grid');
+    const countEl = document.getElementById('album-count');
     if(!grid) return;
 
     grid.innerHTML = albumData.map(album => `
@@ -327,9 +281,49 @@ function renderAlbums() {
             </div>
         </div>
     `).join('');
+    
+    if(countEl) countEl.innerText = albumData.length;
 }
 
-// 记得在 window.onload 里面调用 renderAlbums();
+// 渲染演唱会
+function renderConcerts() {
+    const tbody = document.getElementById('concert-table-body');
+    if(!tbody) return;
+    tbody.innerHTML = concertData.map(c => `
+        <tr class="hover:bg-white/5 transition border-b border-white/5">
+            <td class="p-4 font-mono text-xs">${c.date}</td>
+            <td class="p-4 text-sm">${c.city}</td>
+            <td class="p-4 text-gray-500 text-xs">${c.venue}</td>
+            <td class="p-4"><span class="text-orange-400 text-xs">${c.title}</span></td>
+        </tr>
+    `).join('');
+}
+
+// 通用切换函数
+function toggleSection(contentId, iconId) {
+    const content = document.getElementById(contentId);
+    const icon = document.getElementById(iconId);
+    if (!content) return;
+    
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        content.style.maxHeight = '0px';
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        content.style.maxHeight = '3000px'; 
+        icon.style.transform = 'rotate(180deg)';
+    }
+}
+
+function toggleSongs(id) {
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle('hidden');
+}
+
+// --- 初始化运行 ---
+window.onload = function() {
+    renderAlbums();
+    renderConcerts();
+};
     
     // 2. 放置 renderConcerts 函数
     function renderConcerts() {
