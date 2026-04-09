@@ -31,6 +31,12 @@
         .top-nav { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: rgba(10, 10, 15, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; gap: 30px; }
         .nav-item { cursor: pointer; opacity: 0.7; transition: 0.3s; font-size: 15px; font-weight: 500; }
         .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); }
+        
+        #album-content {
+    will-change: max-height;
+    /* 确保即使内容超长，父容器也会被撑开而不是被遮挡 */
+    display: block !important; 
+}
 
         /* 卡片效果 */
         .glass-card { background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 40px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -144,7 +150,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-0 h-auto border-white/5 overflow-visible"> 
+                <div class="glass-card p-0 border-white/5"> 
             <div onclick="toggleSection('album-content', 'album-icon')" 
                  class="p-6 flex justify-between items-center cursor-pointer hover:bg-white/5 transition bg-white/5">
                 <div class="flex items-center gap-6">
@@ -156,8 +162,8 @@
                 <span id="album-icon" class="transition-transform duration-300 text-orange-500">▼</span>
             </div>
             
-            <div id="album-content" class="max-h-0 transition-all duration-500 ease-in-out overflow-hidden">
-                <div id="album-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 pb-12">
+            <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                <div id="album-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 pb-20">
                     </div>
             </div>
         </div>
@@ -512,14 +518,12 @@ function toggleSection(id, iconId) {
     
     if (!content) return;
 
-    // 检查当前是否已经打开 (高度不是 0)
+    // 如果当前高度不是 0（即处于打开或半打开状态）
     if (content.style.maxHeight && content.style.maxHeight !== "0px") {
-        // 【收起逻辑】
         content.style.maxHeight = "0px";
         if (icon) icon.style.transform = "rotate(0deg)";
     } else {
-        // 【展开逻辑】
-        // scrollHeight 会实时计算内部所有内容（哪怕是动态生成的）的总高度
+        // 【关键】scrollHeight 会计算内部所有专辑卡片撑开后的总物理高度
         content.style.maxHeight = content.scrollHeight + "px";
         if (icon) icon.style.transform = "rotate(180deg)";
     }
