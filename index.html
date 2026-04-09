@@ -157,7 +157,7 @@
             </div>
             
             <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                <div id="album-grid" class="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 border-t border-white/10 bg-black/40">
+                <div id="album-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-20">
                     </div>
             </div>
         </div>
@@ -509,15 +509,22 @@ async function editPost(id) {
 
 function toggleSection(id) {
     const element = document.getElementById(id);
-    if (!element) return; // 如果找不到元素，直接返回，防止报错
+    if (!element) return;
 
-    // 💡 关键逻辑修改：不仅检查 maxHeight 存在，还要检查它不是 '0px'
+    // 清除可能存在的 transition 干扰
+    element.style.transition = "max-height 0.5s ease-in-out";
+
     if (element.style.maxHeight && element.style.maxHeight !== '0px') {
-        // 如果现在是打开的（高度不为 0），强制设为 0px，使其关闭
         element.style.maxHeight = '0px';
+        // 延迟移除背景，防止关闭时闪烁
+        setTimeout(() => { if(element.style.maxHeight === '0px') element.style.background = "transparent"; }, 500);
     } else {
-        // 如果是关闭的（高度为 0 或不存在），计算其内容实际高度并赋值
-        element.style.maxHeight = element.scrollHeight + "px";
+        // 关键：展开前先确保背景色正确，并强制浏览器重新计算高度
+        element.style.background = "rgba(0, 0, 0, 0.3)"; 
+        const scrollHeight = element.scrollHeight;
+        
+        // 如果 scrollHeight 还是 0，给一个保底高度（通常10首歌约 200px）
+        element.style.maxHeight = (scrollHeight === 0 ? 250 : scrollHeight) + "px";
     }
 }
         function renderSilence() {
