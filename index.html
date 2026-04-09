@@ -4,94 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shelley's Space | 向往自由</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         :root { --accent: #ff6b00; --glass: rgba(15, 15, 20, 0.8); }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #050508 !important; color: white; font-family: -apple-system, sans-serif; overflow: hidden; }
         
-        /* --- 1. 真正的动态星空背景容器 --- */
-        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        /* 星空背景层 */
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
-        /* --- 2. 大布局页面容器 --- */
+        /* 内容层 */
         #content-wrapper { position: relative; z-index: 10; width: 100%; height: 100%; overflow-y: auto; padding-top: 100px; background: transparent; }
-        .page { display: none; width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 20px 100px; box-sizing: border-box; }
+        .page { display: none; width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 20px 100px; }
         .page.active { display: block; animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- 3. 磨砂玻璃顶部导航栏 --- */
-        .top-nav { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 70px; 
-            background: rgba(10, 10, 15, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex; align-items: center; justify-content: center; gap: 30px;
-        }
+        /* 导航栏 */
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: rgba(10, 10, 15, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; gap: 30px; }
         .nav-item { cursor: pointer; opacity: 0.7; transition: 0.3s; font-size: 15px; font-weight: 500; }
         .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); }
 
-        /* --- 4. 大卡片样式 --- */
-        /* --- 给卡片增加“弹性触感” --- */
-.glass-card {
-    /* 确保原有属性里有这一行，让动作变丝滑 */
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    cursor: pointer;
-}
-
-.glass-card:hover {
-    /* 1. 物理位移：向上轻微浮起 8 像素 */
-    transform: translateY(-8px) scale(1.02); 
-    
-    /* 2. 光感变化：边框变亮，背景稍微加深 */
-    border-color: rgba(255, 107, 0, 0.4); 
-    background: rgba(20, 20, 25, 0.9);
-    
-    /* 3. 阴影触感：增加一个发光的投影，显得卡片“浮”起来了 */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 107, 0, 0.1);
-}
-
-/* 如果是那个渐变色的 ID 卡片，悬停时可以加一点旋转感 */
-.id-card-gradient:hover {
-    transform: translateY(-10px) rotateX(5deg) rotateY(2deg);
-}
-        .glass-card { 
-            background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
+        /* 卡片效果 */
+        .glass-card { background: var(--glass); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 40px; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .glass-card:hover { transform: translateY(-8px); border-color: rgba(255, 107, 0, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .id-card-gradient { background: linear-gradient(135deg, #a83279 0%, #3b1654 100%); }
-@keyframes pop {
-    from { opacity: 0; transform: scale(1.1); }
-    to { opacity: 1; transform: scale(1); }
-}
-.ios-blur {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-}
     </style>
 </head>
 <body>
-    <div id="particles-js"></div>
-    <div id="ios-dialog" class="fixed inset-0 z-[1000] flex items-center justify-center hidden">
-    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-    <div class="relative ios-blur w-[270px] rounded-[14px] overflow-hidden flex flex-col text-center animate-[pop_0.2s_ease-out]">
-        <div class="p-5">
-            <h3 id="dialog-title" class="text-[17px] font-semibold text-black">提示</h3>
-            <p id="dialog-msg" class="text-[13px] text-black mt-1"></p>
-            <textarea id="dialog-input" class="hidden w-full mt-3 p-2 text-sm bg-black/5 border border-black/10 rounded-md text-black focus:outline-none" rows="3"></textarea>
-        </div>
-        <div class="flex border-t border-black/10 h-[44px]">
-            <button onclick="closeDialog()" class="flex-1 text-[17px] text-[#007AFF] border-r border-black/10 active:bg-black/10">取消</button>
-            <button id="confirm-btn" class="flex-1 text-[17px] text-[#007AFF] font-semibold active:bg-black/10">确定</button>
-        </div>
-    </div>
-</div>
 
-<style>
-@keyframes pop {
-    from { opacity: 0; transform: scale(1.2); }
-    to { opacity: 1; transform: scale(1); }
-}
-</style>
+    <div id="particles-js"></div>
+
     <nav class="top-nav">
         <div class="nav-item active" onclick="showPage('about')">🏠 关于</div>
         <div class="nav-item" onclick="showPage('journal')">📝 随笔</div>
@@ -101,32 +46,29 @@
     </nav>
 
     <div id="content-wrapper">
-
         <div id="about" class="page active">
             <div class="grid md:grid-cols-2 gap-16 items-center pt-10">
-                <div class="glass-card id-card-gradient p-1 w-full max-w-md mx-auto aspect-[3/4] overflow-hidden relative group">
+                <div class="glass-card id-card-gradient p-1 w-full max-w-md mx-auto aspect-[3/4] overflow-hidden relative">
                     <div class="absolute inset-1 bg-[#101015] rounded-[26px] overflow-hidden p-10 flex flex-col items-center justify-between text-center">
-                        <div class="w-32 h-32 bg-white rounded-full border-4 border-[#101015] overflow-hidden shadow-2xl">
-                            <img src="https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg">
+                        <div class="w-32 h-32 bg-white rounded-full border-4 border-[#101015] overflow-hidden">
+                            <img src="https://cdn.phototour1.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg" class="w-full h-full object-cover">
                         </div>
                         <div class="space-y-2">
-                            <h2 class="text-3xl font-extrabold tracking-tight">Shelley Chen</h2>
+                            <h2 class="text-3xl font-extrabold">Shelley Chen</h2>
                             <p class="text-orange-400 text-sm tracking-widest">Wayfair 运营专员</p>
                         </div>
-                        <div class="w-full text-left space-y-3 text-sm text-gray-300 border-t border-gray-700/50 pt-6">
+                        <div class="w-full text-left space-y-3 text-sm text-gray-300 border-t border-white/10 pt-6">
                             <p>🎂 22岁 · 2003.06.20</p>
-                            <p>🎓 商务英语专业 · 长沙大专生</p>
-                            <p>📍 湖南 · 2023届毕业生</p>
+                            <p>🎓 商务英语 · 湖南</p>
+                            <p>愿望：环游世界 🌍</p>
                         </div>
                     </div>
                 </div>
                 <div class="space-y-10">
-                    <h1 class="text-7xl font-extrabold leading-tight tracking-tighter">向往自由，<br><span class="text-orange-500">精彩的人生。</span></h1>
-                    <div class="glass-card p-6 border-l-4 border-orange-500 bg-white/5 space-y-4 italic text-gray-300">
-                        <p>“我和你都在 同一个大大银河”</p>
-                        <p>“会炙热 会冷漠 但也独特 —— Silence Wang”</p>
+                    <h1 class="text-7xl font-extrabold leading-tight">向往自由，<br><span class="text-orange-500">精彩的人生。</span></h1>
+                    <div class="glass-card p-6 border-l-4 border-orange-500 bg-white/5 italic text-gray-400">
+                        “我和你都在 同一个大大银河 —— Silence Wang”
                     </div>
-                    <p class="text-xl text-gray-400 leading-relaxed">出生于盛夏2003年6月20日于湖南的一个小村庄。平时喜欢看电视剧，电影，综艺，涉猎广泛。爱好文学，记录过很多摘抄。这辈子最想实现的愿望就是环游世界！！</p>
                 </div>
             </div>
         </div>
@@ -134,343 +76,152 @@
         <div id="journal" class="page">
             <div class="max-w-4xl mx-auto space-y-10">
                 <h2 class="text-4xl font-bold italic border-b border-orange-500 pb-3 inline-block">📖 随笔日常</h2>
-                <div class="glass-card p-8 space-y-4">
-                    <div class="flex items-center gap-4 mb-4">
-                  <img src="https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg" class="w-12 h-12 rounded-full border border-orange-500/50 object-cover">
-                        <span class="font-bold text-lg">发表新随笔</span>
-                    </div>
-                    <textarea id="postContent" class="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white text-lg focus:outline-none focus:border-orange-500/50 transition" rows="4" placeholder="此刻的想法..."></textarea>
-                    <div class="flex justify-end pt-2">
-                        <button onclick="savePost()" class="bg-orange-600 hover:bg-orange-500 px-10 py-3 rounded-full font-bold transition text-lg">发布</button>
+                <div class="glass-card p-8">
+                    <textarea id="postContent" class="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white focus:outline-none focus:border-orange-500 transition mb-4" rows="4" placeholder="写下此刻的想法..."></textarea>
+                    <div class="flex justify-end">
+                        <button onclick="savePost()" class="bg-orange-600 px-10 py-3 rounded-full font-bold hover:scale-105 transition">发布随笔</button>
                     </div>
                 </div>
-
-       <div id="silence" class="page">
-    <div class="max-w-6xl mx-auto space-y-6">
-        <div class="border-b border-orange-500/30 pb-6 mb-10">
-            <h2 class="text-5xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white to-orange-500">
-                SILENCE WANG
-            </h2>
-            <p class="text-gray-400 tracking-[0.2em] text-sm mt-2 uppercase">万物生长，唯爱至上</p>
+                <div id="postList" class="space-y-6">
+                    </div>
+            </div>
         </div>
 
-        <div class="glass-card p-0 overflow-hidden mb-6 border-white/5">
-            <div onclick="toggleSection('tour-content', 'tour-icon')" 
-                 class="p-6 flex justify-between items-center cursor-pointer hover:bg-white/5 transition bg-white/5">
-                <div class="flex flex-wrap items-center gap-6">
-                    <h3 class="text-xl font-bold">🎤 巡回演唱会全记录</h3>
-                    <div class="flex gap-3">
-                        <span class="px-3 py-1 bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-full text-xs">
-                            累计 <b>105</b> 场次
-                        </span>
-                        <span class="px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs">
-                            覆盖 <b>20</b> 城市
-                        </span>
+        <div id="silence" class="page">
+            <div class="max-w-6xl mx-auto space-y-6">
+                <h2 class="text-5xl font-black italic bg-clip-text text-transparent bg-gradient-to-r from-white to-orange-500 mb-10">SILENCE WANG</h2>
+                
+                <div class="glass-card p-0 overflow-hidden mb-8">
+                    <div onclick="toggleSection('tour-content')" class="p-6 flex justify-between items-center cursor-pointer bg-white/5">
+                        <h3 class="text-xl font-bold">🎤 巡回演唱会记录</h3>
+                        <span>▼</span>
+                    </div>
+                    <div id="tour-content" class="max-h-0 overflow-hidden transition-all duration-500">
+                        <table class="w-full text-left text-sm">
+                            <tbody id="concert-table-body" class="divide-y divide-white/5"></tbody>
+                        </table>
                     </div>
                 </div>
-                <span id="tour-icon" class="transition-transform duration-300 transform rotate-180 text-orange-500">▼</span>
-            </div>
-            
-            <div id="tour-content" class="transition-all duration-500 ease-in-out overflow-hidden">
-                <div class="overflow-x-auto border-t border-white/10">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-white/5 text-orange-500 text-xs uppercase tracking-wider">
-                                <th class="p-4">日期</th>
-                                <th class="p-4">城市</th>
-                                <th class="p-4">场馆</th>
-                                <th class="p-4">名称</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-sm text-gray-300 divide-y divide-white/5" id="concert-table-body">
-                            </tbody>
-                    </table>
+
+                <div class="glass-card p-0 overflow-hidden">
+                    <div onclick="toggleSection('album-content')" class="p-6 flex justify-between items-center cursor-pointer bg-white/5">
+                        <h3 class="text-xl font-bold">💿 音乐专辑年表</h3>
+                        <span>▼</span>
+                    </div>
+                    <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500">
+                        <div id="album-grid" class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="glass-card p-0 overflow-hidden border-white/5">
-            <div onclick="toggleSection('album-content', 'album-icon')" 
-                 class="p-6 flex justify-between items-center cursor-pointer hover:bg-white/5 transition bg-white/5">
-                <div class="flex items-center gap-6">
-                    <h3 class="text-xl font-bold">💿 音乐专辑年表</h3>
-                    <span class="px-3 py-1 bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-full text-xs">
-                        已收录 <b id="album-count">11</b> 张
-                    </span>
-                </div>
-                <span id="album-icon" class="transition-transform duration-300 text-orange-500">▼</span>
-            </div>
-            
-            <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                <div id="album-grid" class="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 border-t border-white/10 bg-black/40">
-                    </div>
-            </div>
-        </div>
+        <div id="media" class="page"><div class="glass-card text-center">🎬 板块整理中...</div></div>
+        <div id="msg" class="page"><div class="glass-card text-center">💬 留言板开发中...</div></div>
     </div>
-</div>
 
-<script>
-// ==========================================
-// 1. 数据定义 (整合在一起，清晰明了)
-// ==========================================
-// 汪苏泷演唱会 105 场全量数据汇总
-const concertData = [
-    // --- 早期 ---
-    { date: '2012-11-24', city: '武汉', venue: '武汉杂技厅', title: 'QQ音乐尊享' },
-    { date: '2012-12-22', city: '广州', venue: '白云国际会议中心', title: 'QQ音乐尊享' },
-    { date: '2016-09-16', city: '北京', venue: '北京展览馆剧场', title: '登陆星球' },
-    { date: '2017-09-16', city: '北京', venue: '工人体育馆', title: '莱芙巡演' },
-    { date: '2018-09-15', city: '北京', venue: 'M空间', title: '个人演唱会' },
-    { date: '2019-03-16', city: '重庆', venue: '合川文化艺术中心', title: '银河漫游' },
-    { date: '2021-08-28', city: '上海', venue: '虹馆', title: '大娱乐家' },
-    { date: '2021-12-04', city: '武汉', venue: '网球中心', title: '大娱乐家' },
+    <script>
+        // --- 1. 初始化配置 ---
+        const MY_AVATAR = "https://cdn.phototour1.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg";
+        const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // --- 变得有些奢侈的事 (10场) ---
-    ...['2023-11-04', '2023-11-05'].map(d => ({ date: d, city: '台北', venue: '小巨蛋', title: '奢侈的事' })),
-    { date: '2024-03-09', city: '广州', venue: '广州体育馆', title: '奢侈的事' },
-    { date: '2024-04-13', city: '成都', venue: '凤凰山体育馆', title: '奢侈的事' },
-    { date: '2024-05-25', city: '北京', venue: '首都体育馆', title: '奢侈的事' },
-    { date: '2024-06-15', city: '南京', venue: '南京奥体中心', title: '奢侈的事' },
-    { date: '2024-06-29', city: '武汉', venue: '武汉体育中心', title: '奢侈的事' },
-    { date: '2024-07-06', city: '深圳', venue: '春茧体育馆', title: '奢侈的事' },
-    { date: '2024-07-20', city: '长沙', venue: '湖南国展中心', title: '奢侈的事' },
-    { date: '2024-08-03', city: '上海', venue: '梅赛德斯奔驰', title: '奢侈的事' },
+        // --- 2. 汪苏泷数据 ---
+        const albumData = [
+            { name: "十万伏特", date: "2024", color: "from-yellow-400" },
+            { name: "联名", date: "2022", color: "from-purple-600" },
+            { name: "大娱乐家", date: "2020", color: "from-pink-600" }
+        ];
+        const concertData = [
+            { date: '2026-05-01', city: '郑州', venue: '奥体中心', title: '明日世界' },
+            { date: '2025-03-21', city: '北京', venue: '鸟巢', title: '十万伏特2.0' }
+        ];
 
-    // --- 十万伏特 1.0 (24场) ---
-    ...['2024-08-23', '2024-08-24'].map(d => ({ date: d, city: '青岛', venue: '青春足球场', title: '十万伏特' })),
-    ...['2024-09-12', '2024-09-13', '2024-09-14'].map(d => ({ date: d, city: '南京', venue: '奥体中心体育场', title: '十万伏特' })),
-    ...['2024-09-26', '2024-09-27', '2024-09-28'].map(d => ({ date: d, city: '福州', venue: '海峡奥体中心', title: '十万伏特' })),
-    ...['2024-10-17', '2024-10-18', '2024-10-19'].map(d => ({ date: d, city: '重庆', venue: '奥体中心体育场', title: '十万伏特' })),
-    ...['2024-10-31', '2024-11-01', '2024-11-02'].map(d => ({ date: d, city: '台州', venue: '台州体育中心', title: '十万伏特' })),
-    ...['2024-11-14', '2024-11-15', '2024-11-16'].map(d => ({ date: d, city: '厦门', venue: '白鹭体育场', title: '十万伏特' })),
-    ...['2024-11-29', '2024-11-30', '2024-12-01'].map(d => ({ date: d, city: '杭州', venue: '奥体中心', title: '十万伏特' })),
-    ...['2024-12-19', '2024-12-20'].map(d => ({ date: d, city: '南宁', venue: '广西体育中心', title: '十万伏特' })),
-    ...['2024-12-31', '2025-01-01'].map(d => ({ date: d, city: '广州', venue: '大学城体育中心', title: '十万伏特' })),
-
-    // --- 十万伏特 2.0 ---
-    ...['2025-03-21', '2025-03-22', '2025-03-23'].map(d => ({ date: d, city: '北京', venue: '鸟巢', title: '十万伏特2.0' })),
-    ...['2025-04-11', '2025-04-12', '2025-04-13'].map(d => ({ date: d, city: '合肥', venue: '合肥体育中心', title: '十万伏特2.0' })),
-    ...['2025-05-16', '2025-05-17', '2025-05-18'].map(d => ({ date: d, city: '南昌', venue: '南昌体育中心', title: '十万伏特2.0' })),
-    ...['2025-06-13', '2025-06-14', '2025-06-15'].map(d => ({ date: d, city: '沈阳', venue: '沈阳奥体中心', title: '十万伏特2.0' })),
-    ...['2025-06-27', '2025-06-28', '2025-06-29'].map(d => ({ date: d, city: '太原', venue: '山西体育中心', title: '十万伏特2.0' })),
-    ...['2025-07-12', '2025-07-13'].map(d => ({ date: d, city: '兰州', venue: '兰州奥体玫瑰场', title: '十万伏特2.0' })),
-    ...['2025-07-25', '2025-07-26', '2025-07-27'].map(d => ({ date: d, city: '深圳', venue: '大运体育场', title: '十万伏特2.0' })),
-    ...['2025-08-08', '2025-08-09', '2025-08-10'].map(d => ({ date: d, city: '西安', venue: '西安奥体中心', title: '十万伏特2.0' })),
-    ...['2025-08-22', '2025-08-23'].map(d => ({ date: d, city: '青岛', venue: '市民健身中心', title: '十万伏特2.0' })),
-    ...['2025-09-12', '2025-09-13', '2025-09-14'].map(d => ({ date: d, city: '南京', venue: '南京奥体中心', title: '十万伏特2.0' })),
-    ...['2025-09-26', '2025-09-27', '2025-09-28'].map(d => ({ date: d, city: '福州', venue: '海峡奥体中心', title: '十万伏特2.0' })),
-    ...['2025-10-17', '2025-10-18', '2025-10-19'].map(d => ({ date: d, city: '重庆', venue: '奥体中心', title: '十万伏特2.0' })),
-    ...['2025-10-31', '2025-11-01', '2025-11-02'].map(d => ({ date: d, city: '台州', venue: '台州体育中心', title: '十万伏特2.0' })),
-    ...['2025-11-29', '2025-11-30', '2025-12-01'].map(d => ({ date: d, city: '杭州', venue: '奥体中心', title: '十万伏特2.0' })),
-    ...['2025-12-19', '2025-12-20', '2025-12-21'].map(d => ({ date: d, city: '南宁', venue: '广西体育中心', title: '十万伏特2.0' })),
-
-    // --- 罗曼前传 (世界巡演) ---
-    ...['2026-02-27', '2026-02-28', '2026-03-01'].map(d => ({ date: d, city: '澳门', venue: '银河综艺馆', title: '罗曼前传' })),
-    ...['2026-03-07', '2026-03-08'].map(d => ({ date: d, city: '纽约', venue: 'Barclays Center', title: '罗曼前传' })),
-    { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge', title: '🏆 第100场:罗曼前传' },
-    ...['2026-03-21', '2026-03-22'].map(d => ({ date: d, city: '墨尔本', venue: 'Rod Laver Arena', title: '罗曼前传' })),
-    ...['2026-03-27', '2026-03-28', '2026-03-29'].map(d => ({ date: d, city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' })),
-
-    // --- 明日世界 (郑州6连开) ---
-    ...['2026-05-01', '2026-05-02', '2026-05-03', '2026-05-08', '2026-05-09', '2026-05-10'].map(d => ({ date: d, city: '郑州', venue: '郑州奥体中心', title: '明日世界' }))
-];
-
-const albumData = [
-    { id: 1, name: "弗斯特", date: "2010-05-14", color: "from-gray-500", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] },
-    { id: 2, name: "慢慢懂", date: "2010-11-19", color: "from-blue-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
-    { id: 3, name: "万有引力", date: "2012-07-16", color: "from-orange-500", songs: ["万有引力", "巴赫旧约", "三国杀", "有点甜", "不分手的恋爱", "苦笑", "小星星", "第一首情歌", "专属味道", "我想了太多"] },
-    { id: 4, name: "传世乐章", date: "2014-06-25", color: "from-red-600", songs: ["传世乐章", "晴", "睡前故事", "有你的快乐", "风度", "银河", "等你下课", "合照", "后会无期", "想"] },
-    { id: 5, name: "登陆计划", date: "2015-10-19", color: "from-indigo-600", songs: ["登陆计划", "银河", "小星星(Remix)", "睡前故事", "合照", "黑眼圈", "风度", "有你的快乐", "等你下课", "晴"] },
-    { id: 6, name: "莱芙", date: "2017-04-18", color: "from-green-500", songs: ["莱芙", "一笑倾城", "年轮", "那个男孩", "让我留在你身边", "告白", "等不到你", "像风一样", "慢慢懂", "第一首情歌"] },
-    { id: 7, name: "克制凶猛", date: "2018-09-19", color: "from-cyan-600", songs: ["克制凶猛", "对话", "落单恋人", "没关系", "如果时光倒流", "我也不知道", "风度", "第一首情歌", "合照", "后会无期"] },
-    { id: 8, name: "过去现在时", date: "2019-10-30", color: "from-yellow-600", songs: ["过去现在时", "像风一样", "告白", "慢慢懂", "第一首情歌", "不分手的恋爱", "专属味道", "小星星", "有点甜", "一笑倾城"] },
-    { id: 9, name: "大娱乐家", date: "2020-09-19", color: "from-pink-600", songs: ["大娱乐家", "娱乐至死", "我想念", "恋爱循环", "自我催眠", "失眠飞行", "那一年", "像风一样", "不分手的恋爱", "第一首情歌"] },
-    { id: 10, name: "联名", date: "2022-09-19", color: "from-purple-600", songs: ["如果你也听说", "如果爱忘了", "落日飞车", "夏夜晚风", "爱人错过", "像鱼", "星河", "像风一样", "慢慢懂", "第一首情歌"], note: "与10位女歌手合作" },
-    { id: 11, name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-yellow-200", songs: ["十万伏特", "浪漫主义", "银河系漫游", "电光石火", "浪潮", "夜行者", "反重力", "星际恋人", "未来情书", "再见宇宙"], isNew: true }
-];
-
-// ==========================================
-// 2. 配置 & Supabase 初始化
-// ==========================================
-const MY_AVATAR = "https://cdn.phototour1.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg";
-const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU';
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// ==========================================
-// 3. 渲染逻辑函数
-// ==========================================
-
-function renderAlbums() {
-    const grid = document.getElementById('album-grid');
-    const countEl = document.getElementById('album-count');
-    if(!grid) return;
-    grid.innerHTML = albumData.map(album => `
-        <div class="glass-card !bg-white/5 p-5 rounded-2xl border-white/10 hover:border-orange-500/50 transition-all group ${album.isNew ? 'border-2 border-yellow-500/30' : ''}">
-            <div class="flex justify-between items-start mb-4">
-                <div class="flex gap-4">
-                    <div class="w-14 h-14 bg-gradient-to-br ${album.color} rounded-lg flex-shrink-0 flex items-center justify-center shadow-lg font-bold text-white">${album.id}</div>
-                    <div>
-                        <h4 class="text-lg font-bold text-white group-hover:text-orange-400">《${album.name}》</h4>
-                        <p class="text-[10px] text-gray-500">📅 ${album.date}</p>
-                        ${album.note ? `<p class="text-[10px] text-purple-400 font-bold">${album.note}</p>` : ''}
-                    </div>
-                </div>
-                <button onclick="toggleSongs('s-${album.id}')" class="text-[10px] bg-white/10 px-3 py-1 rounded-full hover:bg-orange-500 transition">曲目</button>
-            </div>
-            <div id="s-${album.id}" class="hidden mt-4 pt-4 border-t border-white/5">
-                <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-[12px] text-gray-400">
-                    ${album.songs.map((s, i) => `<span>${i+1}. ${s}</span>`).join('')}
-                </div>
-            </div>
-        </div>
-    `).join('');
-    if(countEl) countEl.innerText = albumData.length;
-}
-
-function renderConcerts() {
-    const tbody = document.getElementById('concert-table-body');
-    if(!tbody) return;
-    // 倒序排列，让最新的演唱会排在前面
-    const sortedConcerts = [...concertData].reverse();
-    tbody.innerHTML = sortedConcerts.map((c, index) => `
-        <tr class="hover:bg-white/5 transition border-b border-white/5 group">
-            <td class="p-4 text-orange-500/50 font-mono text-xs">${(sortedConcerts.length - index).toString().padStart(2, '0')}</td>
-            <td class="p-4 text-white font-medium text-sm">${c.date}</td>
-            <td class="p-4 text-gray-400 text-sm">${c.city}</td>
-            <td class="p-4 text-gray-500 text-xs">${c.venue}</td>
-            <td class="p-4">
-                <span class="px-3 py-1 bg-orange-500/10 text-orange-400 rounded-full text-[10px] font-bold group-hover:bg-orange-500 group-hover:text-white transition">
-                    ${c.title}
-                </span>
-            </td>
-        </tr>
-    `).join('');
-}
-
-// ==========================================
-// 4. 交互控制逻辑
-// ==========================================
-
-function toggleSection(contentId, iconId) {
-    const content = document.getElementById(contentId);
-    const icon = document.getElementById(iconId);
-    if (!content) return;
-    
-    if (content.style.maxHeight === "0px" || content.classList.contains('max-h-0')) {
-        content.classList.remove('max-h-0');
-        content.style.maxHeight = content.scrollHeight + "px";
-        icon.style.transform = "rotate(180deg)";
-    } else {
-        content.style.maxHeight = "0px";
-        icon.style.transform = "rotate(0deg)";
-        setTimeout(() => content.classList.add('max-h-0'), 500);
-    }
-}
-
-function toggleSongs(id) {
-    const el = document.getElementById(id);
-    const parentContent = document.getElementById('album-content');
-    if(!el) return;
-    el.classList.toggle('hidden');
-    // 重新调整父容器高度
-    if (parentContent && parentContent.style.maxHeight !== "0px") {
-        parentContent.style.maxHeight = parentContent.scrollHeight + "px";
-    }
-}
-
-function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    
-    const targetPage = document.getElementById(pageId);
-    if (targetPage) {
-        targetPage.classList.add('active');
-        if (pageId === 'journal') fetchPosts();
-        if (pageId === 'silence') {
-            renderAlbums();
-            renderConcerts();
-        }
-    }
-    document.getElementById('content-wrapper').scrollTo(0, 0);
-}
-
-// ==========================================
-// 5. 随笔逻辑 & 星空
-// ==========================================
-
-// --- 随笔渲染函数：增加删除/编辑按钮逻辑 ---
-async function fetchPosts() {
-    const postList = document.getElementById('postList');
-    if (!postList) return;
-
-    const { data, error } = await _supabase
-        .from('posts')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-    if (data) {
-        postList.innerHTML = data.map(post => `
-            <div class="glass-card p-8 group relative mb-6">
-                <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
-                    <span class="font-bold text-white flex items-center gap-3">
-                        <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500/50 object-cover"> 
-                        Shelley
-                    </span>
-                    <div class="flex items-center gap-4">
-                        <span>${new Date(post.created_at).toLocaleString()}</span>
-                        <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-3">
-                            <button onclick="deletePost('${post.id}')" class="text-red-400 hover:text-red-300 text-xs">删除</button>
+        // --- 3. 核心功能 ---
+        async function fetchPosts() {
+            const { data } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
+            const list = document.getElementById('postList');
+            if (data && list) {
+                list.innerHTML = data.map(post => `
+                    <div class="glass-card p-8 mb-6">
+                        <div class="flex items-center gap-3 mb-4 border-b border-white/5 pb-3">
+                            <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full">
+                            <span class="font-bold text-white">Shelley</span>
+                            <span class="text-xs text-gray-500 ml-auto">${new Date(post.created_at).toLocaleString()}</span>
                         </div>
+                        <p class="text-gray-200">${post.content}</p>
                     </div>
-                </div>
-                <p class="text-gray-200 text-lg leading-relaxed">${post.content}</p>
-            </div>
-        `).join('');
-    }
-}
+                `).join('');
+            }
+        }
 
-// --- 星空背景函数：确保参数完整 ---
-function initStars() {
-    const starContainer = document.getElementById('particles-js');
-    if (starContainer && typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#ffffff" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 2, "random": true },
-                "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
-                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false }
-            },
-            "interactivity": {
-                "events": { "onhover": { "enable": true, "mode": "grab" } }
-            },
-            "retina_detect": true
-        });
-        console.log("星空已重新点燃 ✨");
-    }
-}
+        async function savePost() {
+            const content = document.getElementById('postContent').value;
+            if (!content) return alert("写点内容再发布吧~");
+            const { error } = await _supabase.from('posts').insert([{ content }]);
+            if (!error) {
+                document.getElementById('postContent').value = '';
+                fetchPosts();
+            }
+        }
 
-// --- 启动顺序：确保这两个优先运行 ---
-function startEverything() {
-    initStars();     // 先起星空
-    fetchPosts();    // 再拉随笔
-    renderAlbums();  // 渲染专辑
-    renderConcerts();// 渲染演唱会
-}
+        function initStars() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    "particles": {
+                        "number": { "value": 100 },
+                        "color": { "value": "#ffffff" },
+                        "opacity": { "value": 0.5 },
+                        "size": { "value": 2 },
+                        "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2 },
+                        "move": { "enable": true, "speed": 1.5 }
+                    },
+                    "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } } }
+                });
+            }
+        }
 
-// ==========================================
-// 6. 核心启动器 (只运行这一次)
-// ==========================================
-function startEverything() {
-    initStars();
-    fetchPosts();
-    renderAlbums();   // 启动时先渲染一次数据
-    renderConcerts(); // 启动时先渲染一次数据
-    console.log("汪苏泷板块数据加载完毕");
-}
+        // --- 4. 交互 ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            // 按钮点击高亮逻辑
+            const items = document.querySelectorAll('.nav-item');
+            items.forEach(item => {
+                if(item.innerText.includes(document.getElementById(pageId).id)) item.classList.add('active');
+            });
 
-window.addEventListener('load', startEverything);
-</script>
+            if (pageId === 'journal') fetchPosts();
+            document.getElementById('content-wrapper').scrollTo(0, 0);
+        }
+
+        function toggleSection(id) {
+            const el = document.getElementById(id);
+            el.style.maxHeight = (el.style.maxHeight === "0px" || !el.style.maxHeight) ? "1000px" : "0px";
+        }
+
+        function renderSilence() {
+            document.getElementById('album-grid').innerHTML = albumData.map(a => `
+                <div class="flex gap-4 p-4 bg-white/5 rounded-xl">
+                    <div class="w-12 h-12 rounded bg-gradient-to-br ${a.color}"></div>
+                    <div><div class="font-bold">《${a.name}》</div><div class="text-xs text-gray-500">${a.date}</div></div>
+                </div>`).join('');
+            document.getElementById('concert-table-body').innerHTML = concertData.map(c => `
+                <tr class="border-b border-white/5">
+                    <td class="p-4">${c.date}</td>
+                    <td class="p-4">${c.city}</td>
+                    <td class="p-4 text-orange-400 font-bold">${c.title}</td>
+                </tr>`).join('');
+        }
+
+        // --- 5. 启动 ---
+        window.onload = () => {
+            initStars();
+            renderSilence();
+            fetchPosts();
+        };
+    </script>
+</body>
+</html>
