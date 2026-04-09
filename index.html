@@ -44,6 +44,27 @@
         <div class="nav-item" onclick="showPage('media')">🎬 影视</div>
         <div class="nav-item" onclick="showPage('msg')">💬 留言</div>
     </nav>
+    
+    <div id="ios-dialog" class="fixed inset-0 z-[1000] flex items-center justify-center hidden">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div class="relative bg-white/80 backdrop-blur-xl w-[270px] rounded-[14px] overflow-hidden flex flex-col text-center animate-[pop_0.3s_ease-out]">
+        <div class="p-5">
+            <h3 id="dialog-title" class="text-[17px] font-semibold text-black">确认操作</h3>
+            <p id="dialog-msg" class="text-[13px] text-black mt-1">确定要执行此操作吗？</p>
+        </div>
+        <div class="flex border-t border-black/10 h-[44px]">
+            <button onclick="closeDialog()" class="flex-1 text-[17px] text-[#007AFF] border-r border-black/10 active:bg-black/5">取消</button>
+            <button id="confirm-btn" class="flex-1 text-[17px] text-[#007AFF] font-semibold active:bg-black/5">确定</button>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes pop {
+    from { opacity: 0; transform: scale(1.2); }
+    to { opacity: 1; transform: scale(1); }
+}
+</style>
 
     <div id="content-wrapper">
         <div id="about" class="page active">
@@ -164,6 +185,71 @@
                 fetchPosts();
             }
         }
+        // --- 自定义弹窗逻辑 ---
+function showDialog(title, msg, onConfirm) {
+    document.getElementById('dialog-title').innerText = title;
+    document.getElementById('dialog-msg').innerText = msg;
+    const dialog = document.getElementById('ios-dialog');
+    dialog.classList.remove('hidden');
+    
+    document.getElementById('confirm-btn').onclick = async () => {
+        await onConfirm();
+        closeDialog();
+    };
+}
+
+function closeDialog() {
+    document.getElementById('ios-dialog').classList.add('hidden');
+}
+
+// --- 渲染随笔列表 ---
+async function fetchPosts() {
+    const { data, error } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
+    if (data) {
+        document.getElementById('postList').innerHTML = data.map(post => `
+            <div class="glass-card p-8 group relative transition-all hover:border-orange-500/30">
+                <div class="flex justify-between items-center text-sm text-gray-500 mb-4 border-b border-gray-800 pb-3">
+                    <span class="font-bold text-white flex items-center gap-3">
+                        <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500/50 shadow-lg">
+                        Shelley
+                    </span>
+                    <div class="flex items-center gap-4">
+                        <span>${new Date(post.created_at).toLocaleString()}</span>
+                        <div class="opacity-0 group-hover:opacity-100 transition-opacity flex gap-3">
+                            <button onclick="editPost('${post.id}')" class="text-blue-400 hover:text-blue-300 text-xs">编辑</button>
+                            <button onclick="deletePost('${post.id}')" class="text-red-400 hover:text-red-300 text-xs">删除</button>
+                        </div>
+                    </div>
+                </div>
+                <p id="p-${post.id}" class="text-gray-200 text-lg leading-relaxed">${post.content}</p>
+            </div>
+        `).join('');
+    }
+}
+
+// --- 删除功能 ---
+function deletePost(id) {
+    showDialog("删除随笔", "确定要删除这条珍贵的记录吗？", async () => {
+        const { error } = await _supabase.from('posts').delete().eq('id', id);
+        if (!error) fetchPosts();
+    });
+}
+
+// --- 编辑功能 ---
+async function editPost(id) {
+    // 从 DOM 中直接获取内容，完美避开引号导致的 JS 报错
+    const oldContent = document.getElementById(`p-${id}`).innerText;
+    const newContent = prompt("编辑随笔内容：", oldContent);
+    
+    if (newContent === null || newContent === oldContent || newContent.trim() === "") return;
+    
+    const { error } = await _supabase.from('posts').update({ content: newContent }).eq('id', id);
+    if (!error) {
+        fetchPosts();
+    } else {
+        alert("更新失败，请检查 Supabase 权限");
+    }
+}
 
         function initStars() {
             if (typeof particlesJS !== 'undefined') {
