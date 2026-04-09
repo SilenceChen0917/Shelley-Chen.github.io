@@ -569,10 +569,10 @@ async function editPost(id) {
                 <div id="${subId}" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-black/40">
                     <div class="p-4 space-y-3 border-t border-white/5">
                         ${mergedShows.map(s => `
-                            <div class="flex justify-between items-start text-[11px] py-1">
-                                <div class="w-32 text-gray-400 font-mono">${s.date}</div>
-                                <div class="flex-1 px-4 text-white font-medium">${s.city}</div>
-                                <div class="w-32 text-right text-gray-500 leading-tight">${s.venue}</div>
+                            <div class="flex justify-between items-center py-3 border-b border-white/5 last:border-0">
+                                <div class="w-[140px] text-sm text-gray-300 font-mono tracking-tighter">${s.date}
+                                <div class="flex-1 text-center text-sm text-white font-bold tracking-widest">${s.city}
+                                <div class="w-[140px] text-right text-sm text-gray-400 truncate">${s.venue}
                             </div>
                         `).join('')}
                     </div>
