@@ -242,14 +242,14 @@ function deletePost(id) {
 
 // --- 编辑功能 ---
 function editPost(id) {
-        const currentText = document.getElementById(`content-${id}`).innerText;
-        showDialog("编辑随笔", "请输入修改后的内容：", async (newVal) => {
-            if (newVal && newVal !== currentText) {
-                const { error } = await _supabase.from('posts').update({ content: newVal }).eq('id', id);
-                if (!error) fetchPosts();
-            }
+    const currentText = document.getElementById(`content-${id}`).innerText;
+    showDialog("编辑随笔", "请输入修改后的内容：", async (newVal) => {
+        if (newVal && newVal !== currentText) {
+        const { error } = await _supabase.from('posts').update({ content: newVal }).eq('id', id);
+        if (!error) fetchPosts();
+     }
         }, true, currentText);
-    }
+}
         
         function initStars() {
             if (typeof particlesJS !== 'undefined') {
