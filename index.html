@@ -619,11 +619,14 @@ function toggleSection(id) {
 }
 
         // --- 5. 启动 ---
-        window.onload = () => {
-            initStars();
-            renderSilence();
-            fetchPosts();
-        };
+window.onload = () => {
+    // 1. 初始化背景
+    initStars();
+    // 2. 渲染静态数据板块（專輯、演唱會），确保在 Supabase 数据回来前加载 DOM
+    renderSilence();
+    // 3. 渲染 Supabase 数据
+    fetchPosts();
+};
     </script>
 </body>
 </html>
