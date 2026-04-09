@@ -55,7 +55,8 @@
     <div class="relative bg-white/80 backdrop-blur-xl w-[270px] rounded-[14px] overflow-hidden flex flex-col text-center animate-[pop_0.3s_ease-out]">
         <div class="p-5">
             <h3 id="dialog-title" class="text-[17px] font-semibold text-black">确认操作</h3>
-            <p id="dialog-msg" class="text-[13px] text-black mt-1">确定要执行此操作吗？</p>
+            <p id="dialog-msg" class="text-[13px] text-black mt-1 p-2 hidden">确定要执行此操作吗？</p>
+<textarea id="dialog-input" class="hidden w-full mt-2 p-3 text-sm bg-white border border-black/10 rounded-lg text-black focus:outline-none focus:ring-1 focus:ring-[#007AFF] shadow-inner" rows="4"></textarea>
         </div>
         <div class="flex border-t border-black/10 h-[44px]">
             <button onclick="closeDialog()" class="flex-1 text-[17px] text-[#007AFF] border-r border-black/10 active:bg-black/5">取消</button>
@@ -216,22 +217,29 @@
 
         // --- 3. 核心功能 ---
         async function fetchPosts() {
-            const { data } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
-            const list = document.getElementById('postList');
-            if (data && list) {
-                list.innerHTML = data.map(post => `
-                    <div class="glass-card p-8 mb-6">
-                        <div class="flex items-center gap-3 mb-4 border-b border-white/5 pb-3">
-                            <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full">
-                            <span class="font-bold text-white">Shelley</span>
-                            <span class="text-xs text-gray-500 ml-auto">${new Date(post.created_at).toLocaleString()}</span>
+    const { data, error } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
+    if (data) {
+        document.getElementById('postList').innerHTML = data.map(post => `
+            <div class="glass-card p-8 group relative transition-all hover:border-orange-500/30">
+                <div class="flex justify-between items-center text-sm text-gray-400 mb-4 border-b border-gray-800 pb-3">
+                    <span class="font-bold text-white flex items-center gap-3">
+                        <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500/50">
+                        Shelley
+                    </span>
+                    <div class="flex items-center gap-4">
+                        <span>${new Date(post.created_at).toLocaleString()}</span>
+                        <div class="opacity-100 flex gap-3">
+                            <button onclick="editPost('${post.id}')" class="text-blue-400 hover:text-blue-300">编辑</button>
+                            <button onclick="deletePost('${post.id}')" class="text-red-400 hover:text-red-300">删除</button>
                         </div>
-                        <p class="text-gray-200">${post.content}</p>
                     </div>
-                `).join('');
-            }
-        }
-
+                </div>
+                <p id="content-${post.id}" class="text-gray-200 text-lg leading-relaxed">${post.content}</p>
+            </div>
+        `).join('');
+    }
+}
+        
         async function savePost() {
             const content = document.getElementById('postContent').value;
             if (!content) return alert("写点内容再发布吧~");
@@ -301,31 +309,80 @@ async function fetchPosts() {
                         </div>
                     </div>
                 </div>
-                <p id="p-${post.id}" class="text-gray-200 text-lg leading-relaxed">${post.content}</p>
+                <p id="content-${post.id}" class="text-gray-200 text-lg leading-relaxed">${post.content}</p>
             </div>
         `).join('');
     }
 }
 
-// --- 删除功能 ---
+// --- 删除功能 (对接 iOS 弹窗) ---
 function deletePost(id) {
-    showDialog("删除随笔", "确定要删除这条珍贵的记录吗？", async () => {
+    const dialog = document.getElementById('ios-dialog');
+    const confirmBtn = document.getElementById('confirm-btn');
+    const msgEl = document.getElementById('dialog-msg');
+    const inputEl = document.getElementById('dialog-input'); // ✅
+    
+    // 1. 设置弹窗为“删除”模式：隐藏输入框，显示提示文字
+    inputEl.classList.add('hidden');
+    msgEl.classList.remove('hidden');
+    msgEl.innerText = "确定要删除这条珍贵的记录吗？";
+    
+    // 2. 显示弹窗
+    dialog.classList.remove('hidden');
+
+    // 3. 绑定确认删除逻辑
+    confirmBtn.onclick = async () => {
         const { error } = await _supabase.from('posts').delete().eq('id', id);
-        if (!error) fetchPosts();
-    });
+        if (!error) {
+            dialog.classList.add('hidden');
+            fetchPosts(); // 刷新列表
+        } else {
+            alert("删除失败: " + error.message);
+        }
+    };
 }
 
+// --- 编辑功能 (对接 iOS 弹窗) ---
 async function editPost(id) {
-    // 找到当前那条随笔的文字
-    const currentText = document.getElementById(`content-${id}`).innerText;
+    const dialog = document.getElementById('ios-dialog');
+    const confirmBtn = document.getElementById('confirm-btn');
+    const msgEl = document.getElementById('dialog-msg');
+    const inputEl = document.getElementById('dialog-input'); // ✅
     
-    // 调用弹窗：标题，提示语，点击确认后的动作，是否开启输入框(true)，默认文字
-    showDialog("编辑随笔", "请修改内容：", async (newVal) => {
+    // 1. 获取当前那条随笔的内容
+    const contentEl = document.getElementById(`content-${id}`);
+    const currentText = contentEl ? contentEl.innerText : "";
+    
+    // 2. 设置弹窗为“编辑”模式：隐藏提示文字，显示输入框并回显文字
+    msgEl.classList.add('hidden');
+    inputEl.classList.remove('hidden');
+    inputEl.value = currentText; // 💡 关键：把旧文字填进去
+
+    // 3. 显示弹窗
+    dialog.classList.remove('hidden');
+
+    // 4. 绑定确认修改逻辑
+    confirmBtn.onclick = async () => {
+        const newVal = inputEl.value.trim();
+        
+        // 如果有修改且不为空
         if (newVal && newVal !== currentText) {
-            const { error } = await _supabase.from('posts').update({ content: newVal }).eq('id', id);
-            if (!error) fetchPosts();
+            const { error } = await _supabase
+                .from('posts')
+                .update({ content: newVal })
+                .eq('id', id);
+            
+            if (!error) {
+                dialog.classList.add('hidden');
+                fetchPosts(); // 刷新列表
+            } else {
+                alert("修改失败: " + error.message);
+            }
+        } else {
+            // 如果没修改，直接关闭
+            dialog.classList.add('hidden');
         }
-    }, true, currentText);
+    };
 }
         
         function initStars() {
