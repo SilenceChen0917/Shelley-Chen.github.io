@@ -242,15 +242,39 @@
             }
         }
         // --- 自定义弹窗逻辑 ---
-function showDialog(title, msg, onConfirm) {
-    document.getElementById('dialog-title').innerText = title;
-    document.getElementById('dialog-msg').innerText = msg;
-    const dialog = document.getElementById('ios-dialog');
-    dialog.classList.remove('hidden');
+function showDialog(title, msg, callback, isInput = false, defaultValue = "") {
+    const dialog = document.getElementById('customDialog');
+    const titleEl = document.getElementById('dialogTitle');
+    const msgEl = document.getElementById('dialogMsg');
+    const inputEl = document.getElementById('dialogInput');
+    const confirmBtn = document.getElementById('dialogConfirm');
+    const cancelBtn = document.getElementById('dialogCancel');
+
+    // 设置内容
+    titleEl.innerText = title;
+    msgEl.innerText = msg;
     
-    document.getElementById('confirm-btn').onclick = async () => {
-        await onConfirm();
-        closeDialog();
+    // 如果是编辑模式，显示输入框
+    if (isInput) {
+        inputEl.classList.remove('hidden');
+        inputEl.value = defaultValue;
+        msgEl.classList.add('hidden'); // 编辑时通常不需要提示语
+    } else {
+        inputEl.classList.add('hidden');
+        msgEl.classList.remove('hidden');
+    }
+
+    dialog.classList.remove('hidden');
+
+    // 绑定点击事件
+    confirmBtn.onclick = () => {
+        const result = isInput ? inputEl.value : true;
+        callback(result);
+        dialog.classList.add('hidden');
+    };
+
+    cancelBtn.onclick = () => {
+        dialog.classList.add('hidden');
     };
 }
 
