@@ -11,7 +11,7 @@
     
     <style>
         :root { --accent: #ff6b00; --glass: rgba(15, 15, 20, 0.8); }
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #050508 !important; color: white; font-family: -apple-system, sans-serif; overflow: hidden; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #050508 !important; color: white; font-family: -apple-system, sans-serif; overflow-y: auto; }
         
         /* 星空背景层 */
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
@@ -127,7 +127,7 @@
                     <p class="text-gray-400 tracking-[0.2em] text-sm mt-2 uppercase">万物生长，唯爱至上</p>
                 </div>
 
-                <div class="glass-card p-0 overflow-hidden mb-6 border-white/5">
+                <div class="glass-card p-0 mb-6 border-white/5">
                     <div onclick="toggleSection('tour-content', 'tour-icon')" class="p-6 flex justify-between items-center cursor-pointer hover:bg-white/5 transition bg-white/5">
                         <div class="flex items-center gap-6">
                             <h3 class="text-xl font-bold">🎤 巡回演唱会全记录</h3>
@@ -163,7 +163,7 @@
             </div>
             
             <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
-                <div id="album-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 pb-20">
+                <div id="album-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 pb-32">
                     </div>
             </div>
         </div>
