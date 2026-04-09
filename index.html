@@ -508,9 +508,17 @@ async function editPost(id) {
         }
 
         function toggleSection(id) {
-            const el = document.getElementById(id);
-            el.style.maxHeight = (el.style.maxHeight === "0px" || !el.style.maxHeight) ? "1000px" : "0px";
-        }
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    if (element.style.maxHeight && element.style.maxHeight !== '0px') {
+        // 如果现在是打开的，强制设为 0 彻底关闭
+        element.style.maxHeight = '0px';
+    } else {
+        // 如果是关闭的，计算内容高度并赋值
+        element.style.maxHeight = element.scrollHeight + "px";
+    }
+}
 
         function renderSilence() {
     // 1. 【专辑板块】渲染专辑卡片及歌曲列表
@@ -519,28 +527,28 @@ async function editPost(id) {
         albumGrid.innerHTML = albumData.map((a, index) => {
             const albumSubId = `album-songs-${index}`;
             return `
-                <div class="flex flex-col bg-white/5 rounded-2xl overflow-hidden border border-white/5 hover:border-pink-500/30 transition-all duration-300">
-                    <div onclick="toggleSection('${albumSubId}')" class="flex gap-4 p-4 cursor-pointer hover:bg-white/10 transition items-center">
-                        <div class="w-14 h-14 rounded-lg bg-gradient-to-br ${a.color} shadow-lg flex-shrink-0 flex items-center justify-center text-white/40 text-[10px] font-bold">DISC</div>
-                        <div class="flex-1">
-                            <div class="font-bold text-sm text-gray-100">《${a.name}》</div>
-                            <div class="text-[10px] text-gray-500 mt-1">${a.date}</div>
-                        </div>
-                        <div class="text-[9px] px-2 py-1 bg-white/5 text-gray-400 rounded-full italic">Tracklist</div>
-                    </div>
+    <div class="flex flex-col bg-[#1a1a1a] rounded-2xl overflow-hidden border border-white/5 hover:border-pink-500/30 transition-all duration-300 mb-4">
+        <div onclick="toggleSection('${albumSubId}')" class="flex gap-4 p-4 cursor-pointer hover:bg-white/5 transition items-center">
+            <div class="w-14 h-14 rounded-lg bg-gradient-to-br ${a.color} shadow-lg flex-shrink-0 flex items-center justify-center text-white/40 text-[10px] font-bold">DISC</div>
+            <div class="flex-1">
+                <div class="font-bold text-sm text-gray-100">《${a.name}》</div>
+                <div class="text-[10px] text-gray-500 mt-1">${a.date}</div>
+            </div>
+            <div class="text-[9px] px-2 py-1 bg-white/5 text-gray-400 rounded-full italic">Tracklist</div>
+        </div>
 
-                    <div id="${albumSubId}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-black/30">
-                        <div class="p-4 pt-2 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-white/5">
-                            ${a.songs.map((song, i) => `
-                                <div class="text-[12px] text-gray-300 py-1 flex items-center gap-2">
-                                    <span class="text-pink-500/60 font-mono text-[10px]">${String(i + 1).padStart(2, '0')}</span>
-                                    <span class="truncate">${song}</span>
-                                </div>
-                            `).join('')}
-                        </div>
+        <div id="${albumSubId}" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-black/20">
+            <div class="p-4 pt-2 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-white/5">
+                ${a.songs.map((song, i) => `
+                    <div class="text-[12px] text-gray-300 py-1 flex items-center gap-2">
+                        <span class="text-pink-500/60 font-mono text-[10px]">${String(i + 1).padStart(2, '0')}</span>
+                        <span class="truncate">${song}</span>
                     </div>
-                </div>
-            `;
+                `).join('')}
+            </div>
+        </div>
+    </div>
+`;
         }).join('');
     }
 
