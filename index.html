@@ -113,33 +113,57 @@
             </div>
         </div>
 
-        <div id="silence" class="page">
+<div id="silence" class="page">
             <div class="max-w-6xl mx-auto space-y-6">
-                <h2 class="text-5xl font-black italic bg-clip-text text-transparent bg-gradient-to-r from-white to-orange-500 mb-10">SILENCE WANG</h2>
-                
-                <div class="glass-card p-0 overflow-hidden mb-8">
-                    <div onclick="toggleSection('tour-content')" class="p-6 flex justify-between items-center cursor-pointer bg-white/5">
-                        <h3 class="text-xl font-bold">🎤 巡回演唱会记录</h3>
-                        <span>▼</span>
+                <div class="border-b border-orange-500/30 pb-6 mb-10">
+                    <h2 class="text-5xl font-black italic text-transparent bg-clip-text bg-gradient-to-r from-white to-orange-500">SILENCE WANG</h2>
+                    <p class="text-gray-400 tracking-[0.2em] text-sm mt-2 uppercase">万物生长，唯爱至上</p>
+                </div>
+
+                <div class="glass-card p-0 overflow-hidden mb-6 border-white/5">
+                    <div onclick="toggleSection('tour-content', 'tour-icon')" class="p-6 flex justify-between items-center cursor-pointer hover:bg-white/5 transition bg-white/5">
+                        <div class="flex items-center gap-6">
+                            <h3 class="text-xl font-bold">🎤 巡回演唱会全记录</h3>
+                            <div class="flex gap-3">
+                                <span class="px-3 py-1 bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-full text-xs">累计 <b id="total-shows">0</b> 场次</span>
+                                <span class="px-3 py-1 bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-full text-xs">覆盖 <b id="total-cities">0</b> 座城市</span>
+                            </div>
+                        </div>
+                        <span id="tour-icon" class="transition-transform duration-300 text-orange-500">▼</span>
                     </div>
-                    <div id="tour-content" class="max-h-0 overflow-hidden transition-all duration-500">
-                        <table class="w-full text-left text-sm">
-                            <tbody id="concert-table-body" class="divide-y divide-white/5"></tbody>
-                        </table>
+                    <div id="tour-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                        <div class="overflow-x-auto border-t border-white/10">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-white/5 text-orange-500 text-xs uppercase tracking-wider">
+                                       </th><th class="p-4">日期</th><th class="p-4">城市</th><th class="p-4">场馆</th><th class="p-4">名称</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="concert-table-body" class="text-sm text-gray-300 divide-y divide-white/5"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <div class="glass-card p-0 overflow-hidden">
-                    <div onclick="toggleSection('album-content')" class="p-6 flex justify-between items-center cursor-pointer bg-white/5">
-                        <h3 class="text-xl font-bold">💿 音乐专辑年表</h3>
-                        <span>▼</span>
-                    </div>
-                    <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500">
-                        <div id="album-grid" class="p-8 grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-                    </div>
+                <div class="glass-card p-0 overflow-hidden border-white/5">
+            <div onclick="toggleSection('album-content', 'album-icon')" 
+                 class="p-6 flex justify-between items-center cursor-pointer hover:bg-white/5 transition bg-white/5">
+                <div class="flex items-center gap-6">
+                    <h3 class="text-xl font-bold">💿 音乐专辑年表</h3>
+                    <span class="px-3 py-1 bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-full text-xs">
+                        已收录 <b id="album-count">0</b> 张
+                    </span>
                 </div>
+                <span id="album-icon" class="transition-transform duration-300 text-orange-500">▼</span>
+            </div>
+            
+            <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out">
+                <div id="album-grid" class="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 border-t border-white/10 bg-black/40">
+                    </div>
             </div>
         </div>
+    </div>
+</div>
 
         <div id="media" class="page"><div class="glass-card text-center">🎬 板块整理中...</div></div>
         <div id="msg" class="page"><div class="glass-card text-center">💬 留言板开发中...</div></div>
@@ -154,14 +178,41 @@
 
         // --- 2. 汪苏泷数据 ---
         const albumData = [
-            { name: "十万伏特", date: "2024", color: "from-yellow-400" },
-            { name: "联名", date: "2022", color: "from-purple-600" },
-            { name: "大娱乐家", date: "2020", color: "from-pink-600" }
-        ];
+    { id: 1, name: "弗斯特", date: "2010-05-14", color: "from-gray-500", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] },
+    { id: 2, name: "慢慢懂", date: "2010-11-19", color: "from-blue-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
+    { id: 3, name: "万有引力", date: "2012-07-16", color: "from-orange-500", songs: ["万有引力", "巴赫旧约", "三国杀", "有点甜", "不分手的恋爱", "苦笑", "小星星", "第一首情歌", "专属味道", "我想了太多"] },
+    { id: 4, name: "传世乐章", date: "2014-06-25", color: "from-red-600", songs: ["传世乐章", "晴", "睡前故事", "有你的快乐", "风度", "银河", "等你下课", "合照", "后会无期", "想"] },
+    { id: 5, name: "登陆计划", date: "2015-10-19", color: "from-indigo-600", songs: ["登陆计划", "银河", "小星星(Remix)", "睡前故事", "合照", "黑眼圈", "风度", "有你的快乐", "等你下课", "晴"] },
+    { id: 6, name: "莱芙", date: "2017-04-18", color: "from-green-500", songs: ["莱芙", "一笑倾城", "年轮", "那个男孩", "让我留在你身边", "告白", "等不到你", "像风一样", "慢慢懂", "第一首情歌"] },
+    { id: 7, name: "克制凶猛", date: "2018-09-19", color: "from-cyan-600", songs: ["克制凶猛", "对话", "落单恋人", "没关系", "如果时光倒流", "我也不知道", "风度", "第一首情歌", "合照", "后会无期"] },
+    { id: 8, name: "过去现在时", date: "2019-10-30", color: "from-yellow-600", songs: ["过去现在时", "像风一样", "告白", "慢慢懂", "第一首情歌", "不分手的恋爱", "专属味道", "小星星", "有点甜", "一笑倾城"] },
+    { id: 9, name: "大娱乐家", date: "2020-09-19", color: "from-pink-600", songs: ["大娱乐家", "娱乐至死", "我想念", "恋爱循环", "自我催眠", "失眠飞行", "那一年", "像风一样", "不分手的恋爱", "第一首情歌"] },
+    { id: 10, name: "联名", date: "2022-09-19", color: "from-purple-600", songs: ["如果你也听说", "如果爱忘了", "落日飞车", "夏夜晚风", "爱人错过", "像鱼", "星河", "像风一样", "慢慢懂", "第一首情歌"], note: "与10位女歌手合作" },
+    { id: 11, name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-yellow-200", songs: ["十万伏特", "浪漫主义", "银河系漫游", "电光石火", "浪潮", "夜行者", "反重力", "星际恋人", "未来情书", "再见宇宙"], isNew: true }
+];
         const concertData = [
-            { date: '2026-05-01', city: '郑州', venue: '奥体中心', title: '明日世界' },
-            { date: '2025-03-21', city: '北京', venue: '鸟巢', title: '十万伏特2.0' }
-        ];
+    { date: '2012-11-24', city: '武汉', venue: '武汉杂技厅', title: 'QQ音乐尊享' },
+    { date: '2012-12-22', city: '广州', venue: '白云国际会议中心', title: 'QQ音乐尊享' },
+    { date: '2016-09-16', city: '北京', venue: '北京展览馆剧场', title: '登陆星球' },
+    { date: '2017-09-16', city: '北京', venue: '工人体育馆', title: '莱芙巡演' },
+    { date: '2018-09-15', city: '北京', venue: 'M空间', title: '个人演唱会' },
+    { date: '2019-03-16', city: '重庆', venue: '合川文化艺术中心', title: '银河漫游' },
+    { date: '2021-08-28', city: '上海', venue: '虹馆', title: '大娱乐家' },
+    { date: '2021-12-04', city: '武汉', venue: '网球中心', title: '大娱乐家' },
+    // 变得有些奢侈的事 (10场精选示例)
+    ...['2023-11-04', '2023-11-05'].map(d => ({ date: d, city: '台北', venue: '小巨蛋', title: '奢侈的事' })),
+    { date: '2024-03-09', city: '广州', venue: '广州体育馆', title: '奢侈的事' },
+    { date: '2024-04-13', city: '成都', venue: '凤凰山体育馆', title: '奢侈的事' },
+    { date: '2024-05-25', city: '北京', venue: '首都体育馆', title: '奢侈的事' },
+    { date: '2024-08-03', city: '上海', venue: '梅赛德斯奔驰', title: '奢侈的事' },
+    // 十万伏特 1.0 (部分示例)
+    ...['2024-08-23', '2024-08-24'].map(d => ({ date: d, city: '青岛', venue: '青春足球场', title: '十万伏特' })),
+    ...['2024-12-31', '2025-01-01'].map(d => ({ date: d, city: '广州', venue: '大学城体育中心', title: '十万伏特' })),
+    // 十万伏特 2.0 & 2026 计划 (含第100场)
+    ...['2025-03-21', '2025-03-22', '2025-03-23'].map(d => ({ date: d, city: '北京', venue: '鸟巢', title: '十万伏特2.0' })),
+    { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge', title: '🏆 第100场:罗曼前传' },
+    ...['2026-05-01', '2026-05-02', '2026-05-03'].map(d => ({ date: d, city: '郑州', venue: '郑州奥体中心', title: '明日世界' }))
+];
 
         // --- 3. 核心功能 ---
         async function fetchPosts() {
@@ -240,15 +291,17 @@ function deletePost(id) {
     });
 }
 
-// --- 编辑功能 ---
-function editPost(id) {
+async function editPost(id) {
+    // 找到当前那条随笔的文字
     const currentText = document.getElementById(`content-${id}`).innerText;
-    showDialog("编辑随笔", "请输入修改后的内容：", async (newVal) => {
+    
+    // 调用弹窗：标题，提示语，点击确认后的动作，是否开启输入框(true)，默认文字
+    showDialog("编辑随笔", "请修改内容：", async (newVal) => {
         if (newVal && newVal !== currentText) {
-        const { error } = await _supabase.from('posts').update({ content: newVal }).eq('id', id);
-        if (!error) fetchPosts();
-     }
-        }, true, currentText);
+            const { error } = await _supabase.from('posts').update({ content: newVal }).eq('id', id);
+            if (!error) fetchPosts();
+        }
+    }, true, currentText);
 }
         
         function initStars() {
