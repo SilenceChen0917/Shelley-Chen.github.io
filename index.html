@@ -11,14 +11,14 @@
     
     <style>
         :root { --accent: #ff6b00; --glass: rgba(15, 15, 20, 0.8); }
-        body, html { margin: 0; padding: 0; width: 100%; height: auto !important; min-height: 100%; background: #050508 !important; color: white; font-family: -apple-system, sans-serif; overflow-x: hidden; overflow-y: visible !important; }
+        body, html { margin: 0; padding: 0; width: 100%; height: auto !important; min-height: 100vh; background: #050508 !important; color: white; font-family: -apple-system, sans-serif; overflow-x: hidden; overflow-y: auto !important; }
         
         /* 星空背景层 */
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 
         /* 内容层 */
-        #content-wrapper { position: relative; z-index: 10; width: 100%; height: auto !important; min-height: 100vh; overflow-y: visible; ... }
-        .page { display: block; width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 20px 100px; }
+        #content-wrapper { position: relative; z-index: 10; width: 100%; height: auto !important; min-height: 100vh; display: block; ... }
+        .page { display: none; width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 20px 100px; flex-shrink: 0; }
         .page.active { display: block; animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -138,7 +138,7 @@
                         </div>
                         <span id="tour-icon" class="transition-transform duration-300 text-orange-500">▼</span>
                     </div>
-                    <div id="tour-content" class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out bg-black/20">
+                    <div id="tour-content" class="max-h-0 transition-all duration-500 ease-in-out bg-black/20">
                        <div id="tour-nested-list" class="p-4 space-y-3">
                                 <thead>
                                     <tr class="bg-white/5 text-orange-500 text-xs uppercase tracking-wider">
@@ -150,7 +150,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-0 border-white/5"> 
+                <div class="glass-card p-0 border-white/5 !overflow-visible"> 
             <div onclick="toggleSection('album-content', 'album-icon')" 
                  class="p-6 flex justify-between items-center cursor-pointer hover:bg-white/5 transition bg-white/5">
                 <div class="flex items-center gap-6">
@@ -509,7 +509,7 @@ async function editPost(id) {
             });
 
             if (pageId === 'journal') fetchPosts();
-            document.getElementById('content-wrapper').scrollTo(0, 0);
+            window.scrollTo(0, 0);
         }
 
 function toggleSection(id, iconId) {
