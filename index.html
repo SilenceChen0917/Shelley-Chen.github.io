@@ -11,13 +11,13 @@
     
     <style>
         :root { --accent: #ff6b00; --glass: rgba(15, 15, 20, 0.8); }
-        body, html { margin: 0; padding: 0; width: 100%; height: auto !important; min-height: 100vh; background: #050508 !important; color: white; font-family: -apple-system, sans-serif; overflow-x: hidden; overflow-y: auto !important; }
+        body, html { margin: 0; padding: 0; width: 100%; min-height: 100vh; min-height: 100vh; background: #050508 !important; color: white; font-family: -apple-system, sans-serif; overflow-x: hidden; overflow-y: auto !important; }
         
         /* 星空背景层 */
-        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         /* 内容层 */
-        #content-wrapper { position: relative; z-index: 10; width: 100%; height: auto !important; min-height: 100vh; display: block; ... }
+        #content-wrapper { position: relative; z-index: 10; width: 100%; padding-top: 80px; height: auto !important; min-height: 100vh; display: block; ... }
         .page { display: none; width: 100%; max-width: 1200px; margin: 0 auto; padding: 100px 20px 100px; flex-shrink: 0; }
         .page.active { display: block; animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
