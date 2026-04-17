@@ -16,6 +16,11 @@
         /* 星空背景层 */
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
+        /* 导航栏最高 */
+.top-nav { 
+    z-index: 100; 
+}
+        
         /* 内容层 */
         #content-wrapper { position: relative; z-index: 10; width: 100%; padding-top: 80px; height: auto !important; min-height: 100vh; display: block; ... }
         .page { display: none; width: 100%; max-width: 1200px; margin: 0 auto; padding: 100px 20px 100px; flex-shrink: 0; }
@@ -58,15 +63,15 @@
     
     <div id="ios-dialog" class="fixed inset-0 z-[1000] flex items-center justify-center hidden">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-    <div class="relative bg-white/80 backdrop-blur-xl w-[270px] rounded-[14px] overflow-hidden flex flex-col text-center animate-[pop_0.3s_ease-out]">
+    <div class="relative bg-white/80 backdrop-blur-xl w-[270px] rounded-[14px] overflow-hidden flex flex-col text-center">
         <div class="p-5">
-            <h3 id="dialog-title" class="text-[17px] font-semibold text-black">确认操作</h3>
-            <p id="dialog-msg" class="text-[13px] text-black mt-1 p-2 hidden">确定要执行此操作吗？</p>
-<textarea id="dialog-input" class="hidden w-full mt-2 p-3 text-sm bg-white border border-black/10 rounded-lg text-black focus:outline-none focus:ring-1 focus:ring-[#007AFF] shadow-inner" rows="4"></textarea>
+            <h3 id="dialog-title" class="text-[17px] font-semibold text-black">提示</h3>
+            <p id="dialog-msg" class="text-[13px] text-black mt-1 p-2">确定执行吗？</p>
+            <textarea id="dialog-input" class="hidden w-full mt-2 p-3 text-sm bg-white border rounded-lg text-black" rows="4"></textarea>
         </div>
         <div class="flex border-t border-black/10 h-[44px]">
-            <button onclick="closeDialog()" class="flex-1 text-[17px] text-[#007AFF] border-r border-black/10 active:bg-black/5">取消</button>
-            <button id="confirm-btn" class="flex-1 text-[17px] text-[#007AFF] font-semibold active:bg-black/5">确定</button>
+            <button onclick="closeDialog()" class="flex-1 text-[#007AFF] border-r border-black/10">取消</button>
+            <button id="confirm-btn" class="flex-1 text-[#007AFF] font-semibold">确定</button>
         </div>
     </div>
 </div>
@@ -632,15 +637,38 @@ function toggleSection(id, iconId) {
     document.getElementById('total-cities').innerText = cities;
 }
 
-        // --- 5. 启动 ---
-window.onload = () => {
-    // 1. 初始化背景
+        / 初始化入口
+window.onload = function() {
+    // 1. 启动星空
     initStars();
-    // 2. 渲染静态数据板块（專輯、演唱會），确保在 Supabase 数据回来前加载 DOM
+    
+    // 2. 渲染汪苏泷板块数据
     renderSilence();
-    // 3. 渲染 Supabase 数据
-    fetchPosts();
+    
+    // 3. 默认显示首页
+    showPage('about');
 };
+
+// 修正后的弹窗关闭函数
+function closeDialog() {
+    document.getElementById('ios-dialog').classList.add('hidden');
+}
+
+// 修正后的导航高亮逻辑
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.remove('active');
+        // 匹配点击的页面
+        if(n.getAttribute('onclick').includes(pageId)) {
+            n.classList.add('active');
+        }
+    });
+    document.getElementById(pageId).classList.add('active');
+    
+    if (pageId === 'journal') fetchPosts();
+    window.scrollTo(0, 0);
+}
     </script>
 </body>
 </html>
