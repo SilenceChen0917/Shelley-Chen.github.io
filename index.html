@@ -140,17 +140,146 @@
         const MY_AVATAR = "https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg";
         const _supabase = supabase.createClient('https://qjwghoqhjgspissyysoi.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU');
 
-        const albumData = [
-            { name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-orange-500", songs: ["十万伏特", "浪漫主义", "银河系漫游"] },
-            { name: "联名", date: "2022-09-19", color: "from-pink-400 to-rose-500", songs: ["如果你也听说", "如果爱忘了"] },
-            { name: "万有引力", date: "2012-07-16", color: "from-blue-400 to-blue-600", songs: ["万有引力", "巴赫旧约", "有点甜"] }
-        ];
+        <div id="media" class="page"><div class="glass-card text-center">🎬 板块整理中...</div></div>
+        <div id="msg" class="page"><div class="glass-card text-center">💬 留言板开发中...</div></div>
+    </div>
 
-        const concertData = [
-            { date: '2026-05-10', city: '郑州', venue: '奥体中心体育场', title: '明日世界' },
-            { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge Arena', title: '罗曼前传' },
-            { date: '2025-03-21', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' }
-        ];
+    <script>
+        // --- 1. 初始化配置 ---
+        const MY_AVATAR = "https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg";
+        const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // --- 2. 汪苏泷数据 ---
+        const albumData = [
+    { name: "十万伏特", date: "2024-12-21", color: "from-yellow-400 to-orange-500", songs: ["十万伏特", "浪漫主义", "银河系漫游", "电光石火", "浪潮", "夜行者", "反重力", "星际恋人", "未来情书", "再见宇宙"] },
+    { name: "联名", date: "2022-09-19", color: "from-pink-400 to-rose-500", songs: ["如果你也听说", "如果爱忘了", "落日飞车", "夏夜晚风", "爱人错过", "像鱼", "星河", "像风一样", "慢慢懂", "第一首情歌"] },
+    { name: "大娱乐家", date: "2020-09-19", color: "from-purple-500 to-indigo-600", songs: ["大娱乐家", "娱乐至死", "我想念", "恋爱循环", "自我催眠", "失眠飞行", "那一年", "像风一样", "不分手的恋爱", "第一首情歌"] },
+    { name: "过去现在时", date: "2019-10-30", color: "from-blue-500 to-cyan-500", songs: ["过去现在时", "像风一样", "告白", "慢慢懂", "第一首情歌", "不分手的恋爱", "专属味道", "小星星", "有点甜", "一笑倾城"] },
+    { name: "克制凶猛", date: "2018-09-19", color: "from-red-500 to-orange-600", songs: ["克制凶猛", "对话", "落单恋人", "没关系", "如果时光倒流", "我也不知道", "风度", "第一首情歌", "合照", "后会无期"] },
+    { name: "莱芙", date: "2017-04-18", color: "from-green-400 to-teal-500", songs: ["莱芙", "一笑倾城", "年轮", "那个男孩", "让我留在你身边", "告白", "等不到你", "像风一样", "慢慢懂", "第一首情歌"] },
+    { name: "登陆计划", date: "2015-10-19", color: "from-indigo-400 to-purple-500", songs: ["登陆计划", "银河", "小星星(Remix)", "睡前故事", "合照", "黑眼圈", "风度", "有你的快乐", "等你下课", "晴"] },
+    { name: "传世乐章", date: "2014-06-25", color: "from-amber-400 to-orange-500", songs: ["传世乐章", "晴", "睡前故事", "有你的快乐", "风度", "银河", "等你下课", "合照", "后会无期", "想"] },
+    { name: "万有引力", date: "2012-07-16", color: "from-blue-400 to-blue-600", songs: ["万有引力", "巴赫旧约", "三国杀", "有点甜", "不分手的恋爱", "苦笑", "小星星", "第一首情歌", "专属味道", "我想了太多"] },
+    { name: "慢慢懂", date: "2010-11-19", color: "from-lime-400 to-green-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
+    { name: "弗斯特", date: "2010-05-14", color: "from-gray-400 to-gray-600", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] }
+];
+       const concertData = [
+    // --- 2026 「明日世界」巡演 ---
+    { date: '2026-05-10', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+    { date: '2026-05-09', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+    { date: '2026-05-08', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+    { date: '2026-05-03', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+    { date: '2026-05-02', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+    { date: '2026-05-01', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+
+    // --- 2026 「罗曼前传」世界巡演 ---
+    { date: '2026-03-29', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
+    { date: '2026-03-28', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
+    { date: '2026-03-27', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
+    { date: '2026-03-22', city: '墨尔本', venue: 'Rod Laver Arena', title: '罗曼前传' },
+    { date: '2026-03-21', city: '墨尔本', venue: 'Rod Laver Arena', title: '罗曼前传' },
+    { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge Arena', title: '🏆 第100场:罗曼前传' },
+    { date: '2026-03-08', city: '纽约', venue: 'Barclays Center', title: '罗曼前传' },
+    { date: '2026-03-07', city: '纽约', venue: 'Barclays Center', title: '罗曼前传' },
+    { date: '2026-03-01', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
+    { date: '2026-02-28', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
+    { date: '2026-02-27', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
+
+    // --- 2025 「十万伏特2.0」巡演 ---
+    { date: '2025-12-21', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-12-20', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-12-19', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-12-01', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-11-30', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-11-29', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-11-02', city: '台州', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-11-01', city: '台州', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-10-31', city: '台州', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-10-19', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-10-18', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-10-17', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-09-28', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-09-27', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-09-26', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-09-14', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-09-13', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-09-12', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-08-23', city: '青岛', venue: '青岛市民健身中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-08-22', city: '青岛', venue: '青岛市民健身中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-08-10', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-08-09', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-08-08', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-07-27', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-07-26', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-07-25', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-07-13', city: '兰州', venue: '兰州奥体中心玫瑰体育场', title: '十万伏特 2.0' },
+    { date: '2025-07-12', city: '兰州', venue: '兰州奥体中心玫瑰体育场', title: '十万伏特 2.0' },
+    { date: '2025-06-29', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-06-28', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-06-27', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-06-15', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-06-14', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-06-13', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-05-18', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-05-17', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-05-16', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-04-13', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-04-12', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-04-11', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
+    { date: '2025-03-23', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
+    { date: '2025-03-22', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
+    { date: '2025-03-21', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
+
+    // --- 2024-2025 「十万伏特」1.0 ---
+    { date: '2025-01-01', city: '广州', venue: '大学城体育中心', title: '十万伏特 1.0' },
+    { date: '2024-12-31', city: '广州', venue: '大学城体育中心', title: '十万伏特 1.0' },
+    { date: '2024-12-20', city: '南宁', venue: '广西体育中心', title: '十万伏特 1.0' },
+    { date: '2024-12-19', city: '南宁', venue: '广西体育中心', title: '十万伏特 1.0' },
+    { date: '2024-12-01', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-11-30', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-11-29', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-11-16', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
+    { date: '2024-11-15', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
+    { date: '2024-11-14', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
+    { date: '2024-11-02', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
+    { date: '2024-11-01', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
+    { date: '2024-10-31', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
+    { date: '2024-10-19', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-10-18', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-10-17', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-09-28', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-09-27', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-09-26', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
+    { date: '2024-09-14', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
+    { date: '2024-09-13', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
+    { date: '2024-09-12', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
+    { date: '2024-08-24', city: '青岛', venue: '青春足球场', title: '十万伏特 1.0' },
+    { date: '2024-08-23', city: '青岛', venue: '青春足球场', title: '十万伏特 1.0' },
+
+    // --- 2023-2024 「变得有些奢侈的事」巡演 ---
+    { date: '2024-08-03', city: '上海', venue: '梅赛德斯奔驰文化中心', title: '变得有些奢侈的事' },
+    { date: '2024-07-20', city: '长沙', venue: '湖南国际会展中心', title: '变得有些奢侈的事' },
+    { date: '2024-07-06', city: '深圳', venue: '深圳湾春茧体育馆', title: '变得有些奢侈的事' },
+    { date: '2024-06-29', city: '武汉', venue: '武汉体育中心体育馆', title: '变得有些奢侈的事' },
+    { date: '2024-06-15', city: '南京', venue: '南京奥体中心体育馆', title: '变得有些奢侈的事' },
+    { date: '2024-05-25', city: '北京', venue: '首都体育馆', title: '变得有些奢侈的事' },
+    { date: '2024-04-13', city: '成都', venue: '凤凰山体育公园体育馆', title: '变得有些奢侈的事' },
+    { date: '2024-03-09', city: '广州', venue: '广州体育馆', title: '变得有些奢侈的事' },
+    { date: '2023-11-05', city: '台北', venue: '台北小巨蛋', title: '变得有些奢侈的事' },
+    { date: '2023-11-04', city: '台北', venue: '台北小巨蛋', title: '变得有些奢侈的事' },
+
+    // --- 早期巡演记录 ---
+    { date: '2021-12-04', city: '武汉', venue: '光谷国际网球中心', title: '大娱乐家' },
+    { date: '2021-08-28', city: '上海', venue: '国家会展中心虹馆', title: '大娱乐家' },
+    { date: '2019-03-16', city: '重庆', venue: '合川文化艺术中心', title: '银河漫游' },
+    { date: '2018-09-15', city: '北京', venue: 'M空间', title: '个人演唱会' },
+    { date: '2017-09-16', city: '北京', venue: '北京工人体育馆', title: '莱芙巡演' },
+    { date: '2016-09-16', city: '北京', venue: '北京展览馆剧场', title: '登陆星球' },
+    { date: '2012-12-22', city: '广州', venue: '白云国际会议中心', title: 'QQ音乐尊享音乐会' },
+    { date: '2012-11-24', city: '武汉', venue: '武汉杂技厅', title: 'QQ音乐尊享音乐会' }
+];
 
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
