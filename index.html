@@ -552,8 +552,9 @@ function toggleSection(id, iconId) {
     }
 }
         
-        function renderSilence() {
-    // --- 第一部分：渲染专辑 ---
+// --- 1. 核心渲染函数 ---
+function renderSilence() {
+    // 渲染专辑板块
     const albumGrid = document.getElementById('album-grid');
     if (albumGrid) {
         albumGrid.innerHTML = albumData.map((a, index) => {
@@ -582,22 +583,20 @@ function toggleSection(id, iconId) {
         }).join('');
     }
 
-    // --- 第二部分：渲染演唱会（含合并逻辑） ---
+    // 渲染演唱会板块
     const tourList = document.getElementById('tour-nested-list');
     if (tourList) {
-        // 1. 按巡演主题分组
         const grouped = concertData.reduce((acc, curr) => {
             if (!acc[curr.title]) acc[curr.title] = [];
             acc[curr.title].push(curr);
             return acc;
         }, {});
 
-        // 2. 渲染各组
         tourList.innerHTML = Object.keys(grouped).map((title, index) => {
             const shows = grouped[title];
             const subId = `sub-tour-${index}`;
             
-            // 地点合并逻辑
+            // 合并同地点日期
             const mergedShows = [];
             shows.forEach(curr => {
                 const existing = mergedShows.find(item => item.city === curr.city && item.venue === curr.venue);
@@ -609,6 +608,64 @@ function toggleSection(id, iconId) {
                 }
             });
 
+            return `
+                <div class="border border-white/5 rounded-xl overflow-hidden bg-white/5 mb-2">
+                    <div onclick="toggleSection('${subId}')" class="p-4 flex justify-between items-center cursor-pointer hover:bg-white/10 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="text-orange-500 text-[10px]">▶</span>
+                            <span class="font-bold text-sm text-gray-200">${title}</span>
+                            <span class="text-[10px] px-2 py-0.5 bg-orange-500/10 text-orange-400 rounded-full">${shows.length} 场</span>
+                        </div>
+                        <span class="text-[10px] text-gray-500">查看详情</span>
+                    </div>
+                    <div id="${subId}" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out bg-black/40">
+                        <div class="p-4 space-y-3 border-t border-white/5">
+                            ${mergedShows.map(s => `
+                                <div class="flex justify-between items-center py-3 border-b border-white/5 last:border-0">
+                                    <div class="w-[140px] text-sm text-gray-300 font-mono tracking-tighter">${s.date}</div>
+                                    <div class="flex-1 text-center text-sm text-white font-bold tracking-widest">${s.city}</div>
+                                    <div class="w-[140px] text-right text-sm text-gray-400 truncate">${s.venue}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>`;
+        }).join('');
+
+        // 更新统计
+        if(document.getElementById('total-shows')) document.getElementById('total-shows').innerText = concertData.length;
+        if(document.getElementById('total-cities')) document.getElementById('total-cities').innerText = new Set(concertData.map(c => c.city)).size;
+    }
+}
+
+// --- 2. 交互控制函数 ---
+function toggleSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        // 如果当前是收起的，就展开；如果是展开的，就收起
+        el.style.maxHeight = (el.style.maxHeight === '0px' || !el.style.maxHeight) ? '2000px' : '0px';
+    }
+}
+
+function showPage(pageId) {
+    // 隐藏所有页面，显示当前页
+    const pages = ['about', 'albums', 'concerts'];
+    pages.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+    const target = document.getElementById(pageId);
+    if (target) target.classList.remove('hidden');
+}
+
+// --- 3. 统一初始化 ---
+window.onload = () => {
+    if (typeof initStars === 'function') initStars();
+    renderSilence();
+    const hash = window.location.hash.replace('#', '');
+    showPage(hash && ['about', 'albums', 'concerts'].includes(hash) ? hash : 'about');
+};
+        
             return `
                 <div class="border border-white/5 rounded-xl overflow-hidden bg-white/5 mb-2">
                     <div onclick="toggleSection('${subId}')" class="p-4 flex justify-between items-center cursor-pointer hover:bg-white/10 transition">
