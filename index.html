@@ -3,28 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shelley's Space | 向往自由</title>
+    <title>Shelley's Space | See the World, Find myself </title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
-        :root { --accent: #ff6b00; --glass: rgba(15, 15, 20, 0.8); }
-        body, html { margin: 0; padding: 0; width: 100%; min-height: 100vh; background: #050508 !important; color: white; font-family: -apple-system, sans-serif; overflow-x: hidden; }
+        /* --- 现代极简主义艺术风格核心配置 --- */
+        :root { 
+            --accent: #ffffff; /* 现代极简偏爱纯白或微粉作为高光 */
+            --glass: rgba(255, 255, 255, 0.02); /* 极度清透的微光底色 */
+            --text-muted: rgba(255, 255, 255, 0.4); /* 优雅的低沉淀灰色 */
+        }
         
-        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .top-nav { position: fixed; top: 0; left: 0; width: 100%; height: 70px; background: rgba(10, 10, 15, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; gap: 30px; }
-        .nav-item { cursor: pointer; opacity: 0.7; transition: 0.3s; font-size: 15px; font-weight: 500; }
-        .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); }
+        body, html { 
+            margin: 0; padding: 0; width: 100%; min-height: 100vh; 
+            background: #060609 !important; 
+            color: #ffffff; 
+            /* 选用干净利落的系统无衬线现代体 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            overflow-x: hidden; 
+            letter-spacing: 0.5px;
+        }
+        
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.4; }
+        
+        /* 艺术画廊导航栏：去掉粗底边，拉开字间距 */
+        .top-nav { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 80px; 
+            background: rgba(6, 6, 9, 0.7); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); 
+            z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); 
+            display: flex; align-items: center; justify-content: center; gap: 40px; 
+        }
+        .nav-item { 
+            cursor: pointer; opacity: 0.4; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            font-size: 14px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase;
+        }
+        .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         
         #content-wrapper { position: relative; z-index: 10; }
-        .page { display: none; width: 100%; max-width: 1200px; margin: 0 auto; padding: 100px 20px; }
-        .page.active { display: block; animation: fadeIn 0.6s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .page { display: none; width: 100%; max-width: 1100px; margin: 0 auto; padding: 140px 20px 80px 20px; }
+        .page.active { display: block; animation: galleryFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        @keyframes galleryFadeIn { 
+            from { opacity: 0; transform: translateY(15px); filter: blur(4px); } 
+            to { opacity: 1; transform: translateY(0); filter: blur(0); } 
+        }
 
-        .glass-card { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 40px; transition: all 0.4s; }
-        .id-card-gradient { background: linear-gradient(135deg, #a83279 0%, #3b1654 100%); }
+        /* 艺术卡片：超大圆角、微光边框、极简悬浮动画 */
+        .glass-card { 
+            background: var(--glass); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05); 
+            border-radius: 24px; padding: 40px; 
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        /* 个人ID卡片独立艺术渐变 */
+        .id-card-gradient { background: linear-gradient(135deg, rgba(168,50,121,0.15) 0%, rgba(59,22,84,0.15) 100%); }
+
+        /* 极简主义核心：拉开高级感间距与字体粗细对比 */
+        .art-huge-title { font-weight: 200; letter-spacing: -1px; line-height: 1.1; }
+        .art-sub-title { font-weight: 300; letter-spacing: 6px; color: var(--text-muted); text-transform: uppercase; font-size: 13px; }
+        
+        /* 极简折叠版块样式 */
+        .section-header { transition: color 0.3s; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .section-header:hover { color: var(--accent); }
     </style>
 </head>
 <body>
@@ -33,49 +83,51 @@
 
     <nav class="top-nav">
         <div class="nav-item active" id="nav-about" onclick="showPage('about')">关于</div>
-        <div class="nav-item" id="nav-journal" onclick="showPage('journal')"> 随笔</div>
-        <div class="nav-item" id="nav-silence" onclick="showPage('silence')">汪苏泷</div>
-        <div class="nav-item" id="nav-media" onclick="showPage('media')"> 影视</div>
-        <div class="nav-item" id="nav-msg" onclick="showPage('msg')"> 留言</div>
+        <div class="nav-item" id="nav-journal" onclick="showPage('journal')">随笔</div>
+        <div class="nav-item" id="nav-silence" onclick="showPage('silence')">音乐</div>
+        <div class="nav-item" id="nav-media" onclick="showPage('media')">影视</div>
+        <div class="nav-item" id="nav-msg" onclick="showPage('msg')">留言</div>
     </nav>
     
     <div id="ios-dialog" class="fixed inset-0 z-[1000] flex items-center justify-center hidden">
-        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-        <div class="relative bg-white/80 backdrop-blur-xl w-[270px] rounded-[14px] overflow-hidden flex flex-col text-center shadow-2xl">
-            <div class="p-5">
-                <h3 id="dialog-title" class="text-[17px] font-semibold text-black">提示</h3>
-                <p id="dialog-msg" class="text-[13px] text-black mt-1 p-2">确定执行吗？</p>
-                <textarea id="dialog-input" class="hidden w-full mt-2 p-2 text-sm bg-white/50 border rounded text-black" rows="3"></textarea>
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-md"></div>
+        <div class="relative bg-white/90 backdrop-blur-2xl w-[270px] rounded-[18px] overflow-hidden flex flex-col text-center shadow-2xl">
+            <div class="p-6">
+                <h3 id="dialog-title" class="text-[17px] font-medium text-black tracking-wide">提示</h3>
+                <p id="dialog-msg" class="text-[13px] text-gray-600 mt-2 leading-relaxed">确定执行吗？</p>
+                <textarea id="dialog-input" class="hidden w-full mt-3 p-2 text-sm bg-black/5 border border-black/10 rounded-lg text-black focus:outline-none" rows="3"></textarea>
             </div>
-            <div class="flex border-t border-black/10 h-[44px]">
-                <button onclick="closeDialog()" class="flex-1 text-[#007AFF] border-r border-black/10">取消</button>
-                <button id="confirm-btn" class="flex-1 text-[#007AFF] font-semibold">确定</button>
+            <div class="flex border-t border-black/5 h-[45px] text-[16px]">
+                <button onclick="closeDialog()" class="flex-1 text-gray-500 border-r border-black/5 hover:bg-black/5 transition">取消</button>
+                <button id="confirm-btn" class="flex-1 text-black font-medium hover:bg-black/5 transition">确定</button>
             </div>
         </div>
     </div>
 
     <div id="content-wrapper">
+        
         <div id="about" class="page active">
-            <div class="grid md:grid-cols-2 gap-16 items-center pt-10">
-                <div class="glass-card id-card-gradient p-1 w-full max-w-md mx-auto aspect-[3/4] relative">
-                    <div class="absolute inset-1 bg-[#101015] rounded-[26px] p-10 flex flex-col items-center justify-between text-center">
-                        <div class="w-32 h-32 bg-white rounded-full border-4 border-[#101015] overflow-hidden">
-                            <img src="https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg" class="w-full h-full object-cover">
+            <div class="grid md:grid-cols-2 gap-16 items-center pt-6">
+                <div class="glass-card id-card-gradient p-1 w-full max-w-sm mx-auto aspect-[3/4] relative">
+                    <div class="absolute inset-px bg-[#0c0c12] rounded-[23px] p-8 flex flex-col items-center justify-between text-center">
+                        <div class="w-28 h-28 bg-white/5 rounded-full p-1 border border-white/10 overflow-hidden">
+                            <img src="https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg" class="w-full h-full object-cover rounded-full filter grayscale contrast-125">
                         </div>
-                        <div class="space-y-2">
-                            <h2 class="text-3xl font-extrabold">Shelley Chen</h2>
-                            <p class="text-orange-400 text-sm tracking-widest">以后再说</p>
+                        <div class="space-y-1">
+                            <h2 class="text-2xl font-light tracking-widest">Shelley Chen</h2>
+                            <p class="art-sub-title !text-xs !tracking-[4px] mt-1">Seeking Freedom</p>
                         </div>
-                        <div class="w-full text-left space-y-3 text-sm text-gray-300 border-t border-white/10 pt-6">
-                            <p>🎂 22岁 · 2003.06.20</p>
-                            <p>🎓 商务英语 · 湖南</p>
-                            <p>愿望：环游世界 🌍</p>
+                        <div class="w-full text-left space-y-4 text-xs text-gray-400 border-t border-white/5 pt-6 font-light tracking-wide">
+                            <div class="flex justify-between"><span>AGE</span><span class="text-white font-normal">22岁 · 2003.06.20</span></div>
+                            <div class="flex justify-between"><span>FROM</span><span class="text-white font-normal">湖南 · 商务英语</span></div>
+                            <div class="flex justify-between"><span>WISH</span><span class="text-white font-normal">环游世界 🌍</span></div>
                         </div>
                     </div>
                 </div>
-                <div class="space-y-10">
-                    <h1 class="text-7xl font-extrabold leading-tight">向往自由，<br><span class="text-orange-500">精彩的人生。</span></h1>
-                    <div class="glass-card p-6 border-l-4 border-orange-500 bg-white/5 italic text-gray-400">
+                <div class="space-y-12">
+                    <p class="art-sub-title">INTRODUCTION</p>
+                    <h1 class="text-5xl md:text-6xl art-huge-title">向往自由，<br><span class="text-white/40 font-light">以及明亮精彩的人生。</span></h1>
+                    <div class="text-sm font-light text-gray-400 tracking-widest leading-relaxed border-l border-white/20 pl-6 italic">
                         “我和你都在 同一个大大银河 —— Silence Wang”
                     </div>
                 </div>
@@ -83,12 +135,15 @@
         </div>
 
         <div id="journal" class="page">
-            <div class="max-w-4xl mx-auto space-y-10">
-                <h2 class="text-4xl font-bold border-b border-orange-500 pb-3 inline-block">📖 随笔日常</h2>
-                <div class="glass-card p-8">
-                    <textarea id="postContent" class="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white focus:border-orange-500 transition mb-4" rows="4" placeholder="写下此刻的想法..."></textarea>
-                    <div class="flex justify-end">
-                        <button onclick="savePost()" class="bg-orange-600 px-10 py-3 rounded-full font-bold">发布随笔</button>
+            <div class="max-w-3xl mx-auto space-y-12">
+                <div class="space-y-2">
+                    <p class="art-sub-title">DAILY LIFE</p>
+                    <h2 class="text-3xl font-light tracking-wide">📖 随笔日常</h2>
+                </div>
+                <div class="glass-card p-6">
+                    <textarea id="postContent" class="w-full bg-white/[0.02] border border-white/5 rounded-xl p-5 text-white focus:outline-none focus:border-white/20 transition text-sm font-light" rows="3" placeholder="此刻在想些什么..."></textarea>
+                    <div class="flex justify-end mt-4">
+                        <button onclick="savePost()" class="bg-white text-black text-xs font-medium tracking-widest uppercase px-8 py-3 rounded-full hover:bg-gray-200 transition">发布随笔</button>
                     </div>
                 </div>
                 <div id="postList" class="space-y-6"></div>
@@ -96,176 +151,164 @@
         </div>
 
         <div id="silence" class="page">
-            <div class="max-w-6xl mx-auto space-y-6">
-                <div class="border-b border-orange-500/30 pb-6 mb-10 text-center">
-                    <h2 class="text-5xl font-black italic bg-clip-text text-transparent bg-gradient-to-r from-white to-orange-500 uppercase">Silence Wang</h2>
+            <div class="max-w-4xl mx-auto space-y-12">
+                <div class="pb-6 text-center relative overflow-hidden">
+                    <h2 class="text-6xl md:text-7xl font-thin tracking-[12px] text-white/90 uppercase select-none">Silence Wang</h2>
+                    <p class="art-sub-title mt-2">ARCHIVE / 音乐记录画册</p>
                 </div>
 
-                <div class="glass-card p-0 mb-6 border-white/5">
-                    <div onclick="toggleSection('tour-content', 'tour-icon')" class="p-6 flex justify-between items-center cursor-pointer bg-white/5">
-                        <div class="flex items-center gap-6">
-                            <h3 class="text-xl font-bold">🎤 巡回演唱会全记录</h3>
+                <div class="glass-card p-0 overflow-hidden">
+                    <div onclick="toggleSection('tour-content', 'tour-icon')" class="p-6 flex justify-between items-center cursor-pointer section-header">
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs text-gray-500 font-mono">01 /</span>
+                            <h3 class="text-lg font-light tracking-widest">🎤 巡回演唱会全记录</h3>
                         </div>
-                        <span id="tour-icon" class="transition-transform duration-300">▼</span>
+                        <span id="tour-icon" class="text-xs text-gray-500 transition-transform duration-500 font-light">▼</span>
                     </div>
-                    <div id="tour-content" class="max-h-0 overflow-hidden transition-all duration-500 bg-black/20">
-                        <div class="p-6 overflow-x-auto">
-                            <table class="w-full text-left text-sm text-gray-300">
-                                <thead class="border-b border-white/10 text-orange-500 uppercase">
-                                    <tr><th class="p-3">日期</th><th class="p-3">城市</th><th class="p-3">场馆</th><th class="p-3">巡演名称</th></tr>
-                                </thead>
-                                <tbody id="concert-table-body"></tbody>
-                            </table>
+                    <div id="tour-content" class="max-h-0 overflow-hidden transition-all duration-500">
+                        <div class="p-6">
+                            <div id="concert-timeline" class="space-y-4"></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="glass-card p-0 border-white/5">
-                    <div onclick="toggleSection('album-content', 'album-icon')" class="p-6 flex justify-between items-center cursor-pointer bg-white/5">
-                        <h3 class="text-xl font-bold">💿 音乐专辑年表</h3>
-                        <span id="album-icon" class="transition-transform duration-300">▼</span>
+                <div class="glass-card p-0 overflow-hidden">
+                    <div onclick="toggleSection('album-content', 'album-icon')" class="p-6 flex justify-between items-center cursor-pointer section-header">
+                        <div class="flex items-center gap-4">
+                            <span class="text-xs text-gray-500 font-mono">02 /</span>
+                            <h3 class="text-lg font-light tracking-widest">💿 音乐专辑年表</h3>
+                        </div>
+                        <span id="album-icon" class="text-xs text-gray-500 transition-transform duration-500 font-light">▼</span>
                     </div>
                     <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500">
-                        <div id="album-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6"></div>
+                        <div id="album-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8"></div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="media" class="page"><div class="glass-card text-center">🎬 板块整理中...</div></div>
-        <div id="msg" class="page"><div class="glass-card text-center">💬 留言板开发中...</div></div>
+        <div id="media" class="page"><div class="glass-card text-center text-sm font-light text-gray-500 tracking-widest">🎬 板块整理中...</div></div>
+        <div id="msg" class="page"><div class="glass-card text-center text-sm font-light text-gray-500 tracking-widest">💬 留言板开发中...</div></div>
     </div>
 
     <script>
-
         // --- 1. 初始化配置 ---
         const MY_AVATAR = "https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg";
         const SUPABASE_URL = 'https://qjwghoqhjgspissyysoi.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqd2dob3FoamdzcGlzc3l5c29pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU1MzAyMzgsImV4cCI6MjA5MTEwNjIzOH0.JcYHmNvhY8C-2CpIJAaloSYckBijS0D71fM5ekGzLSU';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // --- 2. 汪苏泷数据 ---
+        // --- 2. 数据源 (保持你的完整数据) ---
         const concertData = [
-    // --- 2026 「明日世界」巡演 ---
-    { date: '2026-05-10', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
-    { date: '2026-05-09', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
-    { date: '2026-05-08', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
-    { date: '2026-05-03', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
-    { date: '2026-05-02', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
-    { date: '2026-05-01', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
-    { date: '2026-05-22', city: '南昌', venue: '南昌国际体育中心中心体育场', title: '明日世界' },
-    { date: '2026-05-23', city: '南昌', venue: '南昌国际体育中心中心体育场', title: '明日世界' },
-    { date: '2026-05-24', city: '南昌', venue: '南昌国际体育中心中心体育场', title: '明日世界' },
-    { date: '2026-05-29', city: '宜昌', venue: '宜昌奥体中心体育场', title: '明日世界' },
-    { date: '2026-05-30', city: '宜昌', venue: '宜昌奥体中心体育场', title: '明日世界' },
-    { date: '2026-05-31', city: '宜昌', venue: '宜昌奥体中心体育场', title: '明日世界' },
-            
-    // --- 2026 「罗曼前传」世界巡演 ---
-    { date: '2026-03-29', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
-    { date: '2026-03-28', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
-    { date: '2026-03-27', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
-    { date: '2026-03-22', city: '墨尔本', venue: 'Rod Laver Arena', title: '罗曼前传' },
-    { date: '2026-03-21', city: '墨尔本', venue: 'Rod Laver Arena', title: '罗曼前传' },
-    { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge Arena', title: '🏆 第100场:罗曼前传' },
-    { date: '2026-03-08', city: '纽约', venue: 'Barclays Center', title: '罗曼前传' },
-    { date: '2026-03-07', city: '纽约', venue: 'Barclays Center', title: '罗曼前传' },
-    { date: '2026-03-01', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
-    { date: '2026-02-28', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
-    { date: '2026-02-27', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
-
-    // --- 2025 「十万伏特2.0」巡演 ---
-    { date: '2025-12-21', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-12-20', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-12-19', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-12-01', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-11-30', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-11-29', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-11-02', city: '台州', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-11-01', city: '台州', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-10-31', city: '台州', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-10-19', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-10-18', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-10-17', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-09-28', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-09-27', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-09-26', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-09-14', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-09-13', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-09-12', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-08-23', city: '青岛', venue: '青岛市民健身中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-08-22', city: '青岛', venue: '青岛市民健身中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-08-10', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-08-09', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-08-08', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-07-27', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-07-26', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-07-25', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-07-13', city: '兰州', venue: '兰州奥体中心玫瑰体育场', title: '十万伏特 2.0' },
-    { date: '2025-07-12', city: '兰州', venue: '兰州奥体中心玫瑰体育场', title: '十万伏特 2.0' },
-    { date: '2025-06-29', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-06-28', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-06-27', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-06-15', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-06-14', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-06-13', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-05-18', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-05-17', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-05-16', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-04-13', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-04-12', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-04-11', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
-    { date: '2025-03-23', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
-    { date: '2025-03-22', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
-    { date: '2025-03-21', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
-
-    // --- 2024-2025 「十万伏特」1.0 ---
-    { date: '2025-01-01', city: '广州', venue: '大学城体育中心', title: '十万伏特 1.0' },
-    { date: '2024-12-31', city: '广州', venue: '大学城体育中心', title: '十万伏特 1.0' },
-    { date: '2024-12-20', city: '南宁', venue: '广西体育中心', title: '十万伏特 1.0' },
-    { date: '2024-12-19', city: '南宁', venue: '广西体育中心', title: '十万伏特 1.0' },
-    { date: '2024-12-01', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-11-30', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-11-29', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-11-16', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
-    { date: '2024-11-15', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
-    { date: '2024-11-14', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
-    { date: '2024-11-02', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
-    { date: '2024-11-01', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
-    { date: '2024-10-31', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
-    { date: '2024-10-19', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-10-18', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-10-17', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-09-28', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-09-27', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-09-26', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
-    { date: '2024-09-14', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
-    { date: '2024-09-13', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
-    { date: '2024-09-12', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
-    { date: '2024-08-24', city: '青岛', venue: '青春足球场', title: '十万伏特 1.0' },
-    { date: '2024-08-23', city: '青岛', venue: '青春足球场', title: '十万伏特 1.0' },
-
-    // --- 2023-2024 「变得有些奢侈的事」巡演 ---
-    { date: '2024-08-03', city: '上海', venue: '梅赛德斯奔驰文化中心', title: '变得有些奢侈的事' },
-    { date: '2024-07-20', city: '长沙', venue: '湖南国际会展中心', title: '变得有些奢侈的事' },
-    { date: '2024-07-06', city: '深圳', venue: '深圳湾春茧体育馆', title: '变得有些奢侈的事' },
-    { date: '2024-06-29', city: '武汉', venue: '武汉体育中心体育馆', title: '变得有些奢侈的事' },
-    { date: '2024-06-15', city: '南京', venue: '南京奥体中心体育馆', title: '变得有些奢侈的事' },
-    { date: '2024-05-25', city: '北京', venue: '首都体育馆', title: '变得有些奢侈的事' },
-    { date: '2024-04-13', city: '成都', venue: '凤凰山体育公园体育馆', title: '变得有些奢侈的事' },
-    { date: '2024-03-09', city: '广州', venue: '广州体育馆', title: '变得有些奢侈的事' },
-    { date: '2023-11-05', city: '台北', venue: '台北小巨蛋', title: '变得有些奢侈的事' },
-    { date: '2023-11-04', city: '台北', venue: '台北小巨蛋', title: '变得有些奢侈的事' },
-
-    // --- 早期巡演记录 ---
-    { date: '2021-12-04', city: '武汉', venue: '光谷国际网球中心', title: '大娱乐家' },
-    { date: '2021-08-28', city: '上海', venue: '国家会展中心虹馆', title: '大娱乐家' },
-    { date: '2019-03-16', city: '重庆', venue: '合川文化艺术中心', title: '银河漫游' },
-    { date: '2018-09-15', city: '北京', venue: 'M空间', title: '个人演唱会' },
-    { date: '2017-09-16', city: '北京', venue: '北京工人体育馆', title: '莱芙巡演' },
-    { date: '2016-09-16', city: '北京', venue: '北京展览馆剧场', title: '登陆星球' },
-    { date: '2012-12-22', city: '广州', venue: '白云国际会议中心', title: 'QQ音乐尊享音乐会' },
-    { date: '2012-11-24', city: '武汉', venue: '武汉杂技厅', title: 'QQ音乐尊享音乐会' }
-];
+            { date: '2026-05-10', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+            { date: '2026-05-09', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+            { date: '2026-05-08', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+            { date: '2026-05-03', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+            { date: '2026-05-02', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+            { date: '2026-05-01', city: '郑州', venue: '郑州奥体中心体育场', title: '明日世界' },
+            { date: '2026-05-22', city: '南昌', venue: '南昌国际体育中心中心体育场', title: '明日世界' },
+            { date: '2026-05-23', city: '南昌', venue: '南昌国际体育中心中心体育场', title: '明日世界' },
+            { date: '2026-05-24', city: '南昌', venue: '南昌国际体育中心中心体育场', title: '明日世界' },
+            { date: '2026-05-29', city: '宜昌', venue: '宜昌奥体中心体育场', title: '明日世界' },
+            { date: '2026-05-30', city: '宜昌', venue: '宜昌奥体中心体育场', title: '明日世界' },
+            { date: '2026-05-31', city: '宜昌', venue: '宜昌奥体中心体育场', title: '明日世界' },
+            { date: '2026-03-29', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
+            { date: '2026-03-28', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
+            { date: '2026-03-27', city: '新加坡', venue: 'Indoor Stadium', title: '罗曼前传' },
+            { date: '2026-03-22', city: '墨尔本', venue: 'Rod Laver Arena', title: '罗曼前传' },
+            { date: '2026-03-21', city: '墨尔本', venue: 'Rod Laver Arena', title: '罗曼前传' },
+            { date: '2026-03-14', city: '西雅图', venue: 'Climate Pledge Arena', title: '🏆 第100场:罗曼前传' },
+            { date: '2026-03-08', city: '纽约', venue: 'Barclays Center', title: '罗曼前传' },
+            { date: '2026-03-07', city: '纽约', venue: 'Barclays Center', title: '罗曼前传' },
+            { date: '2026-03-01', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
+            { date: '2026-02-28', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
+            { date: '2026-02-27', city: '澳门', venue: '银河综艺馆', title: '罗曼前传' },
+            { date: '2025-12-21', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-12-20', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-12-19', city: '南宁', venue: '广西体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-12-01', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-11-30', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-11-29', city: '杭州', venue: '杭州奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-11-02', city: '台州', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-11-01', city: '台州', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-10-31', city: '台州', font: '', venue: '台州体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-10-19', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-10-18', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-10-17', city: '重庆', venue: '重庆奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-09-28', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-09-27', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-09-26', city: '福州', venue: '福州海峡奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-09-14', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-09-13', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-09-12', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-08-23', city: '青岛', venue: '青岛市民健身中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-08-22', city: '青岛', venue: '青岛市民健身中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-08-10', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-08-09', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-08-08', city: '西安', venue: '西安奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-07-27', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-07-26', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-07-25', city: '深圳', venue: '深圳大运中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-07-13', city: '兰州', venue: '兰州奥体中心玫瑰体育场', title: '十万伏特 2.0' },
+            { date: '2025-07-12', city: '兰州', venue: '兰州奥体中心玫瑰体育场', title: '十万伏特 2.0' },
+            { date: '2025-06-29', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-06-28', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-06-27', city: '太原', venue: '山西体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-06-15', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-06-14', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-06-13', city: '沈阳', venue: '沈阳奥体中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-05-18', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-05-17', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-05-16', city: '南昌', venue: '南昌国际体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-04-13', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-04-12', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-04-11', city: '合肥', venue: '合肥体育中心体育场', title: '十万伏特 2.0' },
+            { date: '2025-03-23', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
+            { date: '2025-03-22', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
+            { date: '2025-03-21', city: '北京', venue: '国家体育场（鸟巢）', title: '十万伏特 2.0' },
+            { date: '2025-01-01', city: '广州', venue: '大学城体育中心', title: '十万伏特 1.0' },
+            { date: '2024-12-31', city: '广州', venue: '大学城体育中心', title: '十万伏特 1.0' },
+            { date: '2024-12-20', city: '南宁', venue: '广西体育中心', title: '十万伏特 1.0' },
+            { date: '2024-12-19', city: '南宁', venue: '广西体育中心', title: '十万伏特 1.0' },
+            { date: '2024-12-01', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-11-30', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-11-29', city: '杭州', venue: '杭州奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-11-16', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
+            { date: '2024-11-15', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
+            { date: '2024-11-14', city: '厦门', venue: '白鹭体育场', title: '十万伏特 1.0' },
+            { date: '2024-11-02', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
+            { date: '2024-11-01', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
+            { date: '2024-11-02', city: '台州', venue: '台州体育中心', title: '十万伏特 1.0' },
+            { date: '2024-10-19', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-10-18', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-10-17', city: '重庆', venue: '重庆奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-09-28', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-09-27', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-09-26', city: '福州', venue: '海峡奥体中心', title: '十万伏特 1.0' },
+            { date: '2024-09-14', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
+            { date: '2024-09-13', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
+            { date: '2024-09-12', city: '南京', venue: '南京奥体中心体育场', title: '十万伏特 1.0' },
+            { date: '2024-08-24', city: '青岛', venue: '青春足球场', title: '十万伏特 1.0' },
+            { date: '2024-08-23', city: '青岛', venue: '青春足球场', title: '十万伏特 1.0' },
+            { date: '2024-08-03', city: '上海', venue: '梅赛德斯奔驰文化中心', title: '变得有些奢侈的事' },
+            { date: '2024-07-20', city: '长沙', venue: '湖南国际会展中心', title: '变得有些奢侈的事' },
+            { date: '2024-07-06', city: '深圳', venue: '深圳湾春茧体育馆', title: '变得有些奢侈的事' },
+            { date: '2024-06-29', city: '武汉', venue: '武汉体育中心体育馆', title: '变得有些奢侈的事' },
+            { date: '2024-06-15', city: '南京', venue: '南京奥体中心体育馆', title: '变得有些奢侈的事' },
+            { date: '2024-05-25', city: '北京', venue: '首都体育馆', title: '变得有些奢侈的事' },
+            { date: '2024-04-13', city: '成都', venue: '凤凰山体育公园体育馆', title: '变得有些奢侈的事' },
+            { date: '2024-03-09', city: '广州', venue: '广州体育馆', title: '变得有些奢侈的事' },
+            { date: '2023-11-05', city: '台北', venue: '台北小巨蛋', title: '变得有些奢侈的事' },
+            { date: '2023-11-04', city: '台北', venue: '台北小巨蛋', title: '变得有些奢侈的事' },
+            { date: '2021-12-04', city: '武汉', venue: '光谷国际网球中心', title: '大娱乐家' },
+            { date: '2021-08-28', city: '上海', venue: '国家会展中心虹馆', title: '大娱乐家' },
+            { date: '2019-03-16', city: '重庆', venue: '合川文化艺术中心', title: '银河漫游' },
+            { date: '2018-09-15', city: '北京', venue: 'M空间', title: '个人演唱会' },
+            { date: '2017-09-16', city: '北京', venue: '北京工人体育馆', title: '莱芙巡演' },
+            { date: '2016-09-16', city: '北京', venue: '北京展览馆剧场', title: '登陆星球' },
+            { date: '2012-12-22', city: '广州', venue: '白云国际会议中心', title: 'QQ音乐尊享音乐会' },
+            { date: '2012-11-24', city: '武汉', venue: '武汉杂技厅', title: 'QQ音乐尊享音乐会' }
+        ];
 
         const albumData = [
     { name: "明日世界ACTⅠ", date: "2026-04-14", color: "from-grey-400 to-gray-600", songs: ["1424", "就要活得不懂艺术", "一万次热爱", "粉旋风", "问你一个人类梦寐以求的深奥问题"] },
@@ -279,9 +322,10 @@
     { name: "传世乐章", date: "2014-06-25", color: "from-amber-400 to-orange-500", songs: ["传世乐章", "晴", "睡前故事", "有你的快乐", "风度", "银河", "等你下课", "合照", "后会无期", "想"] },
     { name: "万有引力", date: "2012-07-16", color: "from-blue-400 to-blue-600", songs: ["万有引力", "巴赫旧约", "三国杀", "有点甜", "不分手的恋爱", "苦笑", "小星星", "第一首情歌", "专属味道", "我想了太多"] },
     { name: "慢慢懂", date: "2010-11-19", color: "from-lime-400 to-green-500", songs: ["慢慢懂", "唯你懂我心", "某人", "累不累", "你让我懂", "分手季节", "等不到你", "小星星", "苦笑", "幸福是被你需要"] },
-    { name: "弗斯特", date: "2010-05-14", color: "from-gray-400 to-gray-600", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] }
-];
+    { name: "弗斯特", date: "2010-05-14", color: "from-gray-400 to-gray-600", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] }}
+        ];
        
+        // --- 3. 基础页面导航 ---
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -292,31 +336,32 @@
             window.scrollTo(0, 0);
         }
 
+        // --- 4. Supabase 随笔交互部分 ---
         async function fetchPosts() {
             const { data } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
             if (data) {
                 document.getElementById('postList').innerHTML = data.map(post => `
-                    <div class="glass-card p-8 group relative transition-all">
-                        <div class="flex justify-between items-center text-sm text-gray-400 mb-4 border-b border-gray-800 pb-3">
-                            <span class="font-bold text-white flex items-center gap-3">
-                                <img src="${MY_AVATAR}" class="w-8 h-8 rounded-full border border-orange-500"> Shelley
+                    <div class="glass-card p-6 relative transition-all">
+                        <div class="flex justify-between items-center text-xs text-gray-500 mb-4 border-b border-white/5 pb-3">
+                            <span class="text-white flex items-center gap-3 font-light tracking-widest">
+                                <img src="${MY_AVATAR}" class="w-6 h-6 rounded-full filter grayscale"> SHELLEY
                             </span>
-                            <div class="flex items-center gap-4">
-                                <span>${new Date(post.created_at).toLocaleString()}</span>
+                            <div class="flex items-center gap-4 font-mono">
+                                <span>${new Date(post.created_at).toLocaleDateString()}</span>
                                 <div class="flex gap-3">
-                                    <button onclick="editPost('${post.id}')" class="text-blue-400">编辑</button>
-                                    <button onclick="deletePost('${post.id}')" class="text-red-400">删除</button>
+                                    <button onclick="editPost('${post.id}')" class="text-gray-400 hover:text-white transition">编辑</button>
+                                    <button onclick="deletePost('${post.id}')" class="text-gray-600 hover:text-white transition">删除</button>
                                 </div>
                             </div>
                         </div>
-                        <p class="text-gray-200 text-lg">${post.content}</p>
+                        <p class="text-gray-300 text-sm font-light leading-relaxed tracking-wide">${post.content}</p>
                     </div>`).join('');
             }
         }
 
         async function savePost() {
             const content = document.getElementById('postContent').value;
-            if (!content) return alert("内容不能为空");
+            if (!content) return;
             await _supabase.from('posts').insert([{ content }]);
             document.getElementById('postContent').value = '';
             fetchPosts();
@@ -326,7 +371,7 @@
             const dialog = document.getElementById('ios-dialog');
             document.getElementById('dialog-msg').classList.remove('hidden');
             document.getElementById('dialog-input').classList.add('hidden');
-            document.getElementById('dialog-msg').innerText = "确定删除吗？";
+            document.getElementById('dialog-msg').innerText = "确定将此随笔从画廊移除吗？";
             dialog.classList.remove('hidden');
             document.getElementById('confirm-btn').onclick = async () => {
                 await _supabase.from('posts').delete().eq('id', id);
@@ -350,27 +395,35 @@
 
         function closeDialog() { document.getElementById('ios-dialog').classList.add('hidden'); }
 
+        // --- 5. 渲染汪苏泷的极简艺术画册数据 ---
         function renderSilence() {
+            // 极简画册网格渲染
             document.getElementById('album-grid').innerHTML = albumData.map((a, index) => `
-                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 rounded bg-gradient-to-br ${a.color}"></div>
-                        <div><div class="font-bold">《${a.name}》</div><div class="text-xs text-gray-500">${a.date}</div></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-1 text-[11px] text-gray-400">
-                        ${a.songs.map(s => `<div>· ${s}</div>`).join('')}
+                <div class="border-b border-white/5 pb-6 flex flex-col justify-between group">
+                    <div>
+                        <div class="flex justify-between items-baseline mb-4">
+                            <div class="text-lg font-light tracking-wide group-hover:text-gray-300 transition">《${a.name}》</div>
+                            <div class="text-xs font-mono text-gray-500">${a.date.split('-')[0]}</div>
+                        </div>
+                        <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs text-gray-400 font-light tracking-wide leading-relaxed">
+                            ${a.songs.map(s => `<span class="hover:text-white transition cursor-default">/ ${s}</span>`).join('')}
+                        </div>
                     </div>
                 </div>`).join('');
 
-            document.getElementById('concert-table-body').innerHTML = concertData.map(c => `
-                <tr class="border-b border-white/5">
-                    <td class="p-3">${c.date}</td>
-                    <td class="p-3 font-bold text-orange-400">${c.city}</td>
-                    <td class="p-3 text-gray-400">${c.venue}</td>
-                    <td class="p-3 text-xs">${c.title}</td>
-                </tr>`).join('');
+            // 画廊式横向精简排版，彻底告别老套“表格感”
+            document.getElementById('concert-timeline').innerHTML = concertData.map(c => `
+                <div class="flex flex-col md:flex-row md:items-center justify-between py-3 border-b border-white/[0.02] text-xs font-light tracking-wide group hover:border-white/10 transition-all">
+                    <div class="flex items-center gap-6 mb-1 md:mb-0">
+                        <span class="font-mono text-gray-500 w-20">${c.date}</span>
+                        <span class="font-normal text-white text-sm tracking-widest w-16">${c.city}</span>
+                        <span class="text-gray-400 font-light truncate max-w-xs md:max-w-md">${c.venue}</span>
+                    </div>
+                    <span class="text-gray-500 font-mono text-[11px] uppercase tracking-widest bg-white/[0.03] px-3 py-1 rounded-full border border-white/5">${c.title}</span>
+                </div>`).join('');
         }
 
+        // 控制下拉折叠
         function toggleSection(id, iconId) {
             const content = document.getElementById(id);
             const icon = document.getElementById(iconId);
@@ -383,28 +436,22 @@
             }
         }
 
+        // --- 6. 粒子背景与加载 ---
         window.onload = () => {
-    // 初始化星空粒子
-    particlesJS('particles-js', {
-        "particles": {
-            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#ffffff" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.5, "random": true },
-            "size": { "value": 2, "random": true },
-            "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.1, "width": 1 },
-            "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
-        },
-        "interactivity": {
-            "detect_on": "canvas",
-            "events": { "onhover": { "enable": false }, "onclick": { "enable": false } }
-        },
-        "retina_detect": true
-    });
-
-    // 如果你有其他初始化逻辑（比如加载第一页），也可以写在这里
-    console.log("Particles.js loaded!"); 
-};
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 50, "density": { "enable": true, "value_area": 1000 } },
+                    "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.2, "random": true },
+                    "size": { "value": 1.5, "random": true },
+                    "line_linked": { "enable": false },
+                    "move": { "enable": true, "speed": 0.5, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+                },
+                "interactivity": { "events": { "onhover": { "enable": false }, "onclick": { "enable": false } } },
+                "retina_detect": true
+            });
+        };
     </script>
 </body>
 </html>
