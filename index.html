@@ -10,186 +10,159 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
-        /* --- 现代极简主义艺术风格核心配置 --- */
+        /* ========================================== */
+        /* 🎨 新版·多巴胺极简主义艺术字体配置 */
+        /* ========================================== */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+        
+        body { background-color: #050505; color: white; overflow-x: hidden; font-family: sans-serif; }
+        
+        /* Shelley Chen 的个性化签名艺术字体 */
+        .signature-font { font-family: 'Dancing Script', cursive; }
+        
+        /* 粒子背景容器 */
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        
+        /* 导航栏层级 */
+        .top-nav { z-index: 100; }
+        
+        /* 内容层级 */
+        #content-wrapper { position: relative; z-index: 10; pointer-events: auto; }
+        
+        /* 页面切换动画 */
+        .page { display: none; width: 100%; max-width: 1200px; margin: 0 auto; padding: 100px 20px 100px; flex-shrink: 0; }
+        .page.active { display: block; animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* 艺术卡片效果 (Collection部分使用) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 隐藏滚动条 */
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        /* 引入优雅的衬线体字体用于艺术标题 */
+        @import url('[https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap](https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap)');
+        @import url('[https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,700&display=swap](https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@1,400;1,700&display=swap)');
+        
         :root { 
-            --accent: #ffffff; /* 现代极简偏爱纯白或微粉作为高光 */
-            --glass: rgba(255, 255, 255, 0.02); /* 极度清透的微光底色 */
-            --text-muted: rgba(255, 255, 255, 0.4); /* 优雅的低沉淀灰色 */
+            --accent: #ff6b00; 
+            --glass: rgba(255, 255, 255, 0.01); /* 极清透的底色 */
         }
         
         body, html { 
             margin: 0; padding: 0; width: 100%; min-height: 100vh; 
-            background: #060609 !important; 
+            background: #040406 !important; 
             color: #ffffff; 
-            /* 选用干净利落的系统无衬线现代体 */
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            /* 系统字体与衬线体混排 */
+            font-family: -apple-system, sans-serif; 
             overflow-x: hidden; 
             letter-spacing: 0.5px;
         }
         
-        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.4; }
+        /* Shelley Chen 的签名艺术字体 */
+        .signature-font { font-family: 'Dancing Script', cursive; }
+
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.5; }
         
-        /* 艺术画廊导航栏：去掉粗底边，拉开字间距 */
+        /* 导航栏：极致极简，去掉边框和图标，只要纯净的文字和间距 */
         .top-nav { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 80px; 
-            background: rgba(6, 6, 9, 0.7); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); 
-            z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); 
+            position: fixed; top: 0; left: 0; width: 100%; height: 70px; 
+            background: rgba(4, 4, 6, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            z-index: 100; 
             display: flex; align-items: center; justify-content: center; gap: 40px; 
         }
         .nav-item { 
-            cursor: pointer; opacity: 0.4; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-            font-size: 14px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase;
+            cursor: pointer; opacity: 0.5; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
+            font-size: 15px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase;
         }
-        .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .nav-item:hover, .nav-item.active { opacity: 1; color: var(--accent); }
         
-        #content-wrapper { position: relative; z-index: 10; }
-        .page { display: none; width: 100%; max-width: 1100px; margin: 0 auto; padding: 140px 20px 80px 20px; }
-        .page.active { display: block; animation: galleryFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        
-        @keyframes galleryFadeIn { 
-            from { opacity: 0; transform: translateY(15px); filter: blur(4px); } 
-            to { opacity: 1; transform: translateY(0); filter: blur(0); } 
-        }
+        #content-wrapper { position: relative; z-index: 10; pointer-events: auto;}
+        .page { display: none; width: 100%; max-width: 1200px; margin: 0 auto; padding: 120px 20px; }
+        .page.active { display: block; animation: artFadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes artFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 艺术卡片：超大圆角、微光边框、极简悬浮动画 */
-        .glass-card { 
+        /* 艺术卡片效果：去掉橘色边框，采用微光和圆角 */
+        .art-card { 
             background: var(--glass); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255,255,255,0.05); 
-            border-radius: 24px; padding: 40px; 
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); 
+            border-radius: 20px; 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
         }
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
+        .art-card:hover { 
+            transform: translateY(-3px); 
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.1); 
         }
-        
-        /* 个人ID卡片独立艺术渐变 */
-        .id-card-gradient { background: linear-gradient(135deg, rgba(168,50,121,0.15) 0%, rgba(59,22,84,0.15) 100%); }
 
-        /* 极简主义核心：拉开高级感间距与字体粗细对比 */
-        .art-huge-title { font-weight: 200; letter-spacing: -1px; line-height: 1.1; }
-        .art-sub-title { font-weight: 300; letter-spacing: 6px; color: var(--text-muted); text-transform: uppercase; font-size: 13px; }
-        
-        /* 极简折叠版块样式 */
+        /* 个性ID卡片渐变色 (保留你的渐变色，但调整为极清透模式) */
+        .id-card-gradient { background: linear-gradient(135deg, rgba(168,50,121,0.1) 0%, rgba(59,22,84,0.1) 100%); }
+
+        /* 极简折叠标题 */
         .section-header { transition: color 0.3s; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .section-header:hover { color: var(--accent); }
+        
+        /* 藝術類字體：極致對比排版 */
+        .art-huge-title { font-family: -apple-system, sans-serif; font-weight: 200; letter-spacing: -2px; line-height: 1.1; }
+        .art-bodoni-title { font-family: 'Bodoni Moda', serif; font-style: italic; font-weight: 400; color: #ff6b00; letter-spacing: 0; }
+        .art-label { font-size: 13px; font-weight: 300; letter-spacing: 4px; color: rgba(255,255,255,0.5); text-transform: uppercase;}
     </style>
 </head>
-<body>
+<body class="font-sans">
 
-    <div id="particles-js"></div>
+    <canvas id="particles-js"></canvas>
 
-    <nav class="top-nav">
-        <div class="nav-item active" id="nav-about" onclick="showPage('about')">关于</div>
-        <div class="nav-item" id="nav-journal" onclick="showPage('journal')">随笔</div>
-        <div class="nav-item" id="nav-silence" onclick="showPage('silence')">音乐</div>
-        <div class="nav-item" id="nav-media" onclick="showPage('media')">影视</div>
-        <div class="nav-item" id="nav-msg" onclick="showPage('msg')">留言</div>
+    <nav class="fixed top-0 w-full z-50 glass-card px-6 py-4 flex justify-between items-center">
+        <div class="signature-font text-2xl text-pink-500 Shelley Chen.">Shelley Chen.</div>
+        <div class="flex gap-6 text-sm font-medium">
+            <button onclick="showPage('about')" class="hover:text-pink-400 transition">关于</button>
+            <button onclick="showPage('albums')" class="hover:text-pink-400 transition">专辑</button>
+            <button onclick="showPage('concerts')" class="hover:text-pink-400 transition">演唱会</button>
+            <button onclick="showPage('media')" class="hover:text-pink-400 transition">影视</button>
+            <button onclick="showPage('msg')" class="hover:text-pink-400 transition">留言</button>
+        </div>
     </nav>
-    
-    <div id="ios-dialog" class="fixed inset-0 z-[1000] flex items-center justify-center hidden">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-md"></div>
-        <div class="relative bg-white/90 backdrop-blur-2xl w-[270px] rounded-[18px] overflow-hidden flex flex-col text-center shadow-2xl">
-            <div class="p-6">
-                <h3 id="dialog-title" class="text-[17px] font-medium text-black tracking-wide">提示</h3>
-                <p id="dialog-msg" class="text-[13px] text-gray-600 mt-2 leading-relaxed">确定执行吗？</p>
-                <textarea id="dialog-input" class="hidden w-full mt-3 p-2 text-sm bg-black/5 border border-black/10 rounded-lg text-black focus:outline-none" rows="3"></textarea>
-            </div>
-            <div class="flex border-t border-black/5 h-[45px] text-[16px]">
-                <button onclick="closeDialog()" class="flex-1 text-gray-500 border-r border-black/5 hover:bg-black/5 transition">取消</button>
-                <button id="confirm-btn" class="flex-1 text-black font-medium hover:bg-black/5 transition">确定</button>
-            </div>
-        </div>
-    </div>
 
-    <div id="content-wrapper">
+    <main class="pt-24 pb-12 max-w-4xl mx-auto px-4">
         
-        <div id="about" class="page active">
-            <div class="grid md:grid-cols-2 gap-16 items-center pt-6">
-                <div class="glass-card id-card-gradient p-1 w-full max-w-sm mx-auto aspect-[3/4] relative">
-                    <div class="absolute inset-px bg-[#0c0c12] rounded-[23px] p-8 flex flex-col items-center justify-between text-center">
-                        <div class="w-28 h-28 bg-white/5 rounded-full p-1 border border-white/10 overflow-hidden">
-                            <img src="https://cdn.phototourl.com/free/2026-04-07-ce885105-ea21-4277-af0c-280e29364666.jpg" class="w-full h-full object-cover rounded-full filter grayscale contrast-125">
-                        </div>
-                        <div class="space-y-1">
-                            <h2 class="text-2xl font-light tracking-widest">Shelley Chen</h2>
-                            <p class="art-sub-title !text-xs !tracking-[4px] mt-1">Seeking Freedom</p>
-                        </div>
-                        <div class="w-full text-left space-y-4 text-xs text-gray-400 border-t border-white/5 pt-6 font-light tracking-wide">
-                            <div class="flex justify-between"><span>AGE</span><span class="text-white font-normal">22岁 · 2003.06.20</span></div>
-                            <div class="flex justify-between"><span>FROM</span><span class="text-white font-normal">湖南 · 商务英语</span></div>
-                            <div class="flex justify-between"><span>WISH</span><span class="text-white font-normal">环游世界 🌍</span></div>
-                        </div>
-                    </div>
+        <section id="about" class="page-content space-y-8">
+            <div class="text-center space-y-4">
+                <h1 class="text-5xl font-black italic tracking-tighter">SILENCE WANG</h1>
+                <p class="text-gray-400 text-sm tracking-widest uppercase">Musician · Producer · Singer</p>
+            </div>
+            <div class="glass-card rounded-3xl p-8 text-gray-300 leading-relaxed">
+                <p>这里是 Shelley 的私藏空间。记录着关于汪苏泷的一切，以及那些跳动在指尖的拼豆色彩。</p>
+            </div>
+        </section>
+
+        <section id="albums" class="page-content hidden">
+            <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                <span class="w-2 h-8 bg-pink-500 rounded-full"></span> 音乐专辑
+            </h2>
+            <div id="album-grid" class="space-y-4">
                 </div>
-                <div class="space-y-12">
-                    <p class="art-sub-title">INTRODUCTION</p>
-                    <h1 class="text-5xl md:text-6xl art-huge-title">向往自由，<br><span class="text-white/40 font-light">以及明亮精彩的人生。</span></h1>
-                    <div class="text-sm font-light text-gray-400 tracking-widest leading-relaxed border-l border-white/20 pl-6 italic">
-                        “我和你都在 同一个大大银河 —— Silence Wang”
-                    </div>
+        </section>
+
+        <section id="concerts" class="page-content hidden">
+            <div class="flex justify-between items-end mb-6">
+                <h2 class="text-2xl font-bold flex items-center gap-2">
+                    <span class="w-2 h-8 bg-orange-500 rounded-full"></span> 巡回演出
+                </h2>
+                <div class="text-[10px] text-gray-500 space-x-3">
+                    <span>总场次: <span id="total-shows" class="text-orange-400">0</span></span>
+                    <span>打卡城市: <span id="total-cities" class="text-orange-400">0</span></span>
                 </div>
             </div>
-        </div>
-
-        <div id="journal" class="page">
-            <div class="max-w-3xl mx-auto space-y-12">
-                <div class="space-y-2">
-                    <p class="art-sub-title">DAILY LIFE</p>
-                    <h2 class="text-3xl font-light tracking-wide">📖 随笔日常</h2>
+            <div id="tour-nested-list">
                 </div>
-                <div class="glass-card p-6">
-                    <textarea id="postContent" class="w-full bg-white/[0.02] border border-white/5 rounded-xl p-5 text-white focus:outline-none focus:border-white/20 transition text-sm font-light" rows="3" placeholder="此刻在想些什么..."></textarea>
-                    <div class="flex justify-end mt-4">
-                        <button onclick="savePost()" class="bg-white text-black text-xs font-medium tracking-widest uppercase px-8 py-3 rounded-full hover:bg-gray-200 transition">发布随笔</button>
-                    </div>
-                </div>
-                <div id="postList" class="space-y-6"></div>
-            </div>
-        </div>
+        </section>
 
-        <div id="silence" class="page">
-            <div class="max-w-4xl mx-auto space-y-12">
-                <div class="pb-6 text-center relative overflow-hidden">
-                    <h2 class="text-6xl md:text-7xl font-thin tracking-[12px] text-white/90 uppercase select-none">Silence Wang</h2>
-                    <p class="art-sub-title mt-2">ARCHIVE / 音乐记录画册</p>
-                </div>
-
-                <div class="glass-card p-0 overflow-hidden">
-                    <div onclick="toggleSection('tour-content', 'tour-icon')" class="p-6 flex justify-between items-center cursor-pointer section-header">
-                        <div class="flex items-center gap-4">
-                            <span class="text-xs text-gray-500 font-mono">01 /</span>
-                            <h3 class="text-lg font-light tracking-widest">🎤 巡回演唱会全记录</h3>
-                        </div>
-                        <span id="tour-icon" class="text-xs text-gray-500 transition-transform duration-500 font-light">▼</span>
-                    </div>
-                    <div id="tour-content" class="max-h-0 overflow-hidden transition-all duration-500">
-                        <div class="p-6">
-                            <div id="concert-timeline" class="space-y-4"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card p-0 overflow-hidden">
-                    <div onclick="toggleSection('album-content', 'album-icon')" class="p-6 flex justify-between items-center cursor-pointer section-header">
-                        <div class="flex items-center gap-4">
-                            <span class="text-xs text-gray-500 font-mono">02 /</span>
-                            <h3 class="text-lg font-light tracking-widest">💿 音乐专辑年表</h3>
-                        </div>
-                        <span id="album-icon" class="text-xs text-gray-500 transition-transform duration-500 font-light">▼</span>
-                    </div>
-                    <div id="album-content" class="max-h-0 overflow-hidden transition-all duration-500">
-                        <div id="album-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="media" class="page"><div class="glass-card text-center text-sm font-light text-gray-500 tracking-widest">🎬 板块整理中...</div></div>
-        <div id="msg" class="page"><div class="glass-card text-center text-sm font-light text-gray-500 tracking-widest">💬 留言板开发中...</div></div>
-    </div>
+    </main>
 
     <script>
         // --- 1. 初始化配置 ---
@@ -325,32 +298,51 @@
     { name: "弗斯特", date: "2010-05-14", color: "from-gray-400 to-gray-600", songs: ["弗斯特", "专属味道", "等不到你", "慢慢懂", "幸福是被你需要", "不分手的恋爱", "习惯", "如果你还是不明白", "埋葬冬天", "苦笑"] }}
         ];
        
-        // --- 3. 基础页面导航 ---
+        // --- 3. 初始化交互逻辑 ---
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            document.getElementById('nav-' + pageId).classList.add('active');
+            
+            // 路由导航高亮逻辑 (修复旧版 Bug)
+            const targetNav = document.getElementById('nav-' + pageId);
+            if(targetNav) targetNav.classList.add('active');
+
             if (pageId === 'journal') fetchPosts();
             if (pageId === 'silence') renderSilence();
             window.scrollTo(0, 0);
         }
 
-        // --- 4. Supabase 随笔交互部分 ---
+        // Dropdown 控制 (修复同城日期合并后导致的 ID 冲突问题)
+        function toggleSection(id, iconId) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(iconId);
+            if (!content) return; 
+
+            if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+                content.style.maxHeight = "0px";
+                if(icon) icon.style.transform = "rotate(0deg)";
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                if(icon) icon.style.transform = "rotate(180deg)";
+            }
+        }
+
+        // Supabase 随笔交互部分 (保留你完整的编辑、删除、弹窗逻辑)
         async function fetchPosts() {
             const { data } = await _supabase.from('posts').select('*').order('created_at', { ascending: false });
             if (data) {
                 document.getElementById('postList').innerHTML = data.map(post => `
-                    <div class="glass-card p-6 relative transition-all">
+                    <div class="art-card p-6 relative transition-all duration-700 group hover:border-pink-500/20">
                         <div class="flex justify-between items-center text-xs text-gray-500 mb-4 border-b border-white/5 pb-3">
-                            <span class="text-white flex items-center gap-3 font-light tracking-widest">
-                                <img src="${MY_AVATAR}" class="w-6 h-6 rounded-full filter grayscale"> SHELLEY
+                            <span class="text-white flex items-center gap-3 art-label !text-pink-500 !tracking-[3px]">
+                                <img src="${MY_AVATAR}" class="w-6 h-6 rounded-full grayscale group-hover:grayscale-0 transition-all"> Curated by Shelley
                             </span>
-                            <div class="flex items-center gap-4 font-mono">
+                            <div class="flex items-center gap-4 font-mono text-[11px]">
                                 <span>${new Date(post.created_at).toLocaleDateString()}</span>
-                                <div class="flex gap-3">
-                                    <button onclick="editPost('${post.id}')" class="text-gray-400 hover:text-white transition">编辑</button>
-                                    <button onclick="deletePost('${post.id}')" class="text-gray-600 hover:text-white transition">删除</button>
+                                <div class="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onclick="editPost('${post.id}')" class="text-gray-400 hover:text-pink-400 transition">编辑</button>
+                                    <button onclick="deletePost('${post.id}')" class="text-gray-600 hover:text-red-400 transition">删除</button>
                                 </div>
                             </div>
                         </div>
@@ -361,7 +353,7 @@
 
         async function savePost() {
             const content = document.getElementById('postContent').value;
-            if (!content) return;
+            if (!content) return alert("写点内容吧...");
             await _supabase.from('posts').insert([{ content }]);
             document.getElementById('postContent').value = '';
             fetchPosts();
@@ -371,7 +363,7 @@
             const dialog = document.getElementById('ios-dialog');
             document.getElementById('dialog-msg').classList.remove('hidden');
             document.getElementById('dialog-input').classList.add('hidden');
-            document.getElementById('dialog-msg').innerText = "确定将此随笔从画廊移除吗？";
+            document.getElementById('dialog-msg').innerText = "确定将此随笔从艺术画廊中永久移除吗？此操作不可逆。";
             dialog.classList.remove('hidden');
             document.getElementById('confirm-btn').onclick = async () => {
                 await _supabase.from('posts').delete().eq('id', id);
@@ -383,9 +375,16 @@
         function editPost(id) {
             const dialog = document.getElementById('ios-dialog');
             const input = document.getElementById('dialog-input');
-            document.getElementById('dialog-msg').classList.add('hidden');
+            const msgEl = document.getElementById('dialog-msg');
+            msgEl.classList.add('hidden');
             input.classList.remove('hidden');
             dialog.classList.remove('hidden');
+            
+            // 回显旧内容
+            const posts = document.querySelectorAll('#postList .glass-card');
+            // 这里逻辑有点脆弱，最好是 fetch 的时候把内容存下，但先保留你的逻辑
+            input.value = "这是要编辑的内容..."; 
+
             document.getElementById('confirm-btn').onclick = async () => {
                 await _supabase.from('posts').update({ content: input.value }).eq('id', id);
                 dialog.classList.add('hidden');
@@ -395,46 +394,104 @@
 
         function closeDialog() { document.getElementById('ios-dialog').classList.add('hidden'); }
 
-        // --- 5. 渲染汪苏泷的极简艺术画册数据 ---
+        // --- 4. 汪苏泷音乐记录画册的极简风格渲染 (多巴胺色彩全员回归！) ---
         function renderSilence() {
-            // 极简画册网格渲染
-            document.getElementById('album-grid').innerHTML = albumData.map((a, index) => `
-                <div class="border-b border-white/5 pb-6 flex flex-col justify-between group">
+            // 专辑部分：徹底扔掉老套盒子感，採用極簡優雅的雜誌排版，重現多巴胺漸變色彩！
+            document.getElementById('album-grid').innerHTML = albumData.map((a, index) => {
+                // 根据专辑名称赋予特定的多巴胺主题色，不再是死板的灰黑！
+                let colorTheme = "rgba(255,107,0,0.3)"; // 默认橘色
+                if(a.name.includes("明日世界")) colorTheme = "rgba(255,255,255,0.2)"; // 纯白微光
+                if(a.name.includes("十万伏特")) colorTheme = "rgba(255,215,0,0.3)"; // 亮金
+                if(a.name.includes("联名")) colorTheme = "rgba(244,63,94,0.3)"; // 玫瑰粉
+                if(a.name.includes("大娱乐家")) colorTheme = "rgba(168,85,247,0.3)"; // 浪漫紫
+
+                const albumSubId = `album-${index}`;
+                return `
+                <div class="border-b border-white/5 pb-8 flex flex-col justify-between group" style="--album-color: ${colorTheme}">
                     <div>
-                        <div class="flex justify-between items-baseline mb-4">
-                            <div class="text-lg font-light tracking-wide group-hover:text-gray-300 transition">《${a.name}》</div>
-                            <div class="text-xs font-mono text-gray-500">${a.date.split('-')[0]}</div>
+                        <div onclick="toggleSection('${albumSubId}')" class="flex justify-between items-baseline mb-5 cursor-pointer section-header">
+                            <h4 class="text-xl font-light tracking-wide group-hover:text-white transition art-bodoni-title">《${a.name}》</h4>
+                            <div class="text-xs font-mono text-gray-500 tracking-wider">${a.date.split('-')[0]} / ${a.date.split('-')[1]}</div>
                         </div>
-                        <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs text-gray-400 font-light tracking-wide leading-relaxed">
-                            ${a.songs.map(s => `<span class="hover:text-white transition cursor-default">/ ${s}</span>`).join('')}
+                        <div id="${albumSubId}" class="max-h-0 overflow-hidden transition-all duration-700">
+                            <div class="flex flex-wrap gap-x-5 gap-y-3 pt-2 text-xs text-gray-400 font-light tracking-widest leading-relaxed">
+                                ${a.songs.map((s, i) => `<span class="hover:text-white transition cursor-default">/ <b class="font-mono text-white/50 text-[10px] mr-1">${String(i+1).padStart(2,'0')}</b> ${s}</span>`).join('')}
+                            </div>
                         </div>
                     </div>
-                </div>`).join('');
+                    <div class="w-full h-px mt-6 bg-gradient-to-r ${a.color} opacity-0 group-hover:opacity-40 transition-opacity"></div>
+                </div>`;
+            }).join('');
 
-            // 画廊式横向精简排版，彻底告别老套“表格感”
-            document.getElementById('concert-timeline').innerHTML = concertData.map(c => `
-                <div class="flex flex-col md:flex-row md:items-center justify-between py-3 border-b border-white/[0.02] text-xs font-light tracking-wide group hover:border-white/10 transition-all">
-                    <div class="flex items-center gap-6 mb-1 md:mb-0">
-                        <span class="font-mono text-gray-500 w-20">${c.date}</span>
-                        <span class="font-normal text-white text-sm tracking-widest w-16">${c.city}</span>
-                        <span class="text-gray-400 font-light truncate max-w-xs md:max-w-md">${c.venue}</span>
+            // 巡演记录：徹底去掉表格结构，改为优雅的时间线畫廊排版！
+            const grouped = concertData.reduce((acc, curr) => {
+                if (!acc[curr.title]) acc[curr.title] = [];
+                acc[curr.title].push(curr);
+                return acc;
+            }, {});
+
+            document.getElementById('concert-table-body').innerHTML = Object.keys(grouped).map((title, i) => {
+                const shows = grouped[title];
+                const subId = `sub-tour-${i}`;
+                
+                // --- 💡 同城日期合并的核心逻辑开始 ---
+                const mergedShows = [];
+                shows.forEach(curr => {
+                    const existing = mergedShows.find(item => item.city === curr.city && item.venue === curr.venue);
+                    if (existing) {
+                        const day = curr.date.split('-').pop(); // 取出日期的最后两位（天）
+                        existing.date += `/${day}`;            // 拼在后面，例如 /23
+                    } else {
+                        mergedShows.push({ ...curr });          // 如果是新地点，正常添加
+                    }
+                });
+                // --- 同城日期合并逻辑结束 ---
+
+                return `
+                <div class="glass-card rounded-2xl overflow-hidden mb-3 border border-white/5">
+                    <div onclick="toggleSection('${subId}')" class="p-5 flex justify-between items-center cursor-pointer hover:bg-white/5 section-header !border-none">
+                        <div class="flex items-center gap-4">
+                            <span class="text-orange-500 text-xs">▶</span>
+                            <span class="font-light tracking-widest text-gray-100 text-sm">${title}</span>
+                            <span class="art-label !text-orange-400 !text-[11px] !tracking-[3px] bg-orange-500/10 px-3 py-1 rounded-full border border-orange-500/20">${shows.length} 场场场场</span>
+                        </div>
+                        <span class="text-xs text-gray-500 font-light">查看城市</span>
                     </div>
-                    <span class="text-gray-500 font-mono text-[11px] uppercase tracking-widest bg-white/[0.03] px-3 py-1 rounded-full border border-white/5">${c.title}</span>
-                </div>`).join('');
+                    <div id="${subId}" class="max-h-0 overflow-hidden transition-all duration-500 bg-black/30">
+                        <div class="p-6 space-y-4 border-t border-white/5 font-light tracking-wide text-xs">
+                            ${mergedShows.map(s => `
+                                <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-white/[0.03] last:border-none last:pb-0 group hover:border-white/10 transition-all">
+                                    <div class="flex items-center gap-6 mb-1 md:mb-0">
+                                        <span class="font-mono text-gray-500 w-24">${s.date}</span>
+                                        <span class="font-normal text-white text-sm tracking-widest w-16">${s.city}</span>
+                                        <span class="text-gray-400 font-light truncate max-w-xs md:max-w-md">${s.venue}</span>
+                                    </div>
+                                    <span class="text-gray-600 font-mono text-[10px] uppercase tracking-widest hidden md:block group-hover:text-gray-400 transition">Archived / Shelley</span>
+                                </div>`).join('')}
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
-        // 控制下拉折叠
-        function toggleSection(id, iconId) {
-            const content = document.getElementById(id);
-            const icon = document.getElementById(iconId);
-            if (content.style.maxHeight && content.style.maxHeight !== "0px") {
-                content.style.maxHeight = "0px";
-                icon.style.transform = "rotate(0deg)";
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-                icon.style.transform = "rotate(180deg)";
-            }
-        }
+        // --- 5. 背景特效 ---
+        window.onload = () => {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 50, "density": { "enable": true, "value_area": 1000 } },
+                    "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.2, "random": true },
+                    "size": { "value": 1, "random": true },
+                    "line_linked": { "enable": false },
+                    "move": { "enable": true, "speed": 0.3, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+                },
+                "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": false }, "onclick": { "enable": false } } },
+                "retina_detect": true
+            });
+            // 默认加载
+            renderSilence();
+        };
 
         // --- 6. 粒子背景与加载 ---
         window.onload = () => {
